@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local tooling cache (absolute local paths, not shareable)
+.impeccable/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

@@ -1,69 +1,56 @@
-import Image from "next/image";
+"use client";
+
+import { useRef } from "react";
+import { SiteNav } from "@/components/SiteNav";
+import { Footer } from "@/components/Footer";
+import { Fold1Hero } from "@/components/folds/Fold1Hero";
+import { Fold2Intro } from "@/components/folds/Fold2Intro";
+import { ProgressionSection } from "@/components/folds/ProgressionSection";
+import { Fold6Cta } from "@/components/folds/Fold6Cta";
+import { Fold7Partners } from "@/components/folds/Fold7Partners";
+import { Fold8Belief } from "@/components/folds/Fold8Belief";
+
+const progressionSteps = [
+  {
+    number: "01",
+    title: "Built to Build",
+    body: "We have six labs for rapid prototyping, industrial design, mechanical and electrical engineering, metrology, and new product introduction. Space to build intelligent systems that sense, decide, and act like they belong in the world.",
+    image: "/images/fold-3.jpg",
+  },
+  {
+    number: "02",
+    title: "Hands-On Experts",
+    body: "You get structured working sessions with frog, Synapse, and Capgemini Experience Engineering experts, across strategy, design, hardware, AI, simulation, and embedded software. People who build alongside you, not just advice from the sidelines.",
+    image: "/images/fold-4.jpg",
+  },
+  {
+    number: "03",
+    title: "A Straight Line to Enterprise",
+    body: "We work with 85% of the 200 largest public companies on the Forbes Global 2000 list. We bring real world applications for what you build here.",
+    image: "/images/fold-5.jpg",
+  },
+];
 
 export default function Home() {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const progressionRef = useRef<HTMLDivElement>(null);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <>
+      <SiteNav heroRef={heroRef} darkSectionRef={progressionRef} />
+      <Fold1Hero heroRef={heroRef} />
+      {/* Everything after the hero needs its own stacking context — the
+          hero video canvas is `fixed`, and positioned elements always
+          paint above later static-flow siblings regardless of DOM order
+          or z-index value, so without this the video bleeds through. */}
+      <div className="relative z-10">
+        <Fold2Intro />
+        <ProgressionSection steps={progressionSteps} sectionRef={progressionRef} />
+        <Fold6Cta />
+        <Fold7Partners />
+        <Fold8Belief />
+        <Footer />
+      </div>
+    </>
   );
 }

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#9aa0a6"/>
+  <circle cx="260" cy="220" r="140" fill="#7a8188"/>
+  <rect x="420" y="300" width="260" height="180" fill="#82898f"/>
+  <text x="400" y="560" font-family="sans-serif" font-size="20" fill="#5b6167" text-anchor="middle">
+    placeholder — replace with real photography
+  </text>
+</svg>
