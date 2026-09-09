@@ -32,29 +32,34 @@ export function Fold1HeroMobile() {
   };
 
   return (
-    <div ref={scrollRef} className="relative h-[175vh]">
-      <div className="sticky top-0 flex h-screen flex-col overflow-hidden bg-[#c9c7c7]">
+    <div ref={scrollRef} className="relative h-[175svh]">
+      <div className="sticky top-0 flex h-svh flex-col overflow-hidden bg-[#c9c7c7]">
         <div
           className="relative w-full shrink-0"
-          // min(65vh, 100vh - 300px): caps the video at 65% of viewport on
+          // min(65svh, 100svh - 300px): caps the video at 65% of viewport on
           // typical/tall phones, but backs off on short viewports (e.g.
           // iPhone SE) so the text panel below always keeps its ~300px of
           // minimum room instead of the headline/button/scroll-cue
-          // overflowing off the bottom of the screen.
-          style={{ height: "min(65vh, calc(100vh - 300px))" }}
+          // overflowing off the bottom of the screen. svh (not vh) so this
+          // is sized off the viewport with mobile browser chrome excluded,
+          // matching the sticky parent above.
+          style={{ height: "min(65svh, calc(100svh - 300px))" }}
         >
           <ScrollVideoMobile
             framesPath={withBasePath("/frames/octopus")}
             frameCount={96}
             scrollContainerRef={scrollRef}
           />
-          {/* Fades into the nav above and the text panel below, matching
-              the gradient rectangles in Figma's mobile Fold1 frame. */}
-          <div className="absolute inset-x-0 top-0 h-[100px] bg-gradient-to-b from-[#c9c7c7]/0 via-[#c8c5c6] to-[#c9c7c7]" />
+          {/* Video runs edge-to-edge to the top of the device (under the
+              transparent nav) — no fade here, only into the text panel
+              below. */}
           <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-b from-[#c9c7c7]/0 to-[#e8e8e8]" />
         </div>
 
-        <div className="relative z-10 flex flex-1 flex-col items-center justify-between gap-4 bg-[#e8e8e8] px-(--spacing-page) pb-4 pt-6 text-center">
+        <div
+          className="relative z-10 flex flex-1 flex-col items-center justify-between gap-4 bg-[#e8e8e8] px-(--spacing-page) pt-6 text-center"
+          style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
+        >
           <div className="flex flex-col items-center gap-4">
             <h1 className="font-display text-[38px] leading-[42px] text-text-on-light">
               Where AI

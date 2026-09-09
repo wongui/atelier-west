@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -57,6 +57,16 @@ export const metadata: Metadata = {
     description,
     images: ["images/og-image.png"],
   },
+};
+
+// viewport-fit=cover lets env(safe-area-inset-*) resolve to real values
+// on notch/home-indicator devices — the mobile fold-1 hero uses it to keep
+// its bottom content clear of Safari's floating bottom bar instead of
+// hiding behind it.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
