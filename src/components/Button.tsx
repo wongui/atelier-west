@@ -53,8 +53,12 @@ interface ButtonProps {
  * Rectangular button — the only button shape in the system (see
  * docs/FOUNDATIONS.md, Actions family). Squared off from the earlier
  * pill shape per the latest visual pass. Each variant sweeps to its own
- * hover fill via a circle that scales up from center, picked from the
- * button-hover-lab candidates (see /system/button-lab).
+ * hover fill via the same vertical bottom-to-top wipe as ButtonXL (see
+ * that component for why: a circle needs the `scale` CSS property
+ * animated via `transition-[scale]`, not `transition-transform`, and a
+ * straight-edged fill stays crisp at any button width) — kept identical
+ * across both components so every button on the site shares one hover
+ * interaction, just at a different footprint.
  *
  * `cta` (primary, charcoal -> coral on hover — Fold6 "Apply")
  * `nav` (secondary, charcoal -> coral on hover — nav bar "Apply")
@@ -77,7 +81,7 @@ export function Button({
     <>
       <span
         aria-hidden
-        className={`absolute left-1/2 top-1/2 size-4 -translate-x-1/2 -translate-y-1/2 rounded-full scale-0 group-hover:scale-[12] transition-transform duration-500 ease-out ${hoverBgClassName}`}
+        className={`absolute inset-0 origin-bottom [scale:1_0] transition-[scale] duration-500 ease-out group-hover:[scale:1_1] ${hoverBgClassName}`}
       />
       <span className={`relative z-10 ${invert ? "group-hover:text-text-on-dark" : ""}`}>
         {children}
