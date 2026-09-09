@@ -23,10 +23,18 @@ const dates = [
  * fold, so SiteNav/MobileSiteNav watch it to swap to the on-dark
  * (cream) treatment while it's under the fixed nav, same mechanism as
  * ProgressionSection/ImageTextFold elsewhere.
+ *
+ * Desktop only: `lg:min-h-[32vh]` + `lg:content-center` so this fold and
+ * ApplyHero's `min-h-[68vh]` together fill exactly one viewport
+ * (68 + 32 = 100), content vertically centered in the remaining space —
+ * mobile keeps its own natural `py-16` height, untouched.
  */
 export function KeyDates({ sectionRef }: { sectionRef?: RefObject<HTMLDivElement | null> }) {
   return (
-    <FoldGrid ref={sectionRef} className="bg-surface-dark py-16 text-text-on-dark">
+    <FoldGrid
+      ref={sectionRef}
+      className="bg-surface-dark py-16 text-text-on-dark lg:min-h-[32vh] lg:content-center lg:py-0"
+    >
       <div className="col-start-1 col-span-8 flex flex-col gap-6">
         <Divider />
         <EyebrowLabel>Key Dates</EyebrowLabel>
