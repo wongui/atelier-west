@@ -14,11 +14,11 @@ interface MentorshipGridProps {
 }
 
 /**
- * "Expert Mentorship" — intro copy followed by a 6-up row of mentor
- * photo + name + role. Figma itself only has gray placeholder rectangles
- * for the photos at this stage (no real headshots yet), so `image` is
- * expected to point at the shared placeholder graphic until real photos
- * are dropped in per mentor.
+ * "Expert Mentorship" — intro copy followed by a 5-up grid (2 rows of 5)
+ * of mentor photo + name + role. Each photo renders at its own natural
+ * aspect ratio (no forced box, no object-cover crop) rather than the
+ * fixed 290:321 box this briefly had — that box didn't match the real
+ * headshots' native ratio and was trimming them.
  */
 export function MentorshipGrid({ heading, intro, mentors }: MentorshipGridProps) {
   return (
@@ -30,14 +30,10 @@ export function MentorshipGrid({ heading, intro, mentors }: MentorshipGridProps)
         </div>
       </FoldGrid>
 
-      <div className="mt-16 grid grid-cols-2 gap-6 px-(--spacing-page) sm:grid-cols-3 lg:grid-cols-6">
+      <div className="mt-16 grid grid-cols-2 gap-6 px-(--spacing-page) sm:grid-cols-3 lg:grid-cols-5">
         {mentors.map((mentor, i) => (
           <div key={`${mentor.name}-${i}`} className="flex flex-col gap-4">
-            <img
-              src={withBasePath(mentor.image)}
-              alt=""
-              className="aspect-[290/321] w-full object-cover"
-            />
+            <img src={withBasePath(mentor.image)} alt="" className="w-full h-auto" />
             <h3 className="font-display text-h3">{mentor.name}</h3>
             <p className="font-body text-body">{mentor.role}</p>
           </div>

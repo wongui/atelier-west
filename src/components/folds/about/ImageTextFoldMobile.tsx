@@ -1,5 +1,4 @@
 import type { RefObject } from "react";
-import { DuotoneImage } from "@/components/DuotoneImage";
 
 type Bg = "light" | "dark";
 
@@ -13,9 +12,6 @@ interface ImageTextFoldMobileProps {
   bg: Bg;
   image: string;
   imageAlt?: string;
-  /** Omit for real photography — see DuotoneImage. */
-  wash?: "warm" | "cool";
-  shape?: "blob-a" | "blob-b";
   heading: string;
   body: string | string[];
   /** Exposes the section's wrapper — for `bg="dark"` instances, lets
@@ -29,14 +25,15 @@ interface ImageTextFoldMobileProps {
  * (desktop is a side-by-side col1-3/col4-8 row), same shape as
  * Fold2IntroMobile's stacking of desktop's Fold2Intro. Own component so
  * desktop's file stays untouched.
+ *
+ * Renders the photo at its own natural aspect ratio (no forced box, no
+ * object-cover crop, no organic mask) — see desktop ImageTextFold for why.
  */
 export function ImageTextFoldMobile({
   id,
   bg,
   image,
   imageAlt = "",
-  wash,
-  shape = "blob-a",
   heading,
   body,
   sectionRef,
@@ -49,13 +46,7 @@ export function ImageTextFoldMobile({
       id={id}
       className={`flex flex-col gap-9 px-(--spacing-page) py-16 ${bgClassName[bg]}`}
     >
-      <DuotoneImage
-        src={image}
-        alt={imageAlt}
-        wash={wash}
-        shape={shape}
-        className="aspect-[613/393] w-full"
-      />
+      <img src={image} alt={imageAlt} className="w-full h-auto" />
       <div className="flex flex-col gap-6">
         <h2 className="font-display text-[30px] leading-[1.1]">{heading}</h2>
         <div className="flex flex-col gap-4">

@@ -1,5 +1,4 @@
 import type { RefObject } from "react";
-import { DuotoneImage } from "@/components/DuotoneImage";
 import { FoldGrid } from "@/components/FoldGrid";
 
 type Bg = "light" | "dark";
@@ -14,9 +13,6 @@ interface ImageTextFoldProps {
   bg: Bg;
   image: string;
   imageAlt?: string;
-  /** Omit for real photography — see DuotoneImage. */
-  wash?: "warm" | "cool";
-  shape?: "blob-a" | "blob-b";
   heading: string;
   /** One paragraph, or several rendered with gaps between — matches the
    * blank-line-separated paragraphs in the Figma copy (e.g. Cost & Commitment). */
@@ -32,18 +28,20 @@ interface ImageTextFoldProps {
  * pattern behind Cost & Commitment, Events & Enterprise Access, Partner
  * Benefits, and the top intro statement. Same column split as the home
  * page's Fold2Intro, but parameterized (bg, image, copy) since each About
- * section needs its own placeholder image and can flip light/dark — kept
- * as one component, not four near-duplicates, so swapping in real
- * photography later only ever means changing the `image` prop passed in
- * from the About page, not editing repeated markup.
+ * section needs its own image and can flip light/dark — kept as one
+ * component, not four near-duplicates.
+ *
+ * Renders the photo at its own natural aspect ratio (no forced box, no
+ * object-cover crop, no organic mask) — these are real photos supplied
+ * as-is, not placeholder art meant for the duotone-mask treatment, and a
+ * fixed aspect box cropped two of them since their native ratio didn't
+ * match it.
  */
 export function ImageTextFold({
   id,
   bg,
   image,
   imageAlt = "",
-  wash,
-  shape = "blob-a",
   heading,
   body,
   sectionRef,
@@ -56,12 +54,10 @@ export function ImageTextFold({
       id={id}
       className={`min-h-[65vh] items-center py-16 ${bgClassName[bg]}`}
     >
-      <DuotoneImage
+      <img
         src={image}
         alt={imageAlt}
-        wash={wash}
-        shape={shape}
-        className="col-start-1 col-span-3 self-center aspect-[613/393]"
+        className="col-start-1 col-span-3 self-center w-full h-auto"
       />
       <div className="col-start-4 col-span-5 self-center flex flex-col gap-6 max-w-(--max-width-content)">
         <h2 className="font-display text-h2">{heading}</h2>

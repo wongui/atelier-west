@@ -43,11 +43,7 @@ export function LabFacilitiesGrid({ heading, intro, labs, sectionRef }: LabFacil
       <div className="mt-16 grid grid-cols-1 gap-x-6 gap-y-16 px-(--spacing-page) sm:grid-cols-2 lg:grid-cols-3">
         {labs.map((lab) => (
           <div key={lab.title} className="flex flex-col gap-4">
-            <img
-              src={withBasePath(lab.image)}
-              alt=""
-              className="aspect-[381/423] w-full object-cover"
-            />
+            <img src={withBasePath(lab.image)} alt="" className="w-full h-auto" />
             <h3 className="font-display text-h3">{lab.title}</h3>
             <p className="font-body text-body">{lab.body}</p>
           </div>

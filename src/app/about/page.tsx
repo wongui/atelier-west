@@ -69,11 +69,18 @@ const labs = [
   },
 ];
 
-const mentors = Array.from({ length: 6 }, () => ({
-  name: "Antonello Crimi",
-  role: "UX/UI Design",
-  image: "/placeholder-photo.svg",
-}));
+const mentors = [
+  { name: "Antonello Crimi", role: "UX/UI Design", image: "/images/image 383.png" },
+  { name: "Antonello Crimi", role: "UX/UI Design", image: "/images/image 384.png" },
+  { name: "Antonello Crimi", role: "UX/UI Design", image: "/images/image 385.png" },
+  { name: "Antonello Crimi", role: "UX/UI Design", image: "/images/image 386.png" },
+  { name: "Antonello Crimi", role: "UX/UI Design", image: "/images/image 387.png" },
+  { name: "Antonello Crimi", role: "UX/UI Design", image: "/images/image 388.png" },
+  { name: "Antonello Crimi", role: "UX/UI Design", image: "/images/image 389.png" },
+  { name: "Antonello Crimi", role: "UX/UI Design", image: "/images/image 390.png" },
+  { name: "Antonello Crimi", role: "UX/UI Design", image: "/images/image 391.png" },
+  { name: "Antonello Crimi", role: "UX/UI Design", image: "/images/image 392.png" },
+];
 
 export default function AboutPage() {
   const costCommitmentRef = useRef<HTMLDivElement>(null);
@@ -108,7 +115,6 @@ export default function AboutPage() {
           id="about-intro"
           bg="light"
           image={withBasePath("/images/about-intro.png")}
-          shape="blob-a"
           heading="Atelier West is a 12-week, cash- and equity-free residency program for committed, ambitious Physical AI startups."
           body="Cohort companies work out of our San Francisco Mission Rock labs, get structured time to work directly with experts in design, strategy, hardware, and AI, and close the program with a demo day in front of enterprise partners and investors."
         />
@@ -118,7 +124,6 @@ export default function AboutPage() {
           bg="dark"
           sectionRef={costCommitmentRef}
           image={withBasePath("/images/about-cost-commitment.png")}
-          shape="blob-b"
           heading="Cost & Commitment"
           body={[
             "The program is free for participants - no equity, no cash. You will be asked for a refundable deposit tied to lab access.",
@@ -146,7 +151,6 @@ export default function AboutPage() {
           id="events-enterprise"
           bg="light"
           image={withBasePath("/images/about-events-enterprise.png")}
-          shape="blob-a"
           heading="Events & Enterprise Access"
           body="Beyond 1:1 mentorship, you'll join a handful of group workshops throughout the program, built around your cohort's needs and connecting you with relevant enterprise companies. The program closes with a demo day in front of enterprise partners and investors."
         />
@@ -156,7 +160,6 @@ export default function AboutPage() {
           bg="dark"
           sectionRef={partnerBenefitsRef}
           image={withBasePath("/images/about-partner-benefits.png")}
-          shape="blob-b"
           heading="Partner Benefits"
           body="Cohort participants will also be prioritized to join NVIDIA's Inception Program. Companies in this program get access to the latest developer tools and training, preferred pricing on NVIDIA hardware and software, exclusive offers from partners, and exposure to a global ecosystem of investors. Participants will need to submit a separate, short application for Inception, which will be linked to from our Application form."
         />
@@ -187,7 +190,6 @@ export default function AboutPage() {
         id="about-intro"
         bg="light"
         image={withBasePath("/images/about-intro.png")}
-        shape="blob-a"
         heading="Atelier West is a 12-week, cash- and equity-free residency program for committed, ambitious Physical AI startups."
         body="Cohort companies work out of our San Francisco Mission Rock labs, get structured time to work directly with experts in design, strategy, hardware, and AI, and close the program with a demo day in front of enterprise partners and investors."
       />
@@ -197,7 +199,6 @@ export default function AboutPage() {
         bg="dark"
         sectionRef={costCommitmentRef}
         image={withBasePath("/images/about-cost-commitment.png")}
-        shape="blob-b"
         heading="Cost & Commitment"
         body={[
           "The program is free for participants - no equity, no cash. You will be asked for a refundable deposit tied to lab access.",
@@ -225,7 +226,6 @@ export default function AboutPage() {
         id="events-enterprise"
         bg="light"
         image={withBasePath("/images/about-events-enterprise.png")}
-        shape="blob-a"
         heading="Events & Enterprise Access"
         body="Beyond 1:1 mentorship, you'll join a handful of group workshops throughout the program, built around your cohort's needs and connecting you with relevant enterprise companies. The program closes with a demo day in front of enterprise partners and investors."
       />
@@ -235,7 +235,6 @@ export default function AboutPage() {
         bg="dark"
         sectionRef={partnerBenefitsRef}
         image={withBasePath("/images/about-partner-benefits.png")}
-        shape="blob-b"
         heading="Partner Benefits"
         body="Cohort participants will also be prioritized to join NVIDIA's Inception Program. Companies in this program get access to the latest developer tools and training, preferred pricing on NVIDIA hardware and software, exclusive offers from partners, and exposure to a global ecosystem of investors. Participants will need to submit a separate, short application for Inception, which will be linked to from our Application form."
       />
