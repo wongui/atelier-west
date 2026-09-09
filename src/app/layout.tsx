@@ -59,12 +59,13 @@ export const metadata: Metadata = {
   },
 };
 
-// Deliberately no viewport-fit=cover: that opt-in is what let the mobile
-// hero's own flat panel color paint into Safari's safe area (via
-// env(safe-area-inset-bottom)), which is what showed up as a solid grey
-// box sitting over Safari's floating bottom bar. Without it, the page
-// just stops short of the safe area like any normal (non-edge-to-edge)
-// site, and Safari owns that space with its own chrome instead.
+// viewport-fit=cover lets env(safe-area-inset-*) resolve to real values on
+// notch/home-indicator devices — the mobile fold-1 hero uses it to extend
+// its own panel color into Safari's safe area at the bottom, so nothing
+// gaps there. Without it (tried and reverted), that strip is *uncovered*
+// instead and shows the page's default background peeking through as a
+// mismatched sliver — worse than the panel color extending under Safari's
+// chrome, which is what this was for in the first place.
 //
 // themeColor: without this, iOS Safari paints the safe-area strips behind
 // its status bar and floating bottom toolbar with its own default neutral
@@ -74,6 +75,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
   themeColor: "#fbfae4",
 };
 

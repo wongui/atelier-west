@@ -53,7 +53,10 @@ export function Fold1HeroMobile() {
           <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-b from-[#c9c7c7]/0 to-[#e8e8e8]" />
         </div>
 
-        <div className="relative z-10 flex flex-1 flex-col items-center justify-between gap-4 bg-[#e8e8e8] px-(--spacing-page) pt-4 pb-4 text-center">
+        <div
+          className="relative z-10 flex flex-1 flex-col items-center justify-between gap-4 bg-[#e8e8e8] px-(--spacing-page) pt-4 text-center"
+          style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
+        >
           <div className="flex flex-col items-center gap-4">
             <h1 className="font-display text-[38px] leading-[42px] text-text-on-light">
               Where AI
