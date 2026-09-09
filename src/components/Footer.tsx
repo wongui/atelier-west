@@ -63,7 +63,7 @@ export function Footer() {
   }, []);
 
   return (
-    <footer className="flex min-h-[80vh] flex-col overflow-hidden bg-surface-dark text-text-on-dark pt-(--spacing-page) pb-16">
+    <footer className="flex min-h-[80vh] flex-col overflow-hidden bg-surface-dark text-text-on-dark py-(--spacing-page)">
       <FoldGrid>
         <span
           ref={wordmarkRef}
