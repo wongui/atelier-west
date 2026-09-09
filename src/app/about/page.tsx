@@ -114,7 +114,7 @@ export default function AboutPage() {
         <ImageTextFoldMobile
           id="about-intro"
           bg="light"
-          image={withBasePath("/images/about-intro.jpg")}
+          image={withBasePath("/images/About fold1.png")}
           heading="Atelier West is a 12-week, cash- and equity-free residency program for committed, ambitious Physical AI startups."
           body="Cohort companies work out of our San Francisco Mission Rock labs, get structured time to work directly with experts in design, strategy, hardware, and AI, and close the program with a demo day in front of enterprise partners and investors."
         />
@@ -123,7 +123,7 @@ export default function AboutPage() {
           id="cost-commitment"
           bg="dark"
           sectionRef={costCommitmentRef}
-          image={withBasePath("/images/about-cost-commitment.jpg")}
+          image={withBasePath("/images/About fold2.png")}
           heading="Cost & Commitment"
           body={[
             "The program is free for participants - no equity, no cash. You will be asked for a refundable deposit tied to lab access.",
@@ -189,7 +189,7 @@ export default function AboutPage() {
       <ImageTextFold
         id="about-intro"
         bg="light"
-        image={withBasePath("/images/about-intro.jpg")}
+        image={withBasePath("/images/About fold1.png")}
         heading="Atelier West is a 12-week, cash- and equity-free residency program for committed, ambitious Physical AI startups."
         body="Cohort companies work out of our San Francisco Mission Rock labs, get structured time to work directly with experts in design, strategy, hardware, and AI, and close the program with a demo day in front of enterprise partners and investors."
       />
@@ -198,7 +198,7 @@ export default function AboutPage() {
         id="cost-commitment"
         bg="dark"
         sectionRef={costCommitmentRef}
-        image={withBasePath("/images/about-cost-commitment.jpg")}
+        image={withBasePath("/images/About fold2.png")}
         heading="Cost & Commitment"
         body={[
           "The program is free for participants - no equity, no cash. You will be asked for a refundable deposit tied to lab access.",
