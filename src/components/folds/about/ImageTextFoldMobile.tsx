@@ -13,6 +13,7 @@ interface ImageTextFoldMobileProps {
   bg: Bg;
   image: string;
   imageAlt?: string;
+  /** Omit for real photography — see DuotoneImage. */
   wash?: "warm" | "cool";
   shape?: "blob-a" | "blob-b";
   heading: string;
@@ -34,7 +35,7 @@ export function ImageTextFoldMobile({
   bg,
   image,
   imageAlt = "",
-  wash = "warm",
+  wash,
   shape = "blob-a",
   heading,
   body,

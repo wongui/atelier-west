@@ -40,27 +40,27 @@ const labs = [
   {
     title: "Rapid Prototyping",
     body: "3D printers, laser cutters, and cleaning/cutting/sewing stations, for turning ideas into physical prototypes quickly.",
-    image: "/placeholder-photo.svg",
+    image: "/images/about-lab-rapid-prototyping.jpg",
   },
   {
     title: "Industrial Design",
     body: "Precision woodworking and hand tools, for shaping how a product looks and feels.",
-    image: "/placeholder-photo.svg",
+    image: "/images/about-lab-industrial-design.jpg",
   },
   {
     title: "Mechanical Engineering",
     body: "CNC machine, lathe, drill press, welding equipment, for fabricating and modifying structural parts.",
-    image: "/placeholder-photo.svg",
+    image: "/images/about-lab-mechanical-engineering.jpg",
   },
   {
     title: "Electrical Engineering",
     body: "Solder stations, oscilloscopes, and microelectronics test rigs, for building and testing electronic subsystems.",
-    image: "/placeholder-photo.svg",
+    image: "/images/about-lab-electrical-engineering.jpg",
   },
   {
     title: "Metrology Lab",
     body: "Digital microscope, tensile tester, climate chamber, for stress-testing prototypes and validating tolerances.",
-    image: "/placeholder-photo.svg",
+    image: "/images/about-lab-metrology.jpg",
   },
 ];
 
@@ -103,7 +103,6 @@ export default function AboutPage() {
           id="about-intro"
           bg="light"
           image={withBasePath("/images/about-intro.png")}
-          wash="warm"
           shape="blob-a"
           heading="Atelier West is a 12-week, cash- and equity-free residency program for committed, ambitious Physical AI startups."
           body="Cohort companies work out of our San Francisco Mission Rock labs, get structured time to work directly with experts in design, strategy, hardware, and AI, and close the program with a demo day in front of enterprise partners and investors."
@@ -114,7 +113,6 @@ export default function AboutPage() {
           bg="dark"
           sectionRef={costCommitmentRef}
           image={withBasePath("/images/about-cost-commitment.png")}
-          wash="cool"
           shape="blob-b"
           heading="Cost & Commitment"
           body={[
@@ -143,7 +141,6 @@ export default function AboutPage() {
           id="events-enterprise"
           bg="light"
           image={withBasePath("/images/about-events-enterprise.png")}
-          wash="warm"
           shape="blob-a"
           heading="Events & Enterprise Access"
           body="Beyond 1:1 mentorship, you'll join a handful of group workshops throughout the program, built around your cohort's needs and connecting you with relevant enterprise companies. The program closes with a demo day in front of enterprise partners and investors."
@@ -154,7 +151,6 @@ export default function AboutPage() {
           bg="dark"
           sectionRef={partnerBenefitsRef}
           image={withBasePath("/images/about-partner-benefits.png")}
-          wash="cool"
           shape="blob-b"
           heading="Partner Benefits"
           body="Cohort participants will also be prioritized to join NVIDIA's Inception Program. Companies in this program get access to the latest developer tools and training, preferred pricing on NVIDIA hardware and software, exclusive offers from partners, and exposure to a global ecosystem of investors. Participants will need to submit a separate, short application for Inception, which will be linked to from our Application form."
@@ -186,7 +182,6 @@ export default function AboutPage() {
         id="about-intro"
         bg="light"
         image={withBasePath("/images/about-intro.png")}
-        wash="warm"
         shape="blob-a"
         heading="Atelier West is a 12-week, cash- and equity-free residency program for committed, ambitious Physical AI startups."
         body="Cohort companies work out of our San Francisco Mission Rock labs, get structured time to work directly with experts in design, strategy, hardware, and AI, and close the program with a demo day in front of enterprise partners and investors."
@@ -197,7 +192,6 @@ export default function AboutPage() {
         bg="dark"
         sectionRef={costCommitmentRef}
         image={withBasePath("/images/about-cost-commitment.png")}
-        wash="cool"
         shape="blob-b"
         heading="Cost & Commitment"
         body={[
@@ -226,7 +220,6 @@ export default function AboutPage() {
         id="events-enterprise"
         bg="light"
         image={withBasePath("/images/about-events-enterprise.png")}
-        wash="warm"
         shape="blob-a"
         heading="Events & Enterprise Access"
         body="Beyond 1:1 mentorship, you'll join a handful of group workshops throughout the program, built around your cohort's needs and connecting you with relevant enterprise companies. The program closes with a demo day in front of enterprise partners and investors."
@@ -237,7 +230,6 @@ export default function AboutPage() {
         bg="dark"
         sectionRef={partnerBenefitsRef}
         image={withBasePath("/images/about-partner-benefits.png")}
-        wash="cool"
         shape="blob-b"
         heading="Partner Benefits"
         body="Cohort participants will also be prioritized to join NVIDIA's Inception Program. Companies in this program get access to the latest developer tools and training, preferred pricing on NVIDIA hardware and software, exclusive offers from partners, and exposure to a global ecosystem of investors. Participants will need to submit a separate, short application for Inception, which will be linked to from our Application form."
