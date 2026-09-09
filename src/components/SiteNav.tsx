@@ -36,6 +36,10 @@ interface SiteNavProps {
   darkSectionRefs?: RefObject<HTMLElement | null>[];
   /** Underlines "About" to mark it as the current page. */
   activeAbout?: boolean;
+  /** Hides the "Apply" pill — used on the Apply page itself, which
+   * already has its own larger in-content CTAs, so the nav's Apply
+   * button would just be a redundant, smaller duplicate of them. */
+  hideApply?: boolean;
 }
 
 /**
@@ -65,7 +69,7 @@ interface SiteNavProps {
  * switching to the on-dark treatment via `darkSectionRefs` as the page's
  * own dark folds scroll under it.
  */
-export function SiteNav({ heroRef, darkSectionRef, darkSectionRefs, activeAbout = false }: SiteNavProps) {
+export function SiteNav({ heroRef, darkSectionRef, darkSectionRefs, activeAbout = false, hideApply = false }: SiteNavProps) {
   const [isOverDark, setIsOverDark] = useState(false);
 
   useEffect(() => {
@@ -217,11 +221,13 @@ export function SiteNav({ heroRef, darkSectionRef, darkSectionRefs, activeAbout 
       >
         About
       </Link>
-      <div id="site-nav-apply" className="col-start-8 justify-self-end">
-        <Button variant="nav" href="/apply" invert={isOverDark}>
-          Apply
-        </Button>
-      </div>
+      {!hideApply && (
+        <div id="site-nav-apply" className="col-start-8 justify-self-end">
+          <Button variant="nav" href="/apply" invert={isOverDark}>
+            Apply
+          </Button>
+        </div>
+      )}
     </FoldGrid>
   );
 }

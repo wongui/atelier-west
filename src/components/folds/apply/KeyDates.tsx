@@ -1,3 +1,4 @@
+import type { RefObject } from "react";
 import { Divider } from "@/components/Divider";
 import { EyebrowLabel } from "@/components/EyebrowLabel";
 import { FoldGrid } from "@/components/FoldGrid";
@@ -17,10 +18,15 @@ const dates = [
  * grid at `lg` and above — kept as one component with breakpoint classes
  * (not a split sibling) since the content and grouping are identical,
  * only the reflow changes, matching the About page's grid components.
+ *
+ * Exposes its wrapper via `sectionRef` — this is the page's one dark
+ * fold, so SiteNav/MobileSiteNav watch it to swap to the on-dark
+ * (cream) treatment while it's under the fixed nav, same mechanism as
+ * ProgressionSection/ImageTextFold elsewhere.
  */
-export function KeyDates() {
+export function KeyDates({ sectionRef }: { sectionRef?: RefObject<HTMLDivElement | null> }) {
   return (
-    <FoldGrid className="bg-surface-dark py-16 text-text-on-dark">
+    <FoldGrid ref={sectionRef} className="bg-surface-dark py-16 text-text-on-dark">
       <div className="col-start-1 col-span-8 flex flex-col gap-6">
         <Divider />
         <EyebrowLabel>Key Dates</EyebrowLabel>

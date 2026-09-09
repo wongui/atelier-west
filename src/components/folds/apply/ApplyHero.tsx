@@ -25,7 +25,7 @@ export function ApplyHero() {
       <FoldGrid className="relative min-h-[68vh] items-center py-24">
         <div className="col-start-1 col-span-4 flex flex-col items-start gap-6">
           <h1 className="font-display text-h2 text-text-on-light">Shape what&rsquo;s next</h1>
-          <p className="font-display text-h3 text-text-on-light">
+          <p className="max-w-(--max-width-content) font-display text-h3 text-text-on-light">
             Apply for the inaugural cohort taking place between October 2026
             and January 2027.
           </p>
