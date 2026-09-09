@@ -4,9 +4,8 @@ import { withBasePath } from "@/lib/basePath";
 /**
  * Mobile Fold8 — Belief. Desktop centers the brain render as a full-bleed
  * background with text at col6-8; mobile stacks the same treatment as
- * Fold6CtaMobile (full-bleed portrait background bleeding off the top,
- * text block sitting over a cream-tinted lower panel), per Figma's mobile
- * frame.
+ * Fold6CtaMobile — image full-bleed, text sits directly on top, no scrim
+ * (matching desktop's treatment), per Figma's mobile frame.
  */
 export function Fold8BeliefMobile() {
   return (
@@ -16,7 +15,6 @@ export function Fold8BeliefMobile() {
         alt=""
         className="absolute inset-0 h-full w-full object-cover"
       />
-      <div className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-b from-surface-accent/0 to-surface-accent" />
 
       <div className="relative flex flex-col items-start gap-6">
         <h2 className="font-display text-[30px] leading-[1.1] text-text-on-light">

@@ -4,8 +4,8 @@ import { withBasePath } from "@/lib/basePath";
 /**
  * Mobile Fold6 — CTA. Desktop splits image/text side by side; mobile
  * stacks a dedicated portrait background image behind the text block, per
- * Figma's mobile frame (image bleeds off the top, text+button sit over a
- * cream-tinted lower panel).
+ * Figma's mobile frame — image full-bleed, text sits directly on top, no
+ * scrim (matching desktop's treatment).
  */
 export function Fold6CtaMobile() {
   return (
@@ -15,7 +15,6 @@ export function Fold6CtaMobile() {
         alt=""
         className="absolute inset-0 h-full w-full object-cover"
       />
-      <div className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-b from-surface-light/0 to-surface-light" />
 
       <div className="relative flex flex-col items-start gap-6">
         <h2 className="font-display text-[40px] leading-[50px] text-text-on-light">
