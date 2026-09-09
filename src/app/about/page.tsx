@@ -40,27 +40,32 @@ const labs = [
   {
     title: "Rapid Prototyping",
     body: "3D printers, laser cutters, and cleaning/cutting/sewing stations, for turning ideas into physical prototypes quickly.",
-    image: "/images/about-lab-rapid-prototyping.jpg",
+    image: "/images/about-lab-rapid-prototyping.png",
   },
   {
     title: "Industrial Design",
     body: "Precision woodworking and hand tools, for shaping how a product looks and feels.",
-    image: "/images/about-lab-industrial-design.jpg",
+    image: "/images/about-lab-industrial-design.png",
   },
   {
     title: "Mechanical Engineering",
     body: "CNC machine, lathe, drill press, welding equipment, for fabricating and modifying structural parts.",
-    image: "/images/about-lab-mechanical-engineering.jpg",
+    image: "/images/about-lab-mechanical-engineering.png",
   },
   {
     title: "Electrical Engineering",
     body: "Solder stations, oscilloscopes, and microelectronics test rigs, for building and testing electronic subsystems.",
-    image: "/images/about-lab-electrical-engineering.jpg",
+    image: "/images/about-lab-electrical-engineering.png",
   },
   {
     title: "Metrology Lab",
     body: "Digital microscope, tensile tester, climate chamber, for stress-testing prototypes and validating tolerances.",
-    image: "/images/about-lab-metrology.jpg",
+    image: "/images/about-lab-metrology.png",
+  },
+  {
+    title: "New Product Introduction (NPI)",
+    body: "Two workshops for early production runs, used to build and refine your first 50-100 units before scaling.",
+    image: "/images/about-lab-npi.png",
   },
 ];
 
