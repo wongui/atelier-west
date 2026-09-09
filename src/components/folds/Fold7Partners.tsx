@@ -2,6 +2,7 @@ import { PartnerLogoStrip } from "@/components/PartnerLogoStrip";
 import { TextLink } from "@/components/TextLink";
 import { Divider } from "@/components/Divider";
 import { FoldGrid } from "@/components/FoldGrid";
+import { withBasePath } from "@/lib/basePath";
 
 /**
  * Fold7 — partner/credibility strip. Left-aligned within the grid
@@ -29,7 +30,7 @@ export function Fold7Partners() {
           <Divider />
           <PartnerLogoStrip
             label="Hosted by"
-            partners={[{ name: "Capgemini", src: "/images/logos/capgemini.png", width: 209, height: 78 }]}
+            partners={[{ name: "Capgemini", src: withBasePath("/images/logos/capgemini.png"), width: 209, height: 78 }]}
           />
           <TextLink href="#" className="self-center">
             Named a Market Shaper in Physical AI by Gartner
@@ -41,8 +42,8 @@ export function Fold7Partners() {
           <PartnerLogoStrip
             label="With support from"
             partners={[
-              { name: "NVIDIA", src: "/images/logos/nvidia.png", width: 228, height: 47 },
-              { name: "HSBC", src: "/images/logos/hsbc.png", width: 179, height: 47 },
+              { name: "NVIDIA", src: withBasePath("/images/logos/nvidia.png"), width: 228, height: 47 },
+              { name: "HSBC", src: withBasePath("/images/logos/hsbc.png"), width: 179, height: 47 },
             ]}
           />
         </div>
@@ -52,10 +53,10 @@ export function Fold7Partners() {
           <PartnerLogoStrip
             label="Together, our teams know how to build and bring new products to market:"
             partners={[
-              { name: "frog", src: "/images/logos/frog.png", width: 102, height: 62 },
-              { name: "Synapse", src: "/images/logos/synapse.png", width: 260, height: 53 },
-              { name: "Applied Innovation Exchange", src: "/images/logos/aie.png", width: 222, height: 69 },
-              { name: "Capgemini Engineering", src: "/images/logos/capgemini-engineering.png", width: 374, height: 60 },
+              { name: "frog", src: withBasePath("/images/logos/frog.png"), width: 102, height: 62 },
+              { name: "Synapse", src: withBasePath("/images/logos/synapse.png"), width: 260, height: 53 },
+              { name: "Applied Innovation Exchange", src: withBasePath("/images/logos/aie.png"), width: 222, height: 69 },
+              { name: "Capgemini Engineering", src: withBasePath("/images/logos/capgemini-engineering.png"), width: 374, height: 60 },
             ]}
           />
         </div>
