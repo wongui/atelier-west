@@ -63,10 +63,17 @@ export const metadata: Metadata = {
 // on notch/home-indicator devices — the mobile fold-1 hero uses it to keep
 // its bottom content clear of Safari's floating bottom bar instead of
 // hiding behind it.
+//
+// themeColor: without this, iOS Safari paints the safe-area strips behind
+// its status bar and floating bottom toolbar with its own default neutral
+// grey, which reads as a solid box sitting on top of the page instead of
+// blending in — setting it to the page's own resting background lets
+// Safari's chrome match the site instead of standing out.
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
+  themeColor: "#fbfae4",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
