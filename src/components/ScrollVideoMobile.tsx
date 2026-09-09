@@ -11,9 +11,10 @@ gsap.registerPlugin(ScrollTrigger);
 // (ScrollVideo.tsx) — a phone's tilt range in the hand is much narrower
 // than a full mouse sweep across the screen, so matching desktop's pixel
 // offset 1:1 read as barely-there; this reaches full offset at a modest
-// tilt instead of requiring an exaggerated one.
-const PARALLAX_MAX_OFFSET = 30;
-const TILT_RANGE_DEG = 12;
+// tilt instead of requiring an exaggerated one. (Tuned down from an
+// earlier 30px/12deg pass that read as too much on an actual phone.)
+const PARALLAX_MAX_OFFSET = 18;
+const TILT_RANGE_DEG = 16;
 
 interface ScrollVideoMobileProps {
   framesPath: string;
@@ -144,8 +145,8 @@ export function ScrollVideoMobile({
     // so this waits for the visitor's first touch anywhere on the page
     // before asking; other browsers (Android Chrome, etc.) don't require
     // it and just start listening immediately.
-    const xTo = gsap.quickTo(canvas, "x", { duration: 0.45, ease: "power3.out" });
-    const yTo = gsap.quickTo(canvas, "y", { duration: 0.45, ease: "power3.out" });
+    const xTo = gsap.quickTo(canvas, "x", { duration: 0.5, ease: "power3.out" });
+    const yTo = gsap.quickTo(canvas, "y", { duration: 0.5, ease: "power3.out" });
 
     let baseline: { beta: number; gamma: number } | null = null;
 
