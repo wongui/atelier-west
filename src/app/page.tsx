@@ -2,14 +2,20 @@
 
 import { useRef } from "react";
 import { SiteNav } from "@/components/SiteNav";
+import { MobileSiteNav } from "@/components/MobileSiteNav";
 import { Footer } from "@/components/Footer";
 import { Fold1Hero } from "@/components/folds/Fold1Hero";
+import { Fold1HeroMobile } from "@/components/folds/Fold1HeroMobile";
 import { Fold2Intro } from "@/components/folds/Fold2Intro";
+import { Fold2IntroMobile } from "@/components/folds/Fold2IntroMobile";
 import { ProgressionSection } from "@/components/folds/ProgressionSection";
+import { ProgressionSectionMobile } from "@/components/folds/ProgressionSectionMobile";
 import { Fold6Cta } from "@/components/folds/Fold6Cta";
+import { Fold6CtaMobile } from "@/components/folds/Fold6CtaMobile";
 import { Fold7Partners } from "@/components/folds/Fold7Partners";
 import { Fold8Belief } from "@/components/folds/Fold8Belief";
 import { withBasePath } from "@/lib/basePath";
+import { useIsDesktop } from "@/lib/useIsDesktop";
 
 const progressionSteps = [
   {
@@ -35,6 +41,31 @@ const progressionSteps = [
 export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
   const progressionRef = useRef<HTMLDivElement>(null);
+  const progressionRefMobile = useRef<HTMLDivElement>(null);
+
+  // Resolves to null until the first client-side check runs, then stays
+  // true/false for the session. Rendering nothing until it resolves keeps
+  // the desktop tree (GSAP ScrollTrigger, the scroll-scrubbed video) from
+  // ever mounting on a mobile viewport, and vice versa — the two layouts
+  // never coexist in the DOM, so neither can bleed into the other.
+  const isDesktop = useIsDesktop();
+
+  if (isDesktop === null) return null;
+
+  if (!isDesktop) {
+    return (
+      <>
+        <MobileSiteNav darkSectionRef={progressionRefMobile} />
+        <Fold1HeroMobile />
+        <Fold2IntroMobile />
+        <ProgressionSectionMobile steps={progressionSteps} sectionRef={progressionRefMobile} />
+        <Fold6CtaMobile />
+        <Fold7Partners />
+        <Fold8Belief />
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>

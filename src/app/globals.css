@@ -14,11 +14,9 @@
      layer below instead. See docs/FOUNDATIONS.md §1. */
   --primitive-cream: #fbfae4;
   --primitive-charcoal: #2e2c31;
-  --primitive-slate: #63747c;
   --primitive-coral: #ef867c;
   --primitive-sage: #5ac282;
   --primitive-warm-gray: #e1e0d6;
-  --primitive-brick: #b44b41; /* cta button hover sweep target */
 
   /* -- Semantic color tokens -------------------------------------------
      What each value is *for*, not what it is. Mapped into @theme below
@@ -30,13 +28,13 @@
   --color-surface-accent: var(--primitive-coral);  /* Fold6 CTA section bg */
   --color-text-on-light: var(--primitive-charcoal); /* text over cream / photo-dark surfaces — darkened from slate per latest visual pass */
   --color-text-on-dark: var(--primitive-cream);    /* text over charcoal / coral surfaces */
-  --color-accent-cta: var(--primitive-charcoal);   /* primary button fill (Fold6 "Apply now") — darkened from coral, same value as surface-dark */
+  --color-accent-cta: var(--primitive-charcoal);   /* primary button fill (Fold6 "Apply") — darkened from coral, same value as surface-dark */
   --color-accent-cta-alt: var(--primitive-charcoal); /* secondary button fill (Fold1 nav "Apply") — darkened from slate, same value as surface-dark */
   --color-wash-warm: var(--primitive-coral);       /* duotone photo wash, warm variant */
   --color-wash-cool: var(--primitive-sage);        /* duotone photo wash, cool variant */
   --color-overlay-tint: var(--primitive-warm-gray);/* color-mix overlay on desaturated photos */
-  --color-accent-cta-hover: var(--primitive-brick);      /* cta button hover-sweep fill */
-  --color-accent-cta-alt-hover: var(--primitive-slate);  /* nav button hover-sweep fill — was the resting fill before the charcoal pass, reused so hover still reads distinct from the new charcoal resting fill */
+  --color-accent-cta-hover: var(--primitive-coral);      /* cta/nav button hover-sweep fill — always coral, regardless of resting fill */
+  --color-accent-cta-alt-hover: var(--primitive-coral);  /* same coral hover fill for the nav variant (incl. its inverted cream state) */
   --color-progress-fill: var(--primitive-coral);   /* Fold3–5 "How it works" progress bar — kept coral independent of accent-cta since that token went charcoal */
 
   /* -- Type ramp --------------------------------------------------------
@@ -49,6 +47,8 @@
   --text-h1--line-height: 1;
   --text-h2: 3.735rem;                 /* ~59.75px — Fold2/Fold8 subheads */
   --text-h2--line-height: 1.1;
+  --text-h3: 2.25rem;                  /* 36px — About page grid card titles (labs, mentors) */
+  --text-h3--line-height: 1;
   --text-body: 1.125rem;               /* 18px — target reading size, floor is 16px */
   --text-body--line-height: 1.5;
   --text-ui: 0.875rem;                 /* 14px — button labels only, not reading text */
@@ -98,6 +98,8 @@
   --text-h1--line-height: var(--text-h1--line-height);
   --text-h2: var(--text-h2);
   --text-h2--line-height: var(--text-h2--line-height);
+  --text-h3: var(--text-h3);
+  --text-h3--line-height: var(--text-h3--line-height);
   --text-body: var(--text-body);
   --text-body--line-height: var(--text-body--line-height);
   --text-ui: var(--text-ui);

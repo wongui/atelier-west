@@ -25,7 +25,7 @@ export function Fold6Cta() {
             with proof of traction
           </p>
           <Button variant="cta" size="md">
-            Apply now
+            Apply
           </Button>
         </div>
       </FoldGrid>

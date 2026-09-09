@@ -17,12 +17,25 @@ const WORDMARK_NAV_TRACKING = 10.16;
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 interface SiteNavProps {
-  heroRef: RefObject<HTMLElement | null>;
-  /** Optional dark/photo section (Folds 3-5) to watch — while it's under
-   * the fixed nav, the wordmark/About/Apply switch to the cream
-   * (--color-text-on-dark / beige #fbfae4) treatment so they stay
-   * visible over the dark imagery instead of blending into it. */
+  /**
+   * Hero element to morph the wordmark/About/Apply over. Omit on pages
+   * with no hero (About, Apply) — the nav then skips the morph animation
+   * entirely and renders permanently in its compact "scrolled" resting
+   * state instead of starting tracked-out and shrinking on scroll.
+   */
+  heroRef?: RefObject<HTMLElement | null>;
+  /** Single dark/photo section to watch — back-compat with the
+   * one-section home page usage. See `darkSectionRefs` for the general
+   * form. */
   darkSectionRef?: RefObject<HTMLElement | null>;
+  /** Any number of dark/photo sections to watch — while any of them is
+   * under the fixed nav, the wordmark/About/Apply switch to the cream
+   * (--color-text-on-dark / beige #fbfae4) treatment so they stay
+   * visible over the dark imagery instead of blending into it. Used on
+   * interior pages (About) that have several dark folds, not just one. */
+  darkSectionRefs?: RefObject<HTMLElement | null>[];
+  /** Underlines "About" to mark it as the current page. */
+  activeAbout?: boolean;
 }
 
 /**
@@ -45,29 +58,48 @@ interface SiteNavProps {
  * 1732px Figma reference frame and overflowed narrower/wider viewports,
  * causing horizontal scroll). The compact nav-bar size stays fixed
  * (confirmed via Figma to be a genuinely different, non-scaling size).
+ *
+ * On pages with no hero to morph over (About, Apply), pass no `heroRef`:
+ * the nav then renders directly in that same compact resting state from
+ * the start, with no morph animation — just the fixed nav, still
+ * switching to the on-dark treatment via `darkSectionRefs` as the page's
+ * own dark folds scroll under it.
  */
-export function SiteNav({ heroRef, darkSectionRef }: SiteNavProps) {
+export function SiteNav({ heroRef, darkSectionRef, darkSectionRefs, activeAbout = false }: SiteNavProps) {
   const [isOverDark, setIsOverDark] = useState(false);
 
   useEffect(() => {
-    const darkSection = darkSectionRef?.current;
-    if (!darkSection) return;
+    const sections = [darkSectionRef, ...(darkSectionRefs ?? [])].filter(
+      (ref): ref is RefObject<HTMLElement | null> => Boolean(ref?.current)
+    );
+    if (sections.length === 0) return;
 
-    // Active for the entire time the dark section occupies the top of the
-    // viewport (from its top reaching the nav down to its bottom leaving),
-    // not just a single crossing point — matches how long the nav actually
-    // sits on top of the dark imagery.
-    const trigger = ScrollTrigger.create({
-      trigger: darkSection,
-      start: "top top",
-      end: "bottom top",
-      onToggle: (self) => setIsOverDark(self.isActive),
-    });
+    // Active for the entire time ANY watched dark section occupies the top
+    // of the viewport (from its top reaching the nav down to its bottom
+    // leaving), not just a single crossing point — matches how long the
+    // nav actually sits on top of dark imagery, across possibly several
+    // dark folds on a page (About has more than one).
+    const activeFlags = sections.map(() => false);
+    const triggers = sections.map((section, i) =>
+      ScrollTrigger.create({
+        trigger: section.current!,
+        start: "top top",
+        end: "bottom top",
+        onToggle: (self) => {
+          activeFlags[i] = self.isActive;
+          setIsOverDark(activeFlags.some(Boolean));
+        },
+      })
+    );
 
-    return () => trigger.kill();
-  }, [darkSectionRef]);
+    return () => triggers.forEach((trigger) => trigger.kill());
+  }, [darkSectionRef, darkSectionRefs]);
 
   useEffect(() => {
+    // No hero to morph over (About/Apply) — nav stays in its compact
+    // resting state, set directly via className below, nothing to animate.
+    if (!heroRef) return;
+
     const hero = heroRef.current;
     const wordmark = document.getElementById("site-nav-wordmark");
     const measure = document.getElementById("site-nav-wordmark-measure");
@@ -158,32 +190,36 @@ export function SiteNav({ heroRef, darkSectionRef }: SiteNavProps) {
         href="/"
         className={`col-start-1 col-span-3 font-display uppercase whitespace-nowrap ${
           isOverDark ? "text-text-on-dark" : "text-text-on-light"
-        }`}
-        style={{ fontSize: WORDMARK_HERO_SIZE }}
+        } ${heroRef ? "" : "text-wordmark-nav tracking-wordmark-nav"}`}
+        style={heroRef ? { fontSize: WORDMARK_HERO_SIZE } : undefined}
       >
         {WORDMARK_TEXT}
       </Link>
-      {/* Hidden 0-tracking clone used only to measure the wordmark's natural width. */}
-      <span
-        id="site-nav-wordmark-measure"
-        aria-hidden
-        className="fixed top-0 left-[-9999px] font-display uppercase whitespace-nowrap"
-        style={{ fontSize: WORDMARK_HERO_SIZE, letterSpacing: 0 }}
-      >
-        {WORDMARK_TEXT}
-      </span>
+      {/* Hidden 0-tracking clone used only to measure the wordmark's natural
+          width — only needed to solve the hero-state tracking, so skip it
+          entirely when there's no hero to morph over. */}
+      {heroRef && (
+        <span
+          id="site-nav-wordmark-measure"
+          aria-hidden
+          className="fixed top-0 left-[-9999px] font-display uppercase whitespace-nowrap"
+          style={{ fontSize: WORDMARK_HERO_SIZE, letterSpacing: 0 }}
+        >
+          {WORDMARK_TEXT}
+        </span>
+      )}
       <Link
         id="site-nav-about"
         href="/about"
-        className={`col-start-4 font-body text-body ${
+        className={`col-start-4 font-body text-body ${activeAbout ? "underline underline-offset-2" : ""} ${
           isOverDark ? "text-text-on-dark" : "text-text-on-light"
         }`}
       >
         About
       </Link>
       <div id="site-nav-apply" className="col-start-8 justify-self-end">
-        <Button variant="nav" invert={isOverDark}>
-          Apply now
+        <Button variant="nav" href="/apply" invert={isOverDark}>
+          Apply
         </Button>
       </div>
     </FoldGrid>
