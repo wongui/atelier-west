@@ -14,6 +14,8 @@ import { Fold6Cta } from "@/components/folds/Fold6Cta";
 import { Fold6CtaMobile } from "@/components/folds/Fold6CtaMobile";
 import { Fold7Partners } from "@/components/folds/Fold7Partners";
 import { Fold8Belief } from "@/components/folds/Fold8Belief";
+import { Fold8BeliefMobile } from "@/components/folds/Fold8BeliefMobile";
+import { FooterMobile } from "@/components/folds/FooterMobile";
 import { withBasePath } from "@/lib/basePath";
 import { useIsDesktop } from "@/lib/useIsDesktop";
 
@@ -61,8 +63,8 @@ export default function Home() {
         <ProgressionSectionMobile steps={progressionSteps} sectionRef={progressionRefMobile} />
         <Fold6CtaMobile />
         <Fold7Partners />
-        <Fold8Belief />
-        <Footer />
+        <Fold8BeliefMobile />
+        <FooterMobile />
       </>
     );
   }

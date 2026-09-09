@@ -11,7 +11,7 @@ export function Fold6CtaMobile() {
   return (
     <div className="relative flex min-h-screen flex-col justify-end overflow-hidden bg-surface-light px-(--spacing-page) pb-16 pt-24">
       <img
-        src={withBasePath("/images/Fold6 mobile.png")}
+        src={withBasePath("/images/fold-6-mobile.png")}
         alt=""
         className="absolute inset-0 h-full w-full object-cover"
       />
