@@ -1,4 +1,11 @@
-import type { RefObject } from "react";
+"use client";
+
+import { useEffect, useRef, useState, type RefObject } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { StepProgress } from "@/components/StepProgress";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface Step {
   number: string;
@@ -10,41 +17,113 @@ interface Step {
 interface ProgressionSectionMobileProps {
   steps: Step[];
   /** Exposes the section's wrapper so MobileSiteNav can watch it and swap
-   * to its cream treatment while it's under the fixed nav — same purpose
-   * as ProgressionSection's sectionRef, kept independent. */
+   * to its cream treatment while it's under the fixed nav. */
   sectionRef?: RefObject<HTMLDivElement | null>;
 }
 
 /**
- * Mobile Folds 3-5 — per Figma's mobile frame, this drops the desktop
- * pinned/crossfade mechanic (ScrollTrigger + snap) entirely and just
- * stacks each step as its own full-height section with its own
- * background photo. Simpler and avoids fighting GSAP pinning at small
- * viewport sizes.
+ * Mobile Folds 3-5 — mirrors desktop ProgressionSection's pin + crossfade
+ * + continuous progress-bar interaction (per explicit request: same feel
+ * as desktop, own component, desktop's file untouched), laid out as a
+ * single stacked column instead of the 8-col grid.
  */
 export function ProgressionSectionMobile({ steps, sectionRef }: ProgressionSectionMobileProps) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const fillRef = useRef<HTMLDivElement>(null);
+  const [activeStep, setActiveStep] = useState(0);
+
+  useEffect(() => {
+    const wrapper = wrapperRef.current;
+    if (!wrapper) return;
+
+    const trigger = ScrollTrigger.create({
+      trigger: wrapper,
+      start: "top top",
+      end: "bottom bottom",
+      scrub: true,
+      snap: 1 / (steps.length - 1),
+      onUpdate: (self) => {
+        if (fillRef.current) {
+          fillRef.current.style.width = `${self.progress * 100}%`;
+        }
+        const next = Math.min(steps.length - 1, Math.floor(self.progress * steps.length));
+        setActiveStep((prev) => (prev === next ? prev : next));
+      },
+    });
+
+    return () => trigger.kill();
+  }, [steps.length]);
+
   return (
-    <div ref={sectionRef} className="flex flex-col">
-      {steps.map((step) => (
-        <section
-          key={step.number}
-          className="relative flex min-h-screen flex-col justify-center overflow-hidden bg-surface-dark px-(--spacing-page) py-24 text-text-on-dark"
-        >
+    <div
+      ref={(node) => {
+        wrapperRef.current = node;
+        if (sectionRef) sectionRef.current = node;
+      }}
+      className="relative"
+      style={{ height: `${steps.length * 100}vh` }}
+    >
+      <div className="sticky top-0 h-screen overflow-hidden bg-surface-dark text-text-on-dark">
+        {steps.map((step, i) => (
           <img
+            key={step.number}
             src={step.image}
             alt=""
-            className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
+            style={{ opacity: i === activeStep ? 1 : 0 }}
           />
-          <div className="absolute inset-0 bg-black/50" />
+        ))}
+        <div className="absolute inset-0 bg-black/50" />
 
-          <div className="relative flex flex-col gap-2">
-            <span className="font-display text-[30px] leading-none">{step.number}</span>
-            <span className="font-display text-[30px] leading-none">{step.title}</span>
+        <div className="relative flex h-full flex-col justify-center gap-4 px-(--spacing-page)">
+          <div className="relative">
+            {steps.map((step, i) => (
+              <span
+                key={step.number}
+                className="absolute inset-x-0 top-0 font-display text-[30px] leading-none transition-opacity duration-500"
+                style={{ opacity: i === activeStep ? 1 : 0 }}
+              >
+                {step.number}
+              </span>
+            ))}
+            <span className="font-display text-[30px] leading-none opacity-0" aria-hidden>
+              {steps[0].number}
+            </span>
           </div>
-          <div className="relative mt-6 h-px w-full bg-text-on-dark/50" />
-          <p className="relative mt-6 font-body text-body leading-[28px]">{step.body}</p>
-        </section>
-      ))}
+
+          <div className="relative">
+            {steps.map((step, i) => (
+              <h3
+                key={step.number}
+                className="absolute inset-x-0 top-0 font-display text-[30px] leading-none transition-opacity duration-500"
+                style={{ opacity: i === activeStep ? 1 : 0 }}
+              >
+                {step.title}
+              </h3>
+            ))}
+            <h3 className="font-display text-[30px] leading-none opacity-0" aria-hidden>
+              {steps.reduce((longest, s) => (s.title.length > longest.length ? s.title : longest), "")}
+            </h3>
+          </div>
+
+          <StepProgress fillRef={fillRef} totalSteps={steps.length} />
+
+          <div className="relative">
+            {steps.map((step, i) => (
+              <p
+                key={step.number}
+                className="absolute inset-x-0 top-0 font-body text-body leading-[28px] transition-opacity duration-500"
+                style={{ opacity: i === activeStep ? 1 : 0 }}
+              >
+                {step.body}
+              </p>
+            ))}
+            <p className="font-body text-body leading-[28px] opacity-0" aria-hidden>
+              {steps.reduce((longest, s) => (s.body.length > longest.length ? s.body : longest), "")}
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

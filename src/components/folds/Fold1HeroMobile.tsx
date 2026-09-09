@@ -1,12 +1,10 @@
+"use client";
+
+import { useRef } from "react";
 import { Button } from "@/components/Button";
+import { ScrollVideoMobile } from "@/components/ScrollVideoMobile";
 import { withBasePath } from "@/lib/basePath";
 
-/**
- * Mobile Fold1 — static hero (no scroll-scrubbed video: that treatment is
- * desktop-only per Figma's mobile frame, which shows a single settled
- * frame). Reuses one frame from the existing octopus sequence as a plain
- * background image instead of the 96-frame canvas scrubber.
- */
 function ArrowDownIcon({ className = "" }: { className?: string }) {
   return (
     <svg aria-hidden viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -15,45 +13,72 @@ function ArrowDownIcon({ className = "" }: { className?: string }) {
   );
 }
 
+/**
+ * Mobile Fold1 — a shorter scroll runway than desktop's 200vh (mobile
+ * has no nav-morph to sync against, and a long dead-scroll before Fold2
+ * feels worse on a phone), just enough for the octopus sequence to
+ * visibly scrub while the sticky video block is pinned. The video only
+ * occupies the top 65vh (per design: 50-75%, top-aligned) rather than
+ * the full screen — headline/eyebrow/CTA/scroll-cue sit in the
+ * remaining space below it, inside the same pinned block, so they're
+ * visible together with the video from the start instead of overlaid on
+ * top of it like desktop.
+ */
 export function Fold1HeroMobile() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
   const scrollToFold2 = () => {
     document.getElementById("fold-2-mobile")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <section className="relative flex h-screen flex-col overflow-hidden bg-[#c9c7c7]">
-      <img
-        src={withBasePath("/frames/octopus/frame-0001.jpg")}
-        alt=""
-        className="absolute inset-0 h-full w-full object-cover"
-      />
-      {/* Top/bottom fades match the Figma gradient rectangles that soften
-          the photo into the nav bar and the content panel below it. */}
-      <div className="absolute inset-x-0 top-0 h-[100px] bg-gradient-to-b from-[#c9c7c7]/0 via-[#c8c5c6] to-[#c9c7c7]" />
-      <div className="absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-b from-[#d9d9d9]/0 via-[30%] via-[#dbdbdb] to-[#e8e8e8]" />
+    <div ref={scrollRef} className="relative h-[175vh]">
+      <div className="sticky top-0 flex h-screen flex-col overflow-hidden bg-[#c9c7c7]">
+        <div
+          className="relative w-full shrink-0"
+          // min(65vh, 100vh - 300px): caps the video at 65% of viewport on
+          // typical/tall phones, but backs off on short viewports (e.g.
+          // iPhone SE) so the text panel below always keeps its ~300px of
+          // minimum room instead of the headline/button/scroll-cue
+          // overflowing off the bottom of the screen.
+          style={{ height: "min(65vh, calc(100vh - 300px))" }}
+        >
+          <ScrollVideoMobile
+            framesPath={withBasePath("/frames/octopus")}
+            frameCount={96}
+            scrollContainerRef={scrollRef}
+          />
+          {/* Fades into the nav above and the text panel below, matching
+              the gradient rectangles in Figma's mobile Fold1 frame. */}
+          <div className="absolute inset-x-0 top-0 h-[100px] bg-gradient-to-b from-[#c9c7c7]/0 via-[#c8c5c6] to-[#c9c7c7]" />
+          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-b from-[#c9c7c7]/0 to-[#e8e8e8]" />
+        </div>
 
-      <div className="relative z-10 mt-auto flex flex-col items-center gap-6 px-(--spacing-page) pb-16 text-center">
-        <h1 className="font-display text-[50px] leading-[54px] text-text-on-light">
-          Where AI
-          <br />
-          Takes Shape
-        </h1>
-        <p className="max-w-[286px] font-body text-body text-text-on-light">
-          A 12-week equity-free residency for Physical AI founders
-        </p>
-        <Button variant="cta" size="md" onClick={scrollToFold2}>
-          Apply
-        </Button>
+        <div className="relative z-10 flex flex-1 flex-col items-center justify-between gap-4 bg-[#e8e8e8] px-(--spacing-page) pb-4 pt-6 text-center">
+          <div className="flex flex-col items-center gap-4">
+            <h1 className="font-display text-[38px] leading-[42px] text-text-on-light">
+              Where AI
+              <br />
+              Takes Shape
+            </h1>
+            <p className="max-w-[286px] font-body text-body text-text-on-light">
+              A 12-week equity-free residency for Physical AI founders
+            </p>
+            <Button variant="cta" size="md" onClick={scrollToFold2}>
+              Apply
+            </Button>
+          </div>
+
+          <button
+            type="button"
+            onClick={scrollToFold2}
+            className="flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap font-body text-body text-text-on-light"
+          >
+            Scroll to learn more
+            <ArrowDownIcon className="size-[18px] animate-bob" />
+          </button>
+        </div>
       </div>
-
-      <button
-        type="button"
-        onClick={scrollToFold2}
-        className="relative z-10 mb-6 flex cursor-pointer items-center justify-center gap-2 self-center whitespace-nowrap font-body text-body text-text-on-light"
-      >
-        Scroll to learn more
-        <ArrowDownIcon className="size-[18px] animate-bob" />
-      </button>
-    </section>
+    </div>
   );
 }
