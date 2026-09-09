@@ -1,4 +1,4 @@
-import { Button } from "@/components/Button";
+import { ButtonXL } from "@/components/ButtonXL";
 import { withBasePath } from "@/lib/basePath";
 
 /**
@@ -32,9 +32,7 @@ export function ApplyHeroMobile() {
           Apply for the inaugural cohort taking place between October 2026
           and January 2027.
         </p>
-        <Button variant="cta" size="lg">
-          Apply Now
-        </Button>
+        <ButtonXL>Apply Now</ButtonXL>
       </div>
     </div>
   );

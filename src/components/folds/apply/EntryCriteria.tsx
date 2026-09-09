@@ -1,4 +1,4 @@
-import { Button } from "@/components/Button";
+import { ButtonXL } from "@/components/ButtonXL";
 import { FoldGrid } from "@/components/FoldGrid";
 
 const criteria = [
@@ -35,9 +35,7 @@ export function EntryCriteria() {
             ))}
           </ul>
         </div>
-        <Button variant="cta" size="lg" className="w-full">
-          Apply Now
-        </Button>
+        <ButtonXL className="w-full">Apply Now</ButtonXL>
       </div>
     </FoldGrid>
   );

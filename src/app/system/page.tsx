@@ -1,5 +1,6 @@
 import { DuotoneImage } from "@/components/DuotoneImage";
 import { Button } from "@/components/Button";
+import { ButtonXL } from "@/components/ButtonXL";
 import { TextLink } from "@/components/TextLink";
 import { Footer } from "@/components/Footer";
 import { NavBarDemo } from "./NavBarDemo";
@@ -167,8 +168,8 @@ export default function SystemPage() {
             <span className="font-mono text-xs text-text-on-light/70">variant=&quot;nav&quot; — accent-cta-alt</span>
           </div>
           <div className="flex flex-col items-start gap-2">
-            <Button variant="cta" size="lg">Apply now</Button>
-            <span className="font-mono text-xs text-text-on-light/70">size=&quot;lg&quot; — larger padding variant</span>
+            <ButtonXL>Apply now</ButtonXL>
+            <span className="font-mono text-xs text-text-on-light/70">ButtonXL — ~83px, vertical bottom-to-top fill (Apply page only)</span>
           </div>
         </div>
       </Section>

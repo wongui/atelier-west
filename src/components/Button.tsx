@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 type Variant = "cta" | "nav";
-type Size = "md" | "lg";
+type Size = "md";
 
 const baseClassName =
   "relative inline-flex items-center justify-center overflow-hidden " +
@@ -26,12 +26,10 @@ const variantHoverClassName: Record<Variant, string> = {
 // md: px-6/py-3 (24/12px) — nav bar "Apply" and Fold6's "Apply", ~46px
 // tall, matching Figma exactly for both. min-w keeps the button the same
 // footprint it had with the longer "Apply now" label, now that the copy
-// is shorter.
-// lg: bigger padding, not a bigger font — kept as a larger variant for
-// contexts that need more visual weight, not currently used in production.
+// is shorter. The larger ~83px-tall buttons (Apply page hero/Entry
+// Criteria) are ButtonXL, not a size here — see that component for why.
 const sizeClassName: Record<Size, string> = {
   md: "px-6 py-3 min-w-[130px]",
-  lg: "px-10 py-[42px]",
 };
 
 interface ButtonProps {

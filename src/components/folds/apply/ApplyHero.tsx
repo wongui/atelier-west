@@ -1,4 +1,4 @@
-import { Button } from "@/components/Button";
+import { ButtonXL } from "@/components/ButtonXL";
 import { FoldGrid } from "@/components/FoldGrid";
 import { withBasePath } from "@/lib/basePath";
 
@@ -29,9 +29,7 @@ export function ApplyHero() {
             Apply for the inaugural cohort taking place between October 2026
             and January 2027.
           </p>
-          <Button variant="cta" size="lg">
-            Apply Now
-          </Button>
+          <ButtonXL>Apply Now</ButtonXL>
         </div>
       </FoldGrid>
     </div>
