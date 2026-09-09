@@ -32,15 +32,23 @@ export function Fold1HeroMobile() {
   };
 
   return (
-    <div ref={scrollRef} className="relative h-[175svh]">
-      <div className="sticky top-0 flex h-svh flex-col overflow-hidden bg-[#c9c7c7]">
+    // dvh (not svh) on both the scroll runway and the sticky child: svh is
+    // pinned to the *smallest* possible viewport and doesn't grow back when
+    // Safari's chrome collapses mid-scroll, so the pinned block fell short
+    // of the real (bigger) viewport and Fold2's cream showed through the
+    // gap underneath it. dvh tracks the actual current viewport instead.
+    // bg-[#c9c7c7] on this outer wrapper matches the sticky child's own
+    // resting bg, so if a sliver is ever revealed below the pinned block
+    // it still reads as hero background, not a flash of Fold2's cream.
+    <div ref={scrollRef} className="relative h-[175dvh] bg-[#c9c7c7]">
+      <div className="sticky top-0 flex h-dvh flex-col overflow-hidden bg-[#c9c7c7]">
         <div
           className="relative w-full shrink-0"
-          // min(65svh, 100svh - 260px): 260px is close to the text panel's
+          // min(65dvh, 100dvh - 260px): 260px is close to the text panel's
           // real minimum content height, so typical/tall phones get the
           // full 65% and only genuinely short viewports (e.g. iPhone SE)
           // back off from it.
-          style={{ height: "min(65svh, calc(100svh - 260px))" }}
+          style={{ height: "min(65dvh, calc(100dvh - 260px))" }}
         >
           <ScrollVideoMobile
             framesPath={withBasePath("/frames/octopus")}
