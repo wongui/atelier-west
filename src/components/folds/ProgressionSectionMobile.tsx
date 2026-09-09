@@ -118,7 +118,11 @@ export function ProgressionSectionMobile({ steps, sectionRef }: ProgressionSecti
             </h3>
           </div>
 
-          <StepProgress fillRef={fillRef} totalSteps={steps.length} />
+          <StepProgress
+            fillRef={fillRef}
+            totalSteps={steps.length}
+            className="-mx-(--spacing-page)"
+          />
 
           <div className="relative">
             {steps.map((step, i) => (

@@ -93,12 +93,14 @@ export function FooterMobile() {
         </p>
       </FoldGrid>
 
-      <img
-        src={withBasePath("/images/footer-aw.png")}
-        alt=""
-        aria-hidden
-        className="pointer-events-none mt-12 w-full px-(--spacing-page)"
-      />
+      <div className="mt-12 px-(--spacing-page)">
+        <img
+          src={withBasePath("/images/footer-aw.png")}
+          alt=""
+          aria-hidden
+          className="pointer-events-none w-full"
+        />
+      </div>
     </footer>
   );
 }
