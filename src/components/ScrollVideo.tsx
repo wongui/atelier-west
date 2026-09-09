@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type RefObject } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Divider } from "@/components/Divider";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -168,8 +169,18 @@ export function ScrollVideo({
         <canvas ref={canvasRef} className={`h-full w-full ${className}`} />
       </div>
       {!isReady && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
-          <p className="font-body text-body text-white">Loading… {percent}%</p>
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-8 bg-surface-dark px-(--spacing-page) text-text-on-dark">
+          <p className="font-display text-hero tabular-nums">{percent}%</p>
+          <div className="relative w-full">
+            <Divider />
+            <div
+              className="absolute left-0 top-0 h-px bg-progress-fill transition-[width] duration-150"
+              style={{ width: `${percent}%` }}
+            />
+          </div>
+          <p className="font-body text-ui uppercase tracking-[0.2em] text-text-on-dark/70">
+            Loading
+          </p>
         </div>
       )}
     </>
