@@ -220,12 +220,13 @@ export function ScrollVideoMobile({
     <div ref={wrapperRef} className="absolute inset-0 h-full w-full overflow-hidden">
       <canvas ref={canvasRef} className={`h-full w-full ${className}`} />
       {!isReady && (
-        // fixed (not absolute) so this covers the full viewport rather than
-        // just this wrapper's box — the wrapper only spans the video's own
-        // ~65svh region (see Fold1HeroMobile), and the loading splash
-        // should read as full-screen like desktop's ScrollVideo, not
-        // confined to the video area.
-        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-surface-dark px-(--spacing-page) text-text-on-dark">
+        // Deliberately `absolute` (scoped to this wrapper's ~65svh video
+        // box, see Fold1HeroMobile), not `fixed` to the full viewport: a
+        // fixed full-screen dark div here gets sampled by iOS Safari for
+        // its bottom toolbar tint, which then sticks black even after the
+        // real (lighter) content has loaded in. Confined-to-the-video is
+        // the safer tradeoff.
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-surface-dark px-(--spacing-page) text-text-on-dark">
           <p className="font-display text-h3 tabular-nums">{percent}%</p>
           <div className="relative w-full max-w-[200px]">
             <Divider />
