@@ -1,4 +1,4 @@
-import { ButtonXL } from "@/components/ButtonXL";
+import { Button } from "@/components/Button";
 import { withBasePath } from "@/lib/basePath";
 
 /**
@@ -24,7 +24,7 @@ export function ApplyHeroMobile() {
         className="absolute inset-0 h-full w-full object-cover object-top"
       />
       <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-surface-light via-surface-light/70 to-transparent" />
-      <div className="relative flex min-h-[68vh] flex-col justify-end gap-4 px-(--spacing-page) pt-24 pb-16">
+      <div className="relative flex min-h-[68vh] flex-col items-start justify-end gap-4 px-(--spacing-page) pt-24 pb-16">
         <h1 className="font-display text-[40px] leading-[50px] text-text-on-light">
           Shape what&rsquo;s next
         </h1>
@@ -32,7 +32,7 @@ export function ApplyHeroMobile() {
           Apply for the inaugural cohort taking place between October 2026
           and January 2027.
         </p>
-        <ButtonXL>Apply Now</ButtonXL>
+        <Button variant="cta">Apply Now</Button>
       </div>
     </div>
   );
