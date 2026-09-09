@@ -2,32 +2,37 @@
 
 import { useMemo, useRef } from "react";
 import { SiteNav } from "@/components/SiteNav";
+import { MobileSiteNav } from "@/components/MobileSiteNav";
 import { Footer } from "@/components/Footer";
+import { FooterMobile } from "@/components/folds/FooterMobile";
 import { ImageTextFold } from "@/components/folds/about/ImageTextFold";
+import { ImageTextFoldMobile } from "@/components/folds/about/ImageTextFoldMobile";
 import { ProgressionSection } from "@/components/folds/ProgressionSection";
+import { ProgressionSectionMobile } from "@/components/folds/ProgressionSectionMobile";
 import { LabFacilitiesGrid } from "@/components/folds/about/LabFacilitiesGrid";
 import { MentorshipGrid } from "@/components/folds/about/MentorshipGrid";
 import { AboutClosingCta } from "@/components/folds/about/AboutClosingCta";
 import { withBasePath } from "@/lib/basePath";
+import { useIsDesktop } from "@/lib/useIsDesktop";
 
 const programSteps = [
   {
     number: "Weeks 0-1",
     title: "Onboarding & Lab Training",
     body: "Get access to your lab space, meet your expert mentors, and get trained on the equipment you'll be using.",
-    image: withBasePath("/images/about-program-1.jpg"),
+    image: withBasePath("/images/about-program-1.png"),
   },
   {
     number: "Weeks 2-11",
     title: "Build",
     body: "Utilize the space to push your solution forward together with experts. There will also be a handful of cohort events built around your specific problem set.",
-    image: withBasePath("/images/about-program-2.jpg"),
+    image: withBasePath("/images/about-program-2.png"),
   },
   {
     number: "Week 12",
     title: "Demo Day",
     body: "Show what you built to enterprise partners and investors",
-    image: withBasePath("/images/about-program-3.jpg"),
+    image: withBasePath("/images/about-program-3.png"),
   },
 ];
 
@@ -79,6 +84,95 @@ export default function AboutPage() {
     []
   );
 
+  // Resolves to null until the first client-side check runs, then stays
+  // true/false for the session — same technique as the home page, keeping
+  // the desktop tree (GSAP ScrollTrigger pins) from ever mounting on a
+  // mobile viewport, and vice versa.
+  const isDesktop = useIsDesktop();
+
+  if (isDesktop === null) return null;
+
+  if (!isDesktop) {
+    return (
+      <>
+        <MobileSiteNav darkSectionRefs={darkSectionRefs} />
+
+        <div aria-hidden className="h-16" />
+
+        <ImageTextFoldMobile
+          id="about-intro"
+          bg="light"
+          image={withBasePath("/images/about-intro.png")}
+          wash="warm"
+          shape="blob-a"
+          heading="Atelier West is a 12-week, cash- and equity-free residency program for committed, ambitious Physical AI startups."
+          body="Cohort companies work out of our San Francisco Mission Rock labs, get structured time to work directly with experts in design, strategy, hardware, and AI, and close the program with a demo day in front of enterprise partners and investors."
+        />
+
+        <ImageTextFoldMobile
+          id="cost-commitment"
+          bg="dark"
+          sectionRef={costCommitmentRef}
+          image={withBasePath("/images/about-cost-commitment.png")}
+          wash="cool"
+          shape="blob-b"
+          heading="Cost & Commitment"
+          body={[
+            "The program is free for participants - no equity, no cash. You will be asked for a refundable deposit tied to lab access.",
+            "We are sponsoring this program in order to provide the environment and expertise needed to jointly turn promising technology into real-world impact.",
+            "The only commitment we ask from participants is to partner with us on joint case studies, reference architectures, pilot projects, and/or thought leadership.",
+          ]}
+        />
+
+        <ProgressionSectionMobile steps={programSteps} sectionRef={progressionRef} />
+
+        <LabFacilitiesGrid
+          heading="Lab & Facilities Access"
+          intro="Access to six labs at Mission Rock. All participants will be required to complete training for equipment used and follow all required safety procedures."
+          labs={labs}
+          sectionRef={labFacilitiesRef}
+        />
+
+        <MentorshipGrid
+          heading="Expert Mentorship"
+          intro="Scheduled office hours with experts from frog, Synapse, and Capgemini Experience Engineering across strategy, design, hardware, AI, simulation, and embedded software. We start with an intake process to understand what you need, technical or strategic, then match you with a shortlist of relevant experts. You self-schedule time with them for the rest of the program."
+          mentors={mentors}
+        />
+
+        <ImageTextFoldMobile
+          id="events-enterprise"
+          bg="light"
+          image={withBasePath("/images/about-events-enterprise.png")}
+          wash="warm"
+          shape="blob-a"
+          heading="Events & Enterprise Access"
+          body="Beyond 1:1 mentorship, you'll join a handful of group workshops throughout the program, built around your cohort's needs and connecting you with relevant enterprise companies. The program closes with a demo day in front of enterprise partners and investors."
+        />
+
+        <ImageTextFoldMobile
+          id="partner-benefits"
+          bg="dark"
+          sectionRef={partnerBenefitsRef}
+          image={withBasePath("/images/about-partner-benefits.png")}
+          wash="cool"
+          shape="blob-b"
+          heading="Partner Benefits"
+          body="Cohort participants will also be prioritized to join NVIDIA's Inception Program. Companies in this program get access to the latest developer tools and training, preferred pricing on NVIDIA hardware and software, exclusive offers from partners, and exposure to a global ecosystem of investors. Participants will need to submit a separate, short application for Inception, which will be linked to from our Application form."
+        />
+
+        <AboutClosingCta
+          heading="We're looking for committed teams building in Physical AI and solving a clear, named problem."
+          body={[
+            "Physical AI refers to artificial intelligence systems that are embodied in or directly interact with the physical world, perceiving the environment through sensors, making context-aware decisions, and taking actions autonomously. This could include robotics, autonomous machines, computer vision systems, agent-first or edge AI devices.",
+            "See Application page for all eligibility details.",
+          ]}
+        />
+
+        <FooterMobile />
+      </>
+    );
+  }
+
   return (
     <>
       <SiteNav activeAbout darkSectionRefs={darkSectionRefs} />
@@ -91,7 +185,7 @@ export default function AboutPage() {
       <ImageTextFold
         id="about-intro"
         bg="light"
-        image="/placeholder-photo.svg"
+        image={withBasePath("/images/about-intro.png")}
         wash="warm"
         shape="blob-a"
         heading="Atelier West is a 12-week, cash- and equity-free residency program for committed, ambitious Physical AI startups."
@@ -102,7 +196,7 @@ export default function AboutPage() {
         id="cost-commitment"
         bg="dark"
         sectionRef={costCommitmentRef}
-        image="/placeholder-photo.svg"
+        image={withBasePath("/images/about-cost-commitment.png")}
         wash="cool"
         shape="blob-b"
         heading="Cost & Commitment"
@@ -131,7 +225,7 @@ export default function AboutPage() {
       <ImageTextFold
         id="events-enterprise"
         bg="light"
-        image="/placeholder-photo.svg"
+        image={withBasePath("/images/about-events-enterprise.png")}
         wash="warm"
         shape="blob-a"
         heading="Events & Enterprise Access"
@@ -142,7 +236,7 @@ export default function AboutPage() {
         id="partner-benefits"
         bg="dark"
         sectionRef={partnerBenefitsRef}
-        image="/placeholder-photo.svg"
+        image={withBasePath("/images/about-partner-benefits.png")}
         wash="cool"
         shape="blob-b"
         heading="Partner Benefits"

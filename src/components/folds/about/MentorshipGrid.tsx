@@ -24,7 +24,7 @@ export function MentorshipGrid({ heading, intro, mentors }: MentorshipGridProps)
   return (
     <div className="bg-surface-accent text-text-on-light py-24">
       <FoldGrid>
-        <div className="col-start-1 col-span-5 flex flex-col gap-6 max-w-(--max-width-content)">
+        <div className="col-start-1 col-span-8 sm:col-span-5 flex flex-col gap-6 max-w-(--max-width-content)">
           <h2 className="font-display text-h2">{heading}</h2>
           <p className="font-body text-body">{intro}</p>
         </div>

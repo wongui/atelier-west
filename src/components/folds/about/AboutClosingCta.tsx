@@ -24,7 +24,7 @@ export function AboutClosingCta({ heading, body }: AboutClosingCtaProps) {
         className="absolute inset-0 h-full w-full object-cover"
       />
       <FoldGrid className="relative h-full min-h-screen items-center py-24 text-text-on-light">
-        <div className="col-start-1 col-span-3 flex flex-col items-start gap-8">
+        <div className="col-start-1 col-span-8 sm:col-span-3 flex flex-col items-start gap-8">
           <h2 className="font-display text-h2">{heading}</h2>
           <div className="flex flex-col gap-4">
             {body.map((paragraph, i) => (

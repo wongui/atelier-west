@@ -21,6 +21,10 @@ interface MobileSiteNavProps {
    * darkSectionRef, kept independent so this component never touches
    * desktop SiteNav's own state or DOM. */
   darkSectionRef?: RefObject<HTMLElement | null>;
+  /** Any number of dark/photo sections to watch — same general form as
+   * SiteNav's darkSectionRefs, for interior pages (About) with several
+   * dark folds rather than just one. */
+  darkSectionRefs?: RefObject<HTMLElement | null>[];
 }
 
 /**
@@ -29,24 +33,35 @@ interface MobileSiteNavProps {
  * desktop hero has a huge resting wordmark; the mobile hero's wordmark is
  * already compact-sized per Figma, so there's nothing to morph from).
  */
-export function MobileSiteNav({ darkSectionRef }: MobileSiteNavProps) {
+export function MobileSiteNav({ darkSectionRef, darkSectionRefs }: MobileSiteNavProps) {
   const [isOverDark, setIsOverDark] = useState(false);
   const wordmarkRef = useRef<HTMLAnchorElement>(null);
   const measureRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    const darkSection = darkSectionRef?.current;
-    if (!darkSection) return;
+    const sections = [darkSectionRef, ...(darkSectionRefs ?? [])].filter(
+      (ref): ref is RefObject<HTMLElement | null> => Boolean(ref?.current)
+    );
+    if (sections.length === 0) return;
 
-    const trigger = ScrollTrigger.create({
-      trigger: darkSection,
-      start: "top top",
-      end: "bottom top",
-      onToggle: (self) => setIsOverDark(self.isActive),
-    });
+    // Active for the entire time ANY watched dark section occupies the top
+    // of the viewport, not just a single crossing point — same reasoning
+    // as desktop SiteNav's multi-section handling.
+    const activeFlags = sections.map(() => false);
+    const triggers = sections.map((section, i) =>
+      ScrollTrigger.create({
+        trigger: section.current!,
+        start: "top top",
+        end: "bottom top",
+        onToggle: (self) => {
+          activeFlags[i] = self.isActive;
+          setIsOverDark(activeFlags.some(Boolean));
+        },
+      })
+    );
 
-    return () => trigger.kill();
-  }, [darkSectionRef]);
+    return () => triggers.forEach((trigger) => trigger.kill());
+  }, [darkSectionRef, darkSectionRefs]);
 
   useEffect(() => {
     const wordmark = wordmarkRef.current;
