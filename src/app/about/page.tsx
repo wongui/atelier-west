@@ -71,28 +71,28 @@ const labs = [
 
 const mentors = [
   { name: "Antonello Crimi", role: "UX/UI Design", image: "/images/image 383.png" },
-  { name: "Antonello Crimi", role: "UX/UI Design", image: "/images/image 384.png" },
-  { name: "Antonello Crimi", role: "UX/UI Design", image: "/images/image 385.png" },
-  { name: "Antonello Crimi", role: "UX/UI Design", image: "/images/image 386.png" },
-  { name: "Antonello Crimi", role: "UX/UI Design", image: "/images/image 387.png" },
-  { name: "Antonello Crimi", role: "UX/UI Design", image: "/images/image 388.png" },
-  { name: "Antonello Crimi", role: "UX/UI Design", image: "/images/image 389.png" },
-  { name: "Antonello Crimi", role: "UX/UI Design", image: "/images/image 390.png" },
-  { name: "Antonello Crimi", role: "UX/UI Design", image: "/images/image 391.png" },
-  { name: "Antonello Crimi", role: "UX/UI Design", image: "/images/image 392.png" },
+  { name: "Bethany Brown", role: "Service Design", image: "/images/image 384.png" },
+  { name: "Chris Blower", role: "Mechanical Eng.", image: "/images/image 385.png" },
+  { name: "Fabrice Pouani", role: "RF Engineering", image: "/images/image 386.png" },
+  { name: "John Staskevitch", role: "Firmware Eng.", image: "/images/image 387.png" },
+  { name: "Martha Calderon", role: "Electrical Eng.", image: "/images/image 388.png" },
+  { name: "Josh Baillon", role: "SV Ecosystem", image: "/images/image 389.png" },
+  { name: "Ryan Starling", role: "Industrial Design", image: "/images/image 390.png" },
+  { name: "Kamil Klamann", role: "Strategy", image: "/images/image 391.png" },
+  { name: "Peter Hauser", role: "N.P.I.", image: "/images/image 392.png" },
 ];
 
 export default function AboutPage() {
   const costCommitmentRef = useRef<HTMLDivElement>(null);
   const progressionRef = useRef<HTMLDivElement>(null);
   const labFacilitiesRef = useRef<HTMLDivElement>(null);
-  const partnerBenefitsRef = useRef<HTMLDivElement>(null);
+  const eventsEnterpriseRef = useRef<HTMLDivElement>(null);
 
   // Refs are stable across renders, so this array's identity is too —
   // keeps SiteNav's watcher effect from tearing down/recreating its
   // ScrollTriggers on every re-render (e.g. each isOverDark toggle).
   const darkSectionRefs = useMemo(
-    () => [costCommitmentRef, progressionRef, labFacilitiesRef, partnerBenefitsRef],
+    () => [costCommitmentRef, progressionRef, labFacilitiesRef, eventsEnterpriseRef],
     []
   );
 
@@ -114,7 +114,7 @@ export default function AboutPage() {
         <ImageTextFoldMobile
           id="about-intro"
           bg="light"
-          image={withBasePath("/images/about-intro.png")}
+          image={withBasePath("/images/about-intro.jpg")}
           heading="Atelier West is a 12-week, cash- and equity-free residency program for committed, ambitious Physical AI startups."
           body="Cohort companies work out of our San Francisco Mission Rock labs, get structured time to work directly with experts in design, strategy, hardware, and AI, and close the program with a demo day in front of enterprise partners and investors."
         />
@@ -123,7 +123,7 @@ export default function AboutPage() {
           id="cost-commitment"
           bg="dark"
           sectionRef={costCommitmentRef}
-          image={withBasePath("/images/about-cost-commitment.png")}
+          image={withBasePath("/images/about-cost-commitment.jpg")}
           heading="Cost & Commitment"
           body={[
             "The program is free for participants - no equity, no cash. You will be asked for a refundable deposit tied to lab access.",
@@ -149,7 +149,8 @@ export default function AboutPage() {
 
         <ImageTextFoldMobile
           id="events-enterprise"
-          bg="light"
+          bg="dark"
+          sectionRef={eventsEnterpriseRef}
           image={withBasePath("/images/about-events-enterprise.png")}
           heading="Events & Enterprise Access"
           body="Beyond 1:1 mentorship, you'll join a handful of group workshops throughout the program, built around your cohort's needs and connecting you with relevant enterprise companies. The program closes with a demo day in front of enterprise partners and investors."
@@ -157,8 +158,7 @@ export default function AboutPage() {
 
         <ImageTextFoldMobile
           id="partner-benefits"
-          bg="dark"
-          sectionRef={partnerBenefitsRef}
+          bg="light"
           image={withBasePath("/images/about-partner-benefits.png")}
           heading="Partner Benefits"
           body="Cohort participants will also be prioritized to join NVIDIA's Inception Program. Companies in this program get access to the latest developer tools and training, preferred pricing on NVIDIA hardware and software, exclusive offers from partners, and exposure to a global ecosystem of investors. Participants will need to submit a separate, short application for Inception, which will be linked to from our Application form."
@@ -189,7 +189,7 @@ export default function AboutPage() {
       <ImageTextFold
         id="about-intro"
         bg="light"
-        image={withBasePath("/images/about-intro.png")}
+        image={withBasePath("/images/about-intro.jpg")}
         heading="Atelier West is a 12-week, cash- and equity-free residency program for committed, ambitious Physical AI startups."
         body="Cohort companies work out of our San Francisco Mission Rock labs, get structured time to work directly with experts in design, strategy, hardware, and AI, and close the program with a demo day in front of enterprise partners and investors."
       />
@@ -198,7 +198,7 @@ export default function AboutPage() {
         id="cost-commitment"
         bg="dark"
         sectionRef={costCommitmentRef}
-        image={withBasePath("/images/about-cost-commitment.png")}
+        image={withBasePath("/images/about-cost-commitment.jpg")}
         heading="Cost & Commitment"
         body={[
           "The program is free for participants - no equity, no cash. You will be asked for a refundable deposit tied to lab access.",
@@ -224,7 +224,8 @@ export default function AboutPage() {
 
       <ImageTextFold
         id="events-enterprise"
-        bg="light"
+        bg="dark"
+        sectionRef={eventsEnterpriseRef}
         image={withBasePath("/images/about-events-enterprise.png")}
         heading="Events & Enterprise Access"
         body="Beyond 1:1 mentorship, you'll join a handful of group workshops throughout the program, built around your cohort's needs and connecting you with relevant enterprise companies. The program closes with a demo day in front of enterprise partners and investors."
@@ -232,8 +233,7 @@ export default function AboutPage() {
 
       <ImageTextFold
         id="partner-benefits"
-        bg="dark"
-        sectionRef={partnerBenefitsRef}
+        bg="light"
         image={withBasePath("/images/about-partner-benefits.png")}
         heading="Partner Benefits"
         body="Cohort participants will also be prioritized to join NVIDIA's Inception Program. Companies in this program get access to the latest developer tools and training, preferred pricing on NVIDIA hardware and software, exclusive offers from partners, and exposure to a global ecosystem of investors. Participants will need to submit a separate, short application for Inception, which will be linked to from our Application form."
