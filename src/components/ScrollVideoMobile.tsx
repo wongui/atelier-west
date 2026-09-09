@@ -7,6 +7,12 @@ import { Divider } from "@/components/Divider";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Same amplitude as desktop's mouse parallax (ScrollVideo.tsx), just
+// driven by device tilt instead of pointer position — matches the
+// "physical" feel of moving the phone rather than a mouse.
+const PARALLAX_MAX_OFFSET = 10;
+const TILT_RANGE_DEG = 20;
+
 interface ScrollVideoMobileProps {
   framesPath: string;
   frameCount: number;
@@ -25,12 +31,13 @@ function frameSrc(framesPath: string, index: number, framePadding: number, frame
 /**
  * Mobile's own scroll-scrubbed frame canvas — a separate component from
  * ScrollVideo (desktop's version is a `fixed inset-0` full-viewport
- * canvas with mouse parallax, sized off window dimensions). This one
- * sizes itself to its own wrapper element instead of the viewport, so it
- * can sit inside a 65vh sticky container rather than covering the whole
- * screen, and drops the mouse parallax (no pointer on mobile). Kept
- * independent so desktop's ScrollVideo never has to change to support
- * mobile's different sizing needs.
+ * canvas sized off window dimensions). This one sizes itself to its own
+ * wrapper element instead of the viewport, so it can sit inside a
+ * capped-height sticky container rather than covering the whole screen.
+ * Parallax is device-tilt driven instead of mouse-driven (no pointer on
+ * mobile) — same amplitude/easing as desktop's mouse parallax, just a
+ * different input signal. Kept independent so desktop's ScrollVideo never
+ * has to change to support mobile's different sizing/input needs.
  */
 export function ScrollVideoMobile({
   framesPath,
@@ -117,10 +124,69 @@ export function ScrollVideoMobile({
       const rect = wrapper.getBoundingClientRect();
       canvas.width = rect.width * dpr;
       canvas.height = rect.height * dpr;
+      // Scale up just enough that PARALLAX_MAX_OFFSET of tilt-driven
+      // translation in any direction still stays covered (same formula as
+      // desktop's mouse parallax) — margin is half the extra size added
+      // by the scale, on the tighter dimension.
+      const scale = 1 + (PARALLAX_MAX_OFFSET * 2.2) / Math.min(rect.width, rect.height);
+      gsap.set(canvas, { scale });
       drawFrame(frameIndexRef.current);
     };
     resize();
     window.addEventListener("resize", resize);
+
+    // Device-tilt parallax — the phone's own accelerometer/gyro standing
+    // in for desktop's mouse-position parallax. iOS 13+ gates
+    // DeviceOrientationEvent behind an explicit permission prompt that
+    // must be triggered by a user gesture (can't be requested on load),
+    // so this waits for the visitor's first touch anywhere on the page
+    // before asking; other browsers (Android Chrome, etc.) don't require
+    // it and just start listening immediately.
+    const xTo = gsap.quickTo(canvas, "x", { duration: 0.6, ease: "power3.out" });
+    const yTo = gsap.quickTo(canvas, "y", { duration: 0.6, ease: "power3.out" });
+
+    let baseline: { beta: number; gamma: number } | null = null;
+
+    const handleOrientation = (e: DeviceOrientationEvent) => {
+      if (e.beta == null || e.gamma == null) return;
+      // Calibrate to however the phone happens to be held when tilting
+      // starts, rather than assuming it's held perfectly flat/upright —
+      // the effect is relative motion from that resting pose.
+      if (!baseline) {
+        baseline = { beta: e.beta, gamma: e.gamma };
+        return;
+      }
+      const dBeta = gsap.utils.clamp(-TILT_RANGE_DEG, TILT_RANGE_DEG, e.beta - baseline.beta) / TILT_RANGE_DEG;
+      const dGamma = gsap.utils.clamp(-TILT_RANGE_DEG, TILT_RANGE_DEG, e.gamma - baseline.gamma) / TILT_RANGE_DEG;
+      xTo(-dGamma * PARALLAX_MAX_OFFSET);
+      yTo(-dBeta * PARALLAX_MAX_OFFSET);
+    };
+
+    let removeMotionListener: (() => void) | undefined;
+    const enableTiltParallax = () => {
+      window.addEventListener("deviceorientation", handleOrientation);
+      removeMotionListener = () => window.removeEventListener("deviceorientation", handleOrientation);
+    };
+
+    type DeviceOrientationEventIOS = typeof DeviceOrientationEvent & {
+      requestPermission?: () => Promise<"granted" | "denied">;
+    };
+    const DOE = window.DeviceOrientationEvent as DeviceOrientationEventIOS | undefined;
+    let removeGestureListener: (() => void) | undefined;
+
+    if (typeof DOE?.requestPermission === "function") {
+      const requestOnce = () => {
+        DOE.requestPermission!()
+          .then((state) => {
+            if (state === "granted") enableTiltParallax();
+          })
+          .catch(() => {});
+      };
+      document.addEventListener("touchend", requestOnce, { once: true });
+      removeGestureListener = () => document.removeEventListener("touchend", requestOnce);
+    } else if (typeof window.DeviceOrientationEvent !== "undefined") {
+      enableTiltParallax();
+    }
 
     const container = scrollContainerRef.current;
     const trigger = container
@@ -139,6 +205,8 @@ export function ScrollVideoMobile({
 
     return () => {
       window.removeEventListener("resize", resize);
+      removeMotionListener?.();
+      removeGestureListener?.();
       trigger?.kill();
     };
   }, [frameCount, scrollContainerRef]);
