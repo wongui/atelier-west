@@ -7,6 +7,12 @@ import { StepProgress } from "@/components/StepProgress";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Extra scroll distance at the very start, held on step 1 with the
+// progress bar at 0% — gives a beat to read step 1 before anything
+// starts advancing, instead of the bar (and eventually the crossfade)
+// moving from the instant the section is reached.
+const READING_BUFFER_VH = 60;
+
 interface Step {
   number: string;
   title: string;
@@ -36,17 +42,23 @@ export function ProgressionSectionMobile({ steps, sectionRef }: ProgressionSecti
     const wrapper = wrapperRef.current;
     if (!wrapper) return;
 
+    const totalVh = steps.length * 100 + READING_BUFFER_VH;
+
     const trigger = ScrollTrigger.create({
       trigger: wrapper,
       start: "top top",
       end: "bottom bottom",
       scrub: true,
-      snap: 1 / (steps.length - 1),
       onUpdate: (self) => {
+        // Raw progress covers the whole pin range including the leading
+        // buffer; re-map so effective progress sits at 0 for that entire
+        // buffer, then behaves exactly like before across the steps.
+        const rawVh = self.progress * totalVh;
+        const effective = Math.min(1, Math.max(0, (rawVh - READING_BUFFER_VH) / (steps.length * 100)));
         if (fillRef.current) {
-          fillRef.current.style.width = `${self.progress * 100}%`;
+          fillRef.current.style.width = `${effective * 100}%`;
         }
-        const next = Math.min(steps.length - 1, Math.floor(self.progress * steps.length));
+        const next = Math.min(steps.length - 1, Math.floor(effective * steps.length));
         setActiveStep((prev) => (prev === next ? prev : next));
       },
     });
@@ -61,7 +73,7 @@ export function ProgressionSectionMobile({ steps, sectionRef }: ProgressionSecti
         if (sectionRef) sectionRef.current = node;
       }}
       className="relative"
-      style={{ height: `${steps.length * 100}vh` }}
+      style={{ height: `${steps.length * 100 + READING_BUFFER_VH}vh` }}
     >
       <div className="sticky top-0 h-screen overflow-hidden bg-surface-dark text-text-on-dark">
         {steps.map((step, i) => (

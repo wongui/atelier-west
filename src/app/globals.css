@@ -41,7 +41,13 @@
      Reasoning in docs/FOUNDATIONS.md §2. Sizes paired with line-heights
      so `font-display text-hero` (etc.) is a complete, reusable text
      style, not a bare font-size. */
-  --text-hero: 6.875rem;              /* 110px — Fold1 hero line only */
+  /* Fluid across the desktop range only (1024px, where the mobile layout
+     takes over, through 1512px, the Figma reference width) — scales with
+     viewport width so the nowrap "Where AI takes shape" headline shrinks
+     in step with its fluid grid column instead of overflowing it, while
+     staying pinned to the original 110px design size at 1512px and up.
+     Coefficient: 110px / 1512px = 7.28vw. */
+  --text-hero: clamp(4rem, 7.28vw, 6.875rem); /* 110px — Fold1 hero line only */
   --text-hero--line-height: 1;
   --text-h1: 4.375rem;                 /* 70px — section numbers/headers */
   --text-h1--line-height: 1;
@@ -136,6 +142,18 @@ body {
   background: var(--color-surface-light);
   color: var(--color-text-on-light);
   font-family: var(--font-body);
+}
+
+/* Shrinks the root rem base across the desktop range only (1024px, where
+   the mobile layout takes over, through 1512px, the Figma reference
+   width) — every text-* token is rem-based, so this scales the entire
+   type ramp down together as a "narrow desktop" mode, rather than
+   requiring each fold's text sizes to be hand-tuned per breakpoint.
+   Linear fit: 16px at 1512px down to 14px at 1024px. */
+@media (min-width: 1024px) and (max-width: 1512px) {
+  html {
+    font-size: clamp(14px, calc(0.41vw + 9.8px), 16px);
+  }
 }
 
 /*

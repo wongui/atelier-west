@@ -36,14 +36,11 @@ export function Fold1HeroMobile() {
       <div className="sticky top-0 flex h-svh flex-col overflow-hidden bg-[#c9c7c7]">
         <div
           className="relative w-full shrink-0"
-          // min(65svh, 100svh - 300px): caps the video at 65% of viewport on
-          // typical/tall phones, but backs off on short viewports (e.g.
-          // iPhone SE) so the text panel below always keeps its ~300px of
-          // minimum room instead of the headline/button/scroll-cue
-          // overflowing off the bottom of the screen. svh (not vh) so this
-          // is sized off the viewport with mobile browser chrome excluded,
-          // matching the sticky parent above.
-          style={{ height: "min(65svh, calc(100svh - 300px))" }}
+          // min(65svh, 100svh - 260px): 260px is close to the text panel's
+          // real minimum content height, so typical/tall phones get the
+          // full 65% and only genuinely short viewports (e.g. iPhone SE)
+          // back off from it.
+          style={{ height: "min(65svh, calc(100svh - 260px))" }}
         >
           <ScrollVideoMobile
             framesPath={withBasePath("/frames/octopus")}
@@ -51,13 +48,13 @@ export function Fold1HeroMobile() {
             scrollContainerRef={scrollRef}
           />
           {/* Video runs edge-to-edge to the top of the device (under the
-              transparent nav) — no fade here, only into the text panel
-              below. */}
-          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-b from-[#c9c7c7]/0 to-[#e8e8e8]" />
+              transparent nav) — no fade here, only a short blend into the
+              text panel below. */}
+          <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-b from-[#c9c7c7]/0 to-[#e8e8e8]" />
         </div>
 
         <div
-          className="relative z-10 flex flex-1 flex-col items-center justify-between gap-4 bg-[#e8e8e8] px-(--spacing-page) pt-6 text-center"
+          className="relative z-10 flex flex-1 flex-col items-center justify-between gap-4 bg-[#e8e8e8] px-(--spacing-page) pt-4 text-center"
           style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
         >
           <div className="flex flex-col items-center gap-4">

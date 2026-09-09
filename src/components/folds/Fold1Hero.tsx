@@ -42,8 +42,12 @@ export function Fold1Hero({ heroRef }: Fold1HeroProps) {
 
       <FoldGrid className="absolute inset-x-0 top-0 h-screen">
         {/* Eyebrow + headline share the same top offset so they align to
-            each other, not to independently-tuned vh guesses. */}
-        <p className="col-start-1 col-span-2 row-start-1 mt-[73vh] font-body text-body text-text-on-light">
+            each other, not to independently-tuned vh guesses. The extra
+            pt nudges the eyebrow's small-font line box down to visually
+            match the headline's much taller cap-height — sharing the
+            exact same top offset otherwise makes the eyebrow look like
+            it's floating above the headline instead of level with it. */}
+        <p className="col-start-1 col-span-2 row-start-1 mt-[73vh] pt-3 font-body text-body text-text-on-light">
           A 12-week equity-free residency for Physical AI founders
         </p>
 
