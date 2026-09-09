@@ -219,7 +219,12 @@ export function ScrollVideoMobile({
     <div ref={wrapperRef} className="absolute inset-0 h-full w-full overflow-hidden">
       <canvas ref={canvasRef} className={`h-full w-full ${className}`} />
       {!isReady && (
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-surface-dark px-(--spacing-page) text-text-on-dark">
+        // fixed (not absolute) so this covers the full viewport rather than
+        // just this wrapper's box — the wrapper only spans the video's own
+        // ~65svh region (see Fold1HeroMobile), and the loading splash
+        // should read as full-screen like desktop's ScrollVideo, not
+        // confined to the video area.
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-surface-dark px-(--spacing-page) text-text-on-dark">
           <p className="font-display text-h3 tabular-nums">{percent}%</p>
           <div className="relative w-full max-w-[200px]">
             <Divider />
