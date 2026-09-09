@@ -32,7 +32,14 @@ export function FooterMobile() {
     if (!wordmark || !measure) return;
 
     const recompute = () => {
-      const availableWidth = window.innerWidth - 48; // 2x --spacing-page (24px)
+      // Read the live --spacing-page value (mobile overrides it to 16px
+      // below the 1024px breakpoint — see globals.css) rather than
+      // hardcoding a pixel figure, so this stays correct if that token
+      // ever changes.
+      const spacingPage = parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue("--spacing-page")
+      ) * parseFloat(getComputedStyle(document.documentElement).fontSize);
+      const availableWidth = window.innerWidth - spacingPage * 2;
       const naturalWidth = measure.getBoundingClientRect().width;
       const tracking = Math.max(
         0,
@@ -90,7 +97,7 @@ export function FooterMobile() {
         src={withBasePath("/images/footer-aw.png")}
         alt=""
         aria-hidden
-        className="pointer-events-none mt-12 w-full"
+        className="pointer-events-none mt-12 w-full px-(--spacing-page)"
       />
     </footer>
   );

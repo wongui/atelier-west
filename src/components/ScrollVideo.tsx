@@ -7,7 +7,7 @@ import { Divider } from "@/components/Divider";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const PARALLAX_MAX_OFFSET = 10;
+const PARALLAX_MAX_OFFSET = 16;
 
 interface ScrollVideoProps {
   framesPath: string;

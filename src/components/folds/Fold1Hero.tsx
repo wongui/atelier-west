@@ -51,9 +51,21 @@ export function Fold1Hero({ heroRef }: Fold1HeroProps) {
           A 12-week equity-free residency for Physical AI founders
         </p>
 
-        <h1 className="col-start-4 col-span-5 row-start-1 mt-[73vh] font-display text-hero text-text-on-light whitespace-nowrap">
-          Where AI takes shape
-        </h1>
+        {/* Sized off its own grid-column width (container query units), not
+            the viewport — the column's right edge already sits exactly
+            --spacing-page (24px) inside the viewport edge via FoldGrid's
+            padding, so tying font-size to *that* box (rather than a raw
+            vw guess) keeps the 24px margin intact at every width instead
+            of the text creeping past it as the column narrows. The query
+            container has to be a *wrapper*, not the h1 itself — a size
+            container querying its own inline-size is a self-reference
+            browsers resolve as invalid, silently falling back to the
+            clamp's max and ignoring the fluid middle term entirely. */}
+        <div className="col-start-4 col-span-5 row-start-1 mt-[73vh] [container-type:inline-size]">
+          <h1 className="font-display leading-none text-[clamp(4rem,11.77cqw,6.875rem)] text-text-on-light whitespace-nowrap">
+            Where AI takes shape
+          </h1>
+        </div>
 
         {/* Bottom-anchored (self-end + mb-6/24px) rather than a vh guess,
             so its bottom edge matches SiteNav's About/Apply bottom edge.

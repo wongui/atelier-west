@@ -149,10 +149,25 @@ body {
    width) — every text-* token is rem-based, so this scales the entire
    type ramp down together as a "narrow desktop" mode, rather than
    requiring each fold's text sizes to be hand-tuned per breakpoint.
-   Linear fit: 16px at 1512px down to 14px at 1024px. */
+   Linear fit: 16px at 1512px down to a floor at 1024px. The floor is
+   calc(16px / 1.125) rather than a flat 14px — 1.125 is --text-body's
+   rem value, so this is the exact root size at which --text-body (the
+   reading-text token) bottoms out at 16px instead of dropping below it.
+   If --text-body's rem value ever changes, update the 1.125 here too. */
 @media (min-width: 1024px) and (max-width: 1512px) {
   html {
-    font-size: clamp(14px, calc(0.41vw + 9.8px), 16px);
+    font-size: clamp(calc(16px / 1.125), calc(0.41vw + 9.8px), 16px);
+  }
+}
+
+/* Mobile's page margin is narrower than desktop's 24px — scoped to below
+   the 1024px mobile-layout breakpoint (see useIsDesktop) so it can never
+   affect the desktop tree, which never renders at these widths. Every
+   mobile fold already reads --spacing-page for its side padding, so this
+   single override reaches all of them without per-component edits. */
+@media (max-width: 1023.98px) {
+  :root {
+    --spacing-page: 1rem;
   }
 }
 

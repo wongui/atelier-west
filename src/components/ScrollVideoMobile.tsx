@@ -7,11 +7,13 @@ import { Divider } from "@/components/Divider";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Same amplitude as desktop's mouse parallax (ScrollVideo.tsx), just
-// driven by device tilt instead of pointer position — matches the
-// "physical" feel of moving the phone rather than a mouse.
-const PARALLAX_MAX_OFFSET = 10;
-const TILT_RANGE_DEG = 20;
+// Bigger amplitude and a smaller tilt range than desktop's mouse parallax
+// (ScrollVideo.tsx) — a phone's tilt range in the hand is much narrower
+// than a full mouse sweep across the screen, so matching desktop's pixel
+// offset 1:1 read as barely-there; this reaches full offset at a modest
+// tilt instead of requiring an exaggerated one.
+const PARALLAX_MAX_OFFSET = 30;
+const TILT_RANGE_DEG = 12;
 
 interface ScrollVideoMobileProps {
   framesPath: string;
@@ -142,8 +144,8 @@ export function ScrollVideoMobile({
     // so this waits for the visitor's first touch anywhere on the page
     // before asking; other browsers (Android Chrome, etc.) don't require
     // it and just start listening immediately.
-    const xTo = gsap.quickTo(canvas, "x", { duration: 0.6, ease: "power3.out" });
-    const yTo = gsap.quickTo(canvas, "y", { duration: 0.6, ease: "power3.out" });
+    const xTo = gsap.quickTo(canvas, "x", { duration: 0.45, ease: "power3.out" });
+    const yTo = gsap.quickTo(canvas, "y", { duration: 0.45, ease: "power3.out" });
 
     let baseline: { beta: number; gamma: number } | null = null;
 
