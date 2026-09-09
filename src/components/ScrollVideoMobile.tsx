@@ -185,8 +185,11 @@ export function ScrollVideoMobile({
           })
           .catch(() => {});
       };
-      document.addEventListener("touchend", requestOnce, { once: true });
-      removeGestureListener = () => document.removeEventListener("touchend", requestOnce);
+      // touchstart (not touchend) - fires the instant a finger touches the
+      // screen, still counts as a user gesture for the permission prompt,
+      // and doesn't wait for an entire scroll gesture to finish first.
+      document.addEventListener("touchstart", requestOnce, { once: true });
+      removeGestureListener = () => document.removeEventListener("touchstart", requestOnce);
     } else if (typeof window.DeviceOrientationEvent !== "undefined") {
       enableTiltParallax();
     }
