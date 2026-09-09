@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { useEffect, useRef, type RefObject } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Divider } from "@/components/Divider";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -54,8 +53,6 @@ export function ScrollVideoMobile({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const framesRef = useRef<HTMLImageElement[]>([]);
   const frameIndexRef = useRef(0);
-  const [loadedCount, setLoadedCount] = useState(0);
-  const [isReady, setIsReady] = useState(false);
 
   const drawFrame = (index: number) => {
     const canvas = canvasRef.current;
@@ -89,7 +86,6 @@ export function ScrollVideoMobile({
 
   useEffect(() => {
     let cancelled = false;
-    let loaded = 0;
 
     const images: HTMLImageElement[] = new Array(frameCount);
     for (let i = 0; i < frameCount; i++) {
@@ -97,16 +93,7 @@ export function ScrollVideoMobile({
       img.src = frameSrc(framesPath, i, framePadding, frameExtension);
       img.onload = () => {
         if (cancelled) return;
-        loaded += 1;
-        setLoadedCount(loaded);
         if (i === 0) drawFrame(0);
-        if (loaded === frameCount) setIsReady(true);
-      };
-      img.onerror = () => {
-        if (cancelled) return;
-        loaded += 1;
-        setLoadedCount(loaded);
-        if (loaded === frameCount) setIsReady(true);
       };
       images[i] = img;
     }
@@ -217,29 +204,9 @@ export function ScrollVideoMobile({
     };
   }, [frameCount, scrollContainerRef]);
 
-  const percent = frameCount > 0 ? Math.round((loadedCount / frameCount) * 100) : 0;
-
   return (
     <div ref={wrapperRef} className="absolute inset-0 h-full w-full overflow-hidden">
       <canvas ref={canvasRef} className={`h-full w-full ${className}`} />
-      {!isReady && (
-        // Deliberately `absolute` (scoped to this wrapper's ~65svh video
-        // box, see Fold1HeroMobile), not `fixed` to the full viewport: a
-        // fixed full-screen dark div here gets sampled by iOS Safari for
-        // its bottom toolbar tint, which then sticks black even after the
-        // real (lighter) content has loaded in. Confined-to-the-video is
-        // the safer tradeoff.
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-surface-dark px-(--spacing-page) text-text-on-dark">
-          <p className="font-display text-h3 tabular-nums">{percent}%</p>
-          <div className="relative w-full max-w-[200px]">
-            <Divider />
-            <div
-              className="absolute left-0 top-0 h-px bg-progress-fill transition-[width] duration-150"
-              style={{ width: `${percent}%` }}
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 }
