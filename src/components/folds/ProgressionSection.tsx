@@ -62,7 +62,16 @@ export function ProgressionSection({ steps, sectionRef }: ProgressionSectionProp
           fillRef.current.style.width = `${self.progress * 100}%`;
         }
         const next = Math.min(steps.length - 1, Math.floor(self.progress * steps.length));
-        setActiveStep((prev) => (prev === next ? prev : next));
+        setActiveStep((prev) => {
+          if (prev === next) return prev;
+          // Reset in the SAME render that switches steps — resetting from a
+          // separate effect one render later let the incoming item briefly
+          // render already-revealed (stale `stepRevealed` from the previous
+          // step) before flipping hidden then back, a flash-then-hide-then-
+          // show glitch instead of a clean single reveal.
+          setStepRevealed(false);
+          return next;
+        });
       },
     });
 
@@ -71,7 +80,6 @@ export function ProgressionSection({ steps, sectionRef }: ProgressionSectionProp
 
   useEffect(() => {
     if (!sectionReveal.isVisible) return;
-    setStepRevealed(false);
     let raf2 = 0;
     const raf1 = requestAnimationFrame(() => {
       raf2 = requestAnimationFrame(() => setStepRevealed(true));
@@ -102,9 +110,8 @@ export function ProgressionSection({ steps, sectionRef }: ProgressionSectionProp
             key={step.number}
             src={step.image}
             alt=""
-            className={`absolute inset-0 h-full w-full object-cover transition-all duration-500 ${
-              i === activeStep ? (stepRevealed ? "opacity-100 blur-none" : "opacity-0 blur-md") : "opacity-0"
-            }`}
+            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
+            style={{ opacity: i === activeStep ? 1 : 0 }}
           />
         ))}
         <div className="absolute inset-0 bg-black/50" />
