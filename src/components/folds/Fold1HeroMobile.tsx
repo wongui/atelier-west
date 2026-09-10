@@ -60,18 +60,21 @@ export function Fold1HeroMobile({ heroRef }: Fold1HeroMobileProps) {
   }, []);
 
   useEffect(() => {
-    // iOS Safari's `dvh` unit is wrong on first paint — it computes
-    // against a stale viewport height and only self-corrects once the
-    // user scrolls (which is why the caret below only showed up after
-    // the first scroll: the sticky block above it was sized too tall on
-    // load, and overflow-hidden clipped the caret off the bottom).
-    // window.innerHeight itself is accurate immediately, so we mirror it
-    // into a CSS var and use that instead of `dvh` for this fold's
-    // load-bearing heights; it's kept live the same way dvh normally
-    // would be, via resize (fires when Safari's chrome collapses/expands
-    // the layout viewport).
+    // This layout uses viewport-fit=cover (see layout.tsx) so
+    // env(safe-area-inset-*) resolves under the notch — which also means
+    // the page extends *underneath* Safari's chrome instead of the
+    // layout viewport shrinking to make room for it. On load, before any
+    // scroll collapses the bottom toolbar, that toolbar floats over the
+    // page rather than pushing content up, so the caret ends up rendered
+    // behind it. window.innerHeight (the layout viewport) doesn't reflect
+    // that overlay and reports the full underlying height either way;
+    // window.visualViewport.height is the one that actually shrinks while
+    // the toolbar covers part of the screen, so mirror that into a CSS
+    // var instead of relying on the `dvh` unit (which has the same blind
+    // spot, since it's also layout-viewport-based here).
     const setVh = () => {
-      document.documentElement.style.setProperty("--dvh", `${window.innerHeight / 100}px`);
+      const h = window.visualViewport?.height ?? window.innerHeight;
+      document.documentElement.style.setProperty("--dvh", `${h / 100}px`);
     };
     setVh();
     window.addEventListener("resize", setVh);
