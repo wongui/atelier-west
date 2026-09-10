@@ -1,13 +1,11 @@
 name: Deploy to GitHub Pages
 
-# Publishes two versions side by side under one Pages site/domain so they can
-# be compared and shared: `main` (v1, stable) at the root, and `redesign` (v2,
-# in-progress) at /v2. When one is chosen as the final version, either merge
-# it into `main` or repoint the CUSTOM_DOMAIN/root build at it, then delete
-# the build-v2/redesign branch and revert to a single-build workflow.
+# Single-build pipeline — the v1/v2 side-by-side split (main at the root,
+# redesign at /v2) has been retired now that v2 was merged into main and
+# promoted to the live site; the redesign branch was deleted.
 on:
   push:
-    branches: [main, redesign]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -20,12 +18,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-v1:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: main
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -36,55 +32,13 @@ jobs:
           # Tells next.config.ts to serve from the /<repo-name> basePath.
           # Remove this env var once a custom domain (CNAME) is attached.
           CUSTOM_DOMAIN: ${{ vars.CUSTOM_DOMAIN }}
-      - uses: actions/upload-artifact@v4
-        with:
-          name: site-v1
-          path: ./out
-          retention-days: 1
-
-  build-v2:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: redesign
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-      - run: npm ci
-      - run: npm run build
-        env:
-          CUSTOM_DOMAIN: ${{ vars.CUSTOM_DOMAIN }}
-          SITE_VARIANT: v2
-      - uses: actions/upload-artifact@v4
-        with:
-          name: site-v2
-          path: ./out
-          retention-days: 1
-
-  combine:
-    needs: [build-v1, build-v2]
-    if: always() && needs.build-v1.result == 'success'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: site-v1
-          path: combined
-      - uses: actions/download-artifact@v4
-        with:
-          name: site-v2
-          path: combined/v2
-        continue-on-error: true
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: combined
+          path: ./out
 
   deploy:
-    needs: combine
+    needs: build
     runs-on: ubuntu-latest
     environment:
       name: github-pages
