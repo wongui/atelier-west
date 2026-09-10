@@ -92,7 +92,11 @@ export function PartnersStrip({ sectionRef }: PartnersStripProps) {
           <div
             ref={supportedBy.ref}
             style={{ transitionDelay: "100ms" }}
-            className={`flex min-w-0 flex-col items-center gap-6 py-10 text-center lg:flex-1 lg:gap-8 lg:px-8 lg:py-0 xl:px-10 ${supportedBy.revealClassName}`}
+            // lg:justify-center — this column only has 2 items (label +
+            // logos) vs. its siblings' 3, so at the row's stretched
+            // height it otherwise sits top-aligned with a block of empty
+            // space left below it instead of centered in the row.
+            className={`flex min-w-0 flex-col items-center gap-6 py-10 text-center lg:flex-1 lg:justify-center lg:gap-8 lg:px-8 lg:py-0 xl:px-10 ${supportedBy.revealClassName}`}
           >
             <EyebrowLabel>With support from</EyebrowLabel>
             <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">

@@ -28,7 +28,7 @@ export function AboutClosingCta({ heading, body }: AboutClosingCtaProps) {
         alt=""
         className="absolute inset-0 h-full w-full object-cover"
       />
-      <FoldGrid className="relative h-full min-h-screen items-center py-24 text-text-on-light">
+      <FoldGrid className="relative h-full min-h-screen py-24 text-text-on-light" gridClassName="items-center">
         <div
           ref={text.ref}
           className={`col-start-1 col-span-8 sm:col-span-3 flex flex-col items-start gap-8 ${text.revealClassName}`}

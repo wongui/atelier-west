@@ -16,7 +16,7 @@ export function Fold2Intro() {
   const text = useReveal<HTMLDivElement>();
 
   return (
-    <FoldGrid id="fold-2" className="bg-surface-light h-screen content-center">
+    <FoldGrid id="fold-2" className="bg-surface-light h-screen" gridClassName="content-center">
       <img
         ref={image.ref}
         src={withBasePath("/images/fold-2.png")}

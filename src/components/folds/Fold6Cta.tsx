@@ -19,7 +19,7 @@ export function Fold6Cta() {
         alt=""
         className="absolute inset-0 h-full w-full object-cover"
       />
-      <FoldGrid className="relative h-full min-h-screen items-center py-24">
+      <FoldGrid className="relative h-full min-h-screen py-24" gridClassName="items-center">
         <div
           ref={text.ref}
           className={`col-start-1 col-span-3 flex flex-col items-start gap-8 ${text.revealClassName}`}

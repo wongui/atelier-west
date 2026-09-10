@@ -39,6 +39,16 @@ interface ImageTextFoldProps {
  * as-is, not placeholder art meant for the duotone-mask treatment, and a
  * fixed aspect box cropped two of them since their native ratio didn't
  * match it.
+ *
+ * v2: hugs its content (`py-16`) instead of forcing a fixed `min-h-[65vh]`
+ * — that fixed height left dead space below shorter sections (e.g. Cost &
+ * Commitment). `gridClassName="items-center"` is dropped along with it:
+ * FoldGrid's inner grid is a single auto-sized row, so grid-level
+ * `items-center` had nothing to center against once the row wasn't being
+ * forced taller than its content anyway (same non-effect as ApplyHero's
+ * old centering, before that was fixed with `flex justify-center`) — not
+ * needed here since content is top-of-row by default once the fold just
+ * hugs it.
  */
 export function ImageTextFold({
   id,
@@ -57,7 +67,7 @@ export function ImageTextFold({
     <FoldGrid
       ref={sectionRef}
       id={id}
-      className={`min-h-[65vh] items-center py-16 ${bgClassName[bg]}`}
+      className={`py-16 ${bgClassName[bg]}`}
     >
       <img
         ref={photo.ref}

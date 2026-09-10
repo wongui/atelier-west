@@ -76,7 +76,7 @@ export function LabFacilitiesGrid({ heading, intro, labs, sectionRef }: LabFacil
           FoldGrid's 8 columns — 8 doesn't split evenly into thirds, and
           three-per-row (wrapping the 6 labs into two even rows) is the
           point here, not alignment to the 8-col system's own breakpoints. */}
-      <div className="mt-16 grid grid-cols-1 gap-x-6 gap-y-16 px-(--spacing-page) sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mx-auto mt-16 grid max-w-(--max-width-page) grid-cols-1 gap-x-6 gap-y-16 px-(--spacing-page) sm:grid-cols-2 lg:grid-cols-3">
         {labs.map((lab) => (
           <LabCard key={lab.title} lab={lab} />
         ))}

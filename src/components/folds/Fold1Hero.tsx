@@ -2,6 +2,7 @@
 
 import { useLayoutEffect, useRef, useState, type RefObject } from "react";
 import Link from "next/link";
+import { Button } from "@/components/Button";
 import { ScrollVideo } from "@/components/ScrollVideo";
 import { FoldGrid } from "@/components/FoldGrid";
 import { withBasePath } from "@/lib/basePath";
@@ -15,53 +16,45 @@ const WORDMARK_TEXT = "Atelier West";
 const WORDMARK_HERO_SIZE = 42.4;
 
 /**
- * Down arrow next to "Scroll to learn more" — real path data from the
- * Figma "ArrowDown" node (617:361, node 620:576), reproduced inline as a
- * generic universal glyph rather than a committed image asset, same
- * convention as TextLink's own arrow icon. `currentColor` fill so it
- * inherits the surrounding text color instead of hardcoding Figma's charcoal hex.
- */
-function ArrowDownIcon({ className = "" }: { className?: string }) {
-  return (
-    <svg aria-hidden viewBox="0 0 24 24" fill="currentColor" className={className}>
-      <path d="M19.2806 14.0306L12.5306 20.7806C12.461 20.8504 12.3783 20.9057 12.2872 20.9434C12.1962 20.9812 12.0986 21.0006 12 21.0006C11.9014 21.0006 11.8038 20.9812 11.7128 20.9434C11.6217 20.9057 11.539 20.8504 11.4694 20.7806L4.71938 14.0306C4.57864 13.8899 4.49958 13.699 4.49958 13.5C4.49958 13.301 4.57864 13.1101 4.71938 12.9694C4.86011 12.8286 5.05098 12.7496 5.25 12.7496C5.44902 12.7496 5.63989 12.8286 5.78063 12.9694L11.25 18.4397V3.75C11.25 3.55109 11.329 3.36032 11.4697 3.21967C11.6103 3.07902 11.8011 3 12 3C12.1989 3 12.3897 3.07902 12.5303 3.21967C12.671 3.36032 12.75 3.55109 12.75 3.75V18.4397L18.2194 12.9694C18.3601 12.8286 18.551 12.7496 18.75 12.7496C18.949 12.7496 19.1399 12.8286 19.2806 12.9694C19.4214 13.1101 19.5004 13.301 19.5004 13.5C19.5004 13.699 19.4214 13.8899 19.2806 14.0306Z" />
-    </svg>
-  );
-}
-
-/**
- * Fold1 — the video-scrub hero. The wordmark, headline/eyebrow/scroll-hint
- * are all in normal flow here, so they scroll away naturally with the rest
- * of the hero; only the compact nav wordmark that appears once About/Apply
- * stick to the top is owned by SiteNav (see its own comment — it's a plain
- * appear, not a scale-up of this one). Content positions (column + vh
- * offset) match the Figma Fold1 frame exactly.
+ * Fold1 — the video-scrub hero, redesigned to the centered "alt hero"
+ * wireframe (Figma node 739:687): headline/eyebrow/CTA/scroll-cue are a
+ * single centered column over the video instead of desktop's old
+ * left/right split — closer in spirit to the mobile hero's centered
+ * composition, but built with desktop's own mechanics (scroll-scrubbed
+ * video, row-start-1 overlap + vh offsets, reveal-on-mount), not copied
+ * from Fold1HeroMobile.
+ *
+ * Brought back from v1: the large in-flow wordmark at the top of the
+ * hero (scrolls away with the rest of the hero content, not
+ * pinned/fixed). SiteNav now stays hidden until this fold has fully
+ * scrolled past (see SiteNav's heroRef prop), so the two never show at
+ * the same time.
  */
 export function Fold1Hero({ heroRef }: Fold1HeroProps) {
   const measureRef = useRef<HTMLSpanElement>(null);
   const [heroTracking, setHeroTracking] = useState(0);
   const wordmark = useRevealOnMount<HTMLAnchorElement>();
-  const eyebrow = useRevealOnMount<HTMLParagraphElement>();
-  const headline = useRevealOnMount<HTMLDivElement>();
+  const cluster = useRevealOnMount<HTMLDivElement>();
   const scrollHint = useRevealOnMount<HTMLButtonElement>();
 
   useLayoutEffect(() => {
     const measure = measureRef.current;
     if (!measure) return;
 
-    // Same technique as the compact nav wordmark used to use: a hidden
-    // 0-tracking clone gives the natural width at this font-size, then
-    // letter-spacing is solved so the tracked-out text exactly fills the
-    // grid's content width at any viewport size.
-    //
-    // useLayoutEffect (not useEffect) so this runs before the browser
-    // paints — otherwise the wordmark visibly paints at 0 tracking first,
-    // then jumps to the real value, and since it shares the reveal's
-    // transition-all, that jump animates too (reads as the letter-spacing
-    // "growing" on load) instead of the reveal being the only visible
-    // animation.
+    // A hidden 0-tracking clone gives the wordmark's natural width at
+    // this font-size, then letter-spacing is solved so the tracked-out
+    // text exactly fills the grid's content width at any viewport size.
+    // useLayoutEffect (not useEffect) so this runs before paint —
+    // otherwise the wordmark visibly paints at 0 tracking first, then
+    // jumps to the real value.
     const recompute = () => {
-      const availableWidth = window.innerWidth - 48; // 2x --spacing-page (24px)
+      // The wordmark gets its own fixed 24px margin (top + sides),
+      // independent of --spacing-page (the page's general content
+      // margin, 64px in v2 — same reasoning as SiteNav's own independent
+      // top offset) — so this computes against a 24px-inset, 1392px-capped
+      // lane (matching the wrapper's own inset-6/max-w-[1392px] below),
+      // not FoldGrid's page-wide padding.
+      const availableWidth = Math.min(window.innerWidth, 1440) - 48; // 2x 24px
       const naturalWidth = measure.getBoundingClientRect().width;
       // Divide by (length - 1), not length: letter-spacing adds a trailing
       // gap after the LAST character too, which doesn't count as a visible
@@ -81,83 +74,104 @@ export function Fold1Hero({ heroRef }: Fold1HeroProps) {
     <div ref={heroRef} className="relative h-[200vh] overflow-x-hidden bg-surface-light">
       <ScrollVideo framesPath={withBasePath("/frames/octopus")} frameCount={96} scrollContainerRef={heroRef} />
 
-      <FoldGrid className="absolute inset-x-0 top-0 h-screen pt-(--spacing-page)">
-        <Link
-          ref={wordmark.ref}
-          href="/"
-          // Its own explicit transition-property list (opacity/filter/
-          // transform only), NOT revealClassName's `transition-all` — this
-          // element also carries a dynamically-computed letterSpacing, and
-          // transition-all made any correction to that value (e.g. a resize,
-          // or the measurement settling) visibly animate over 700ms, which
-          // read as the letter-spacing "growing"/stretching on load instead
-          // of being instant like a normal layout property.
-          className={`col-start-1 col-span-3 row-start-1 font-display uppercase whitespace-nowrap text-text-on-light transition-[opacity,filter,transform] duration-700 ease-out ${
-            wordmark.isVisible ? "opacity-100 blur-none translate-y-0" : "opacity-0 blur-md translate-y-6"
-          }`}
-          style={{ fontSize: WORDMARK_HERO_SIZE, letterSpacing: heroTracking }}
-        >
-          {WORDMARK_TEXT}
-        </Link>
-        {/* Hidden 0-tracking clone used only to measure the wordmark's
-            natural width, to solve the tracking above. */}
-        <span
-          ref={measureRef}
-          aria-hidden
-          className="fixed top-0 left-[-9999px] font-display uppercase whitespace-nowrap"
-          style={{ fontSize: WORDMARK_HERO_SIZE, letterSpacing: 0 }}
-        >
-          {WORDMARK_TEXT}
-        </span>
-
-        {/* Eyebrow + headline share the same top offset so they align to
-            each other, not to independently-tuned vh guesses. The extra
-            pt nudges the eyebrow's small-font line box down to visually
-            match the headline's much taller cap-height — sharing the
-            exact same top offset otherwise makes the eyebrow look like
-            it's floating above the headline instead of level with it. */}
-        <p
-          ref={eyebrow.ref}
-          style={{ transitionDelay: "80ms" }}
-          className={`col-start-1 col-span-2 row-start-1 mt-[73vh] pt-3 font-body text-body text-text-on-light ${eyebrow.revealClassName}`}
-        >
-          A 12-week equity-free residency for Physical AI founders
-        </p>
-
-        {/* Sized off its own grid-column width (container query units), not
-            the viewport — the column's right edge already sits exactly
-            --spacing-page (24px) inside the viewport edge via FoldGrid's
-            padding, so tying font-size to *that* box (rather than a raw
-            vw guess) keeps the 24px margin intact at every width instead
-            of the text creeping past it as the column narrows. The query
-            container has to be a *wrapper*, not the h1 itself — a size
-            container querying its own inline-size is a self-reference
-            browsers resolve as invalid, silently falling back to the
-            clamp's max and ignoring the fluid middle term entirely. */}
-        <div
-          ref={headline.ref}
-          style={{ transitionDelay: "160ms" }}
-          className={`col-start-4 col-span-5 row-start-1 mt-[73vh] [container-type:inline-size] ${headline.revealClassName}`}
-        >
-          <h1 className="font-display leading-none text-[clamp(4rem,11.77cqw,6.875rem)] text-text-on-light whitespace-nowrap">
-            Where AI takes shape
-          </h1>
+      {/* Own fixed 24px inset (top + sides) — independent of FoldGrid's
+          page-wide --spacing-page margin (64px), same reasoning as
+          SiteNav's own independent top offset — capped at 1392px
+          (1440 - 2x24) and centered, so it still respects the site's
+          overall content-width ceiling on ultra-wide screens. */}
+      <div className="absolute inset-x-6 top-6 h-screen">
+        <div className="mx-auto max-w-[1392px]">
+          <Link
+            ref={wordmark.ref}
+            href="/"
+            // Its own explicit transition-property list (opacity/filter/
+            // transform only), NOT revealClassName's `transition-all` —
+            // this element also carries a dynamically-computed
+            // letterSpacing, and transition-all made any correction to
+            // that value (e.g. a resize, or the measurement settling)
+            // visibly animate over 700ms instead of applying instantly.
+            className={`block font-display uppercase whitespace-nowrap text-text-on-light transition-[opacity,filter,transform] duration-700 ease-out ${
+              wordmark.isVisible ? "opacity-100 blur-none translate-y-0" : "opacity-0 blur-md translate-y-6"
+            }`}
+            style={{ fontSize: WORDMARK_HERO_SIZE, letterSpacing: heroTracking }}
+          >
+            {WORDMARK_TEXT}
+          </Link>
         </div>
+      </div>
+      {/* Hidden 0-tracking clone used only to measure the wordmark's
+          natural width, to solve the tracking above. */}
+      <span
+        ref={measureRef}
+        aria-hidden
+        className="fixed top-0 left-[-9999px] font-display uppercase whitespace-nowrap"
+        style={{ fontSize: WORDMARK_HERO_SIZE, letterSpacing: 0 }}
+      >
+        {WORDMARK_TEXT}
+      </span>
 
-        {/* Bottom-anchored (self-end + mb-6/24px) rather than a vh guess,
-            so its bottom edge matches SiteNav's About/Apply bottom edge.
-            A real button (not a styled <p>) since it now scrolls to Fold2. */}
-        <button
-          ref={scrollHint.ref}
-          id="fold1-scroll-hint"
-          type="button"
-          onClick={scrollToFold2}
-          style={{ transitionDelay: "240ms" }}
-          className={`col-start-1 row-start-1 self-end mb-6 flex w-fit cursor-pointer items-center justify-start gap-2 whitespace-nowrap font-body text-body text-text-on-light ${scrollHint.revealClassName}`}
-        >
-          Scroll to learn more
-          <ArrowDownIcon className="size-[18px] animate-bob" />
-        </button>
+      <FoldGrid className="absolute inset-x-0 top-0 h-screen pt-(--spacing-page)">
+        {/* Full-height flex column, not a vh-based mt guess — the
+            headline group fills the space above the scroll-hint
+            (flex-1, content pinned to the bottom of that space via
+            justify-end, approximating Figma's ~67vh-down position at any
+            viewport height) and the hint is a separate sibling below it,
+            so it always lands at the very bottom of the screen and can
+            never be pushed off-screen or overlapped, on any screen size. */}
+        <div className="col-start-1 col-span-8 row-start-1 flex h-full flex-col items-center text-center">
+          <div
+            ref={cluster.ref}
+            style={{ transitionDelay: "80ms" }}
+            // w-full: without it, this flex child (its parent uses
+            // items-center, not stretch) shrinks to its own fit-content
+            // width instead of the full grid column — which the h1's
+            // container-query font-size is sized against, so it silently
+            // shrank the headline's available width and made it wrap.
+            className={`flex min-h-0 w-full flex-1 flex-col items-center justify-end gap-6 ${cluster.revealClassName}`}
+          >
+            {/* Sized off its own wrapper's width (container query units),
+                not the viewport — the wrapper's own edges already sit
+                exactly --spacing-page inside FoldGrid's capped content
+                column via FoldGrid's padding, so tying font-size to
+                *that* box (rather than a raw vw guess) keeps the margin
+                intact at every width, and pins the headline at its max
+                size once the column itself stops growing past 1440px.
+                The query container has to be a *wrapper*, not the h1
+                itself — a size container querying its own inline-size is
+                a self-reference browsers resolve as invalid, silently
+                falling back to the clamp's max and ignoring the fluid
+                middle term entirely. */}
+            <div className="w-full shrink-0 [container-type:inline-size]">
+              <h1 className="font-display leading-none text-[clamp(4rem,7.9cqw,6.875rem)] text-text-on-light">
+                Where AI Takes Shape
+              </h1>
+            </div>
+            <p className="max-w-(--max-width-content) shrink-0 font-body text-body text-text-on-light">
+              A 12-week equity-free residency for Physical AI founders
+            </p>
+            <Button variant="cta" size="md" href="/apply">
+              Apply Now
+            </Button>
+          </div>
+
+          {/* Fixed-height sibling of the flex-1 headline group above, not
+              part of its flow — guarantees this always sits at the
+              bottom of the viewport (h-full column), unreachable/hidden
+              on no screen size. Icon-only per the alt-hero wireframe (no
+              "Scroll to learn more" label) — the label stays for screen
+              readers. */}
+          <button
+            ref={scrollHint.ref}
+            id="fold1-scroll-hint"
+            type="button"
+            onClick={scrollToFold2}
+            style={{ transitionDelay: "240ms" }}
+            className={`mt-6 mb-6 flex w-fit shrink-0 cursor-pointer items-center justify-center text-text-on-light ${scrollHint.revealClassName}`}
+          >
+            <span className="sr-only">Scroll to learn more</span>
+            <img src={withBasePath("/images/CaretDown.svg")} alt="" className="size-8 animate-bob" />
+          </button>
+        </div>
       </FoldGrid>
     </div>
   );
