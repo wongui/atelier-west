@@ -1,8 +1,13 @@
+"use client";
+
 import { TextLink } from "@/components/TextLink";
 import { FoldGrid } from "@/components/FoldGrid";
 import { withBasePath } from "@/lib/basePath";
+import { useReveal } from "@/lib/useReveal";
 
 export function Fold8Belief() {
+  const text = useReveal<HTMLDivElement>();
+
   return (
     <div className="relative min-h-screen bg-surface-accent">
       <img
@@ -11,7 +16,10 @@ export function Fold8Belief() {
         className="absolute inset-0 h-full w-full object-cover"
       />
       <FoldGrid className="relative h-full min-h-screen items-center py-24 text-text-on-light">
-        <div className="col-start-6 col-span-3 flex flex-col gap-6">
+        <div
+          ref={text.ref}
+          className={`col-start-6 col-span-3 flex flex-col gap-6 ${text.revealClassName}`}
+        >
           <h2 className="font-display text-h2">
             We believe that the future of AI is physical
           </h2>

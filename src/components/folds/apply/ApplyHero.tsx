@@ -1,6 +1,9 @@
+"use client";
+
 import { Button } from "@/components/Button";
 import { FoldGrid } from "@/components/FoldGrid";
 import { withBasePath } from "@/lib/basePath";
+import { useReveal } from "@/lib/useReveal";
 
 /**
  * Apply Fold1 — hero (desktop). Full-bleed background photo behind the
@@ -15,6 +18,8 @@ import { withBasePath } from "@/lib/basePath";
  * (657/973 ≈ 68%) — deliberately shorter than the other full-bleed folds.
  */
 export function ApplyHero() {
+  const text = useReveal<HTMLDivElement>();
+
   return (
     <div className="relative min-h-[68vh] overflow-hidden bg-surface-light">
       <img
@@ -23,7 +28,10 @@ export function ApplyHero() {
         className="absolute inset-0 h-full w-full object-cover"
       />
       <FoldGrid className="relative min-h-[68vh] items-center py-24">
-        <div className="col-start-1 col-span-4 flex flex-col items-start gap-6">
+        <div
+          ref={text.ref}
+          className={`col-start-1 col-span-4 flex flex-col items-start gap-6 ${text.revealClassName}`}
+        >
           <h1 className="font-display text-h2 text-text-on-light">Shape what&rsquo;s next</h1>
           <p className="max-w-(--max-width-content) font-display text-h3 text-text-on-light">
             Apply for the inaugural cohort taking place between October 2026

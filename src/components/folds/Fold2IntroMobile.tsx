@@ -1,4 +1,7 @@
+"use client";
+
 import { withBasePath } from "@/lib/basePath";
+import { useReveal } from "@/lib/useReveal";
 
 /**
  * Mobile Fold2 — text stacks above the imagery (desktop is a side-by-side
@@ -7,9 +10,12 @@ import { withBasePath } from "@/lib/basePath";
  * pass, matching how desktop already avoided that (see Fold2Intro.tsx).
  */
 export function Fold2IntroMobile() {
+  const text = useReveal<HTMLDivElement>();
+  const image = useReveal<HTMLImageElement>();
+
   return (
     <section id="fold-2-mobile" className="bg-surface-light px-(--spacing-page) py-16">
-      <div className="flex flex-col gap-6">
+      <div ref={text.ref} className={`flex flex-col gap-6 ${text.revealClassName}`}>
         <h2 className="font-display text-[30px] leading-[1.1] text-text-on-light">
           A fellowship for founders building machines with real specs and
           real instinct.
@@ -23,9 +29,11 @@ export function Fold2IntroMobile() {
         </p>
       </div>
       <img
+        ref={image.ref}
         src={withBasePath("/images/fold-2.png")}
         alt=""
-        className="mt-9 w-full rounded-2xl"
+        className={`mt-9 w-full rounded-2xl ${image.revealClassName}`}
+        style={{ transitionDelay: "100ms" }}
       />
     </section>
   );

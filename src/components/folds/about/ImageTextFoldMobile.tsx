@@ -1,4 +1,7 @@
+"use client";
+
 import type { RefObject } from "react";
+import { useReveal } from "@/lib/useReveal";
 
 type Bg = "light" | "dark";
 
@@ -39,6 +42,8 @@ export function ImageTextFoldMobile({
   sectionRef,
 }: ImageTextFoldMobileProps) {
   const paragraphs = Array.isArray(body) ? body : [body];
+  const photo = useReveal<HTMLImageElement>();
+  const text = useReveal<HTMLDivElement>();
 
   return (
     <div
@@ -46,8 +51,14 @@ export function ImageTextFoldMobile({
       id={id}
       className={`flex flex-col gap-9 px-(--spacing-page) py-16 ${bgClassName[bg]}`}
     >
-      <img src={image} alt={imageAlt} className="w-full h-auto" />
-      <div className="flex flex-col gap-6">
+      <img
+        ref={photo.ref}
+        src={image}
+        alt={imageAlt}
+        className={`w-full h-auto ${photo.revealClassName}`}
+        style={{ transitionDelay: "100ms" }}
+      />
+      <div ref={text.ref} className={`flex flex-col gap-6 ${text.revealClassName}`}>
         <h2 className="font-display text-[30px] leading-[1.1]">{heading}</h2>
         <div className="flex flex-col gap-4">
           {paragraphs.map((paragraph, i) => (

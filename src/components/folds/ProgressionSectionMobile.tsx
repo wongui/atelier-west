@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type RefObject } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { StepProgress } from "@/components/StepProgress";
+import { useReveal } from "@/lib/useReveal";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -37,6 +38,9 @@ export function ProgressionSectionMobile({ steps, sectionRef }: ProgressionSecti
   const wrapperRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
   const [activeStep, setActiveStep] = useState(0);
+  const number = useReveal<HTMLDivElement>();
+  const title = useReveal<HTMLDivElement>();
+  const body = useReveal<HTMLDivElement>();
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
@@ -88,7 +92,7 @@ export function ProgressionSectionMobile({ steps, sectionRef }: ProgressionSecti
         <div className="absolute inset-0 bg-black/50" />
 
         <div className="relative flex h-full flex-col justify-center gap-4 px-(--spacing-page)">
-          <div className="relative">
+          <div ref={number.ref} className={`relative ${number.revealClassName}`}>
             {steps.map((step, i) => (
               <span
                 key={step.number}
@@ -103,7 +107,7 @@ export function ProgressionSectionMobile({ steps, sectionRef }: ProgressionSecti
             </span>
           </div>
 
-          <div className="relative">
+          <div ref={title.ref} className={`relative ${title.revealClassName}`}>
             {steps.map((step, i) => (
               <h3
                 key={step.number}
@@ -124,7 +128,7 @@ export function ProgressionSectionMobile({ steps, sectionRef }: ProgressionSecti
             className="-mx-(--spacing-page)"
           />
 
-          <div className="relative">
+          <div ref={body.ref} className={`relative ${body.revealClassName}`}>
             {steps.map((step, i) => (
               <p
                 key={step.number}

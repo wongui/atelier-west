@@ -1,5 +1,8 @@
+"use client";
+
 import { ButtonXL } from "@/components/ButtonXL";
 import { FoldGrid } from "@/components/FoldGrid";
+import { useReveal } from "@/lib/useReveal";
 
 const criteria = [
   "You're building in Physical AI, defined as artificial intelligence systems that are embodied in or directly interact with the physical world, perceiving their environment through sensors, making context-aware decisions, and taking actions autonomously. This could include robotics, autonomous machines, computer vision systems, agent-first or edge AI devices.",
@@ -19,9 +22,14 @@ const criteria = [
  * the hero's, not just a bigger version of the same button.
  */
 export function EntryCriteria() {
+  const text = useReveal<HTMLDivElement>();
+
   return (
     <FoldGrid className="bg-surface-light py-24 text-text-on-light">
-      <div className="col-start-1 col-span-8 flex flex-col items-start gap-8 lg:col-start-3 lg:col-span-4">
+      <div
+        ref={text.ref}
+        className={`col-start-1 col-span-8 flex flex-col items-start gap-8 lg:col-start-3 lg:col-span-4 ${text.revealClassName}`}
+      >
         <h2 className="font-display text-h2">Entry Criteria &amp; Selection Process</h2>
         <div className="flex flex-col gap-4">
           <p className="font-body text-body">

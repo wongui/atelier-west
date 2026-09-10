@@ -1,7 +1,10 @@
+"use client";
+
 import type { RefObject } from "react";
 import { Divider } from "@/components/Divider";
 import { EyebrowLabel } from "@/components/EyebrowLabel";
 import { FoldGrid } from "@/components/FoldGrid";
+import { useReveal } from "@/lib/useReveal";
 
 const dates = [
   { date: "9/14/26", label: "Applications open" },
@@ -29,26 +32,39 @@ const dates = [
  * (68 + 32 = 100), content vertically centered in the remaining space —
  * mobile keeps its own natural `py-16` height, untouched.
  */
+function KeyDateItem({ date, label }: { date: string; label: string }) {
+  const reveal = useReveal<HTMLDivElement>();
+
+  return (
+    <div ref={reveal.ref} className={`flex flex-col ${reveal.revealClassName}`}>
+      <span className="font-display text-[23px] leading-[1.4] lg:text-h3 lg:leading-none">
+        {date}
+      </span>
+      <span className="font-display text-[23px] leading-[1.4] lg:text-h3 lg:leading-none">
+        {label}
+      </span>
+    </div>
+  );
+}
+
 export function KeyDates({ sectionRef }: { sectionRef?: RefObject<HTMLDivElement | null> }) {
+  const eyebrow = useReveal<HTMLDivElement>();
+
   return (
     <FoldGrid
       ref={sectionRef}
       className="bg-surface-dark py-16 text-text-on-dark lg:min-h-[32vh] lg:content-center lg:py-0"
     >
-      <div className="col-start-1 col-span-8 flex flex-col gap-6">
+      <div
+        ref={eyebrow.ref}
+        className={`col-start-1 col-span-8 flex flex-col gap-6 ${eyebrow.revealClassName}`}
+      >
         <Divider />
         <EyebrowLabel>Key Dates</EyebrowLabel>
       </div>
       <div className="col-start-1 col-span-8 mt-10 flex flex-col gap-6 lg:grid lg:grid-cols-4 lg:gap-x-6 lg:gap-y-10">
         {dates.map((d) => (
-          <div key={d.label} className="flex flex-col">
-            <span className="font-display text-[23px] leading-[1.4] lg:text-h3 lg:leading-none">
-              {d.date}
-            </span>
-            <span className="font-display text-[23px] leading-[1.4] lg:text-h3 lg:leading-none">
-              {d.label}
-            </span>
-          </div>
+          <KeyDateItem key={d.label} date={d.date} label={d.label} />
         ))}
       </div>
     </FoldGrid>

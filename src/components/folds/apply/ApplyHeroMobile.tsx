@@ -1,5 +1,8 @@
+"use client";
+
 import { Button } from "@/components/Button";
 import { withBasePath } from "@/lib/basePath";
+import { useReveal } from "@/lib/useReveal";
 
 /**
  * Mobile Fold1 — hero. Same overlay construction as Fold6CtaMobile (bg
@@ -16,6 +19,8 @@ import { withBasePath } from "@/lib/basePath";
  * breakpoints, not just desktop.
  */
 export function ApplyHeroMobile() {
+  const text = useReveal<HTMLDivElement>();
+
   return (
     <div className="relative min-h-[68vh] overflow-hidden bg-surface-light">
       <img
@@ -24,7 +29,10 @@ export function ApplyHeroMobile() {
         className="absolute inset-0 h-full w-full object-cover object-top"
       />
       <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-surface-light via-surface-light/70 to-transparent" />
-      <div className="relative flex min-h-[68vh] flex-col items-start justify-end gap-4 px-(--spacing-page) pt-24 pb-16">
+      <div
+        ref={text.ref}
+        className={`relative flex min-h-[68vh] flex-col items-start justify-end gap-4 px-(--spacing-page) pt-24 pb-16 ${text.revealClassName}`}
+      >
         <h1 className="font-display text-[40px] leading-[50px] text-text-on-light">
           Shape what&rsquo;s next
         </h1>
