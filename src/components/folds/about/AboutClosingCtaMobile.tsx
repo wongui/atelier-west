@@ -10,24 +10,28 @@ interface AboutClosingCtaMobileProps {
 }
 
 /**
- * Mobile About closing CTA — same shape as Fold8BeliefMobile: the image
- * caps at the top 70% of the section, blending into the solid coral bg
- * behind the text below it, reusing that fold's mobile artwork per
- * Figma's mobile frame.
+ * Mobile About closing CTA — same shape as Fold8BeliefMobile, but the
+ * section runs taller than a full screen so the text has room to start
+ * below the image instead of overlapping it. The image stays pinned to
+ * a fixed viewport-relative height (not a % of the section) so it keeps
+ * its original size while the extra section height pushes the bottom-
+ * anchored text further down.
  */
 export function AboutClosingCtaMobile({ heading, body }: AboutClosingCtaMobileProps) {
   const text = useReveal<HTMLDivElement>();
 
   return (
-    <div className="relative flex min-h-screen flex-col justify-end overflow-hidden bg-surface-accent px-(--spacing-page) pb-16 pt-24">
+    <div className="relative flex min-h-[125vh] flex-col justify-end overflow-hidden bg-surface-accent px-(--spacing-page) pb-16 pt-24">
       <img
         src={withBasePath("/images/fold-8-mobile.png")}
         alt=""
-        className="absolute inset-x-0 top-0 h-[70%] w-full object-cover"
+        className="absolute inset-x-0 top-0 h-[70vh] w-full object-cover"
       />
       {/* Blends the image's bottom edge into the solid coral bg behind the
-          text, same technique as Fold1HeroMobile's image-to-bg blend. */}
-      <div className="absolute inset-x-0 top-[calc(70%-8rem)] h-32 bg-gradient-to-b from-surface-accent/0 to-surface-accent" />
+          text, same technique as Fold1HeroMobile's image-to-bg blend.
+          Extended taller than Fold8BeliefMobile's version to widen the
+          gap between the image and the text below it. */}
+      <div className="absolute inset-x-0 top-[calc(70vh-12rem)] h-48 bg-gradient-to-b from-surface-accent/0 to-surface-accent" />
 
       <div ref={text.ref} className={`relative flex flex-col items-start gap-6 ${text.revealClassName}`}>
         <h2 className="font-display text-[30px] leading-[1.1] text-text-on-light">{heading}</h2>
