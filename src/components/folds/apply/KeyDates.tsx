@@ -12,7 +12,7 @@ const dates = [
 
 /**
  * Apply Fold2 — Key Dates strip. Divider + eyebrow label above a row of
- * date/label pairs, same coupling as Fold7Partners' divider→label groups.
+ * date/label pairs, same coupling as PartnersStrip's divider→label groups.
  * Stacked single column below `lg` (23px, per the Figma mobile frame —
  * the desktop 36px display size reads too heavy at phone width), 4-up
  * grid at `lg` and above — kept as one component with breakpoint classes

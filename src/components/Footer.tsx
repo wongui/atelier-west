@@ -17,8 +17,8 @@ const legalLinks = [
 /**
  * Site footer — wordmark lockup (full-bleed, same treatment as the hero
  * wordmark), About/Apply Now links + legal line at col1, and the real
- * decorative blob-texture asset positioned at col4-8 (5 columns per
- * Figma). See docs/FOUNDATIONS.md, Navigation family.
+ * decorative blob asset positioned at col4-8 (5 columns per Figma). See
+ * docs/FOUNDATIONS.md, Navigation family.
  *
  * min-h (not a full viewport height) with the nav/copyright/image row
  * as a flex-1 block below the wordmark — per Figma's 797px fold vs. the
@@ -104,7 +104,7 @@ export function Footer() {
         </div>
 
         <img
-          src={withBasePath("/images/footer-blobs.png")}
+          src={withBasePath("/images/AW footer.png")}
           alt=""
           aria-hidden
           className="pointer-events-none col-start-4 col-span-5 hidden self-end md:block"

@@ -95,7 +95,7 @@ export function FooterMobile() {
 
       <div className="mt-12 px-(--spacing-page)">
         <img
-          src={withBasePath("/images/footer-aw.png")}
+          src={withBasePath("/images/AW footer.png")}
           alt=""
           aria-hidden
           className="pointer-events-none w-full"

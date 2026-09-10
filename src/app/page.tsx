@@ -12,7 +12,7 @@ import { ProgressionSection } from "@/components/folds/ProgressionSection";
 import { ProgressionSectionMobile } from "@/components/folds/ProgressionSectionMobile";
 import { Fold6Cta } from "@/components/folds/Fold6Cta";
 import { Fold6CtaMobile } from "@/components/folds/Fold6CtaMobile";
-import { Fold7Partners } from "@/components/folds/Fold7Partners";
+import { PartnersStrip } from "@/components/folds/PartnersStrip";
 import { Fold8Belief } from "@/components/folds/Fold8Belief";
 import { Fold8BeliefMobile } from "@/components/folds/Fold8BeliefMobile";
 import { FooterMobile } from "@/components/folds/FooterMobile";
@@ -59,10 +59,10 @@ export default function Home() {
       <>
         <MobileSiteNav darkSectionRef={progressionRefMobile} />
         <Fold1HeroMobile />
+        <PartnersStrip />
         <Fold2IntroMobile />
         <ProgressionSectionMobile steps={progressionSteps} sectionRef={progressionRefMobile} />
         <Fold6CtaMobile />
-        <Fold7Partners />
         <Fold8BeliefMobile />
         <FooterMobile />
       </>
@@ -78,10 +78,10 @@ export default function Home() {
           paint above later static-flow siblings regardless of DOM order
           or z-index value, so without this the video bleeds through. */}
       <div className="relative z-10">
+        <PartnersStrip />
         <Fold2Intro />
         <ProgressionSection steps={progressionSteps} sectionRef={progressionRef} />
         <Fold6Cta />
-        <Fold7Partners />
         <Fold8Belief />
         <Footer />
       </div>

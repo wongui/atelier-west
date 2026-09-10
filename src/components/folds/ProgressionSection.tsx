@@ -24,14 +24,16 @@ interface ProgressionSectionProps {
 
 /**
  * Folds 3-5 — Floema-style pinned "How it works" progression. Content
- * (image/number/title/body) snaps discretely between the 3 steps —
+ * (image/number/title/body) changes discretely between the 3 steps —
  * activeStep only updates on an actual threshold crossing, so each step
  * holds fully static while pinned, with a quick crossfade to the next —
- * but the progress-bar fill tracks scroll position continuously, so the
- * user can see it grow in real time rather than jumping in thirds. Each
- * step gets exactly one full viewport height of scroll. Column layout
- * matches Figma exactly: number+title in col1, a full-bleed divider
- * between them, body copy in col4.
+ * but the scroll position itself is NOT snapped (no ScrollTrigger
+ * `snap`): the progress-bar fill and the user's actual scroll stay 1:1,
+ * so a small scroll gesture only moves the bar a little instead of
+ * jumping the page to the next step. Each step gets exactly one full
+ * viewport height of scroll. Column layout matches Figma exactly:
+ * number+title in col1, a full-bleed divider between them, body copy in
+ * col4.
  */
 export function ProgressionSection({ steps, sectionRef }: ProgressionSectionProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -47,7 +49,6 @@ export function ProgressionSection({ steps, sectionRef }: ProgressionSectionProp
       start: "top top",
       end: "bottom bottom",
       scrub: true,
-      snap: 1 / (steps.length - 1),
       onUpdate: (self) => {
         if (fillRef.current) {
           fillRef.current.style.width = `${self.progress * 100}%`;
