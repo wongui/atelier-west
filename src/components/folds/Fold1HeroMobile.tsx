@@ -1,9 +1,20 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, type RefObject } from "react";
+import Link from "next/link";
 import { Button } from "@/components/Button";
 import { ScrollVideoMobile } from "@/components/ScrollVideoMobile";
 import { withBasePath } from "@/lib/basePath";
+
+const WORDMARK_TEXT = "Atelier West";
+
+interface Fold1HeroMobileProps {
+  /** Also used as the scroll container ref for the video scrub below —
+   * the "hero" MobileSiteNav watches to know when it's fully scrolled
+   * past (see MobileSiteNav's own heroRef) is the same outer element
+   * ScrollVideoMobile scrubs against, so one ref serves both. */
+  heroRef: RefObject<HTMLDivElement | null>;
+}
 
 /**
  * Mobile Fold1 — a shorter scroll runway than desktop's 200vh (mobile
@@ -15,9 +26,38 @@ import { withBasePath } from "@/lib/basePath";
  * remaining space below it, inside the same pinned block, so they're
  * visible together with the video from the start instead of overlaid on
  * top of it like desktop.
+ *
+ * Carries its own full-width wordmark overlaid on the video, in-flow
+ * (not fixed) so it scrolls away with the rest of the hero — same idea
+ * as desktop Fold1Hero's large wordmark. MobileSiteNav's fixed compact
+ * bar stays hidden until this fold has fully scrolled past (via the
+ * shared heroRef), so the two never show at the same time.
  */
-export function Fold1HeroMobile() {
-  const scrollRef = useRef<HTMLDivElement>(null);
+export function Fold1HeroMobile({ heroRef }: Fold1HeroMobileProps) {
+  const wordmarkRef = useRef<HTMLAnchorElement>(null);
+  const measureRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const wordmark = wordmarkRef.current;
+    const measure = measureRef.current;
+    if (!wordmark || !measure) return;
+
+    // Same edge-to-edge tracking technique as FooterMobile's wordmark —
+    // reads the live --spacing-page value rather than a hardcoded
+    // figure, so this stays correct if that token ever changes.
+    const recompute = () => {
+      const spacingPage =
+        parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--spacing-page")) *
+        parseFloat(getComputedStyle(document.documentElement).fontSize);
+      const availableWidth = window.innerWidth - spacingPage * 2;
+      const naturalWidth = measure.getBoundingClientRect().width;
+      const tracking = Math.max(0, (availableWidth - naturalWidth) / (WORDMARK_TEXT.length - 1));
+      wordmark.style.letterSpacing = `${tracking}px`;
+    };
+    recompute();
+    window.addEventListener("resize", recompute);
+    return () => window.removeEventListener("resize", recompute);
+  }, []);
 
   const scrollToFold2 = () => {
     document.getElementById("fold-2-mobile")?.scrollIntoView({ behavior: "smooth" });
@@ -32,7 +72,7 @@ export function Fold1HeroMobile() {
     // bg-[#c9c7c7] on this outer wrapper matches the sticky child's own
     // resting bg, so if a sliver is ever revealed below the pinned block
     // it still reads as hero background, not a flash of Fold2's cream.
-    <div ref={scrollRef} className="relative h-[175dvh] bg-[#c9c7c7]">
+    <div ref={heroRef} className="relative h-[175dvh] bg-[#c9c7c7]">
       <div className="sticky top-0 flex h-dvh flex-col overflow-hidden bg-[#c9c7c7]">
         <div
           className="relative w-full shrink-0"
@@ -45,8 +85,30 @@ export function Fold1HeroMobile() {
           <ScrollVideoMobile
             framesPath={withBasePath("/frames/octopus")}
             frameCount={96}
-            scrollContainerRef={scrollRef}
+            scrollContainerRef={heroRef}
           />
+          {/* Full-width wordmark, overlaid on the video at the same
+              inset/offset MobileSiteNav's fixed bar uses (px-(--spacing-page),
+              py-4), so the handoff between the two reads as one continuous
+              element rather than a jump. */}
+          <div className="absolute inset-x-0 top-0 px-(--spacing-page) py-4">
+            <Link
+              ref={wordmarkRef}
+              href="/"
+              className="font-display text-wordmark uppercase whitespace-nowrap text-text-on-light"
+            >
+              {WORDMARK_TEXT}
+            </Link>
+            {/* Hidden 0-tracking clone used only to measure natural width. */}
+            <span
+              ref={measureRef}
+              aria-hidden
+              className="fixed top-0 left-[-9999px] font-display text-wordmark uppercase whitespace-nowrap"
+              style={{ letterSpacing: 0 }}
+            >
+              {WORDMARK_TEXT}
+            </span>
+          </div>
           {/* Video runs edge-to-edge to the top of the device (under the
               transparent nav) — no fade here, only a short blend into the
               text panel below. */}

@@ -17,10 +17,10 @@ import { useIsDesktop } from "@/lib/useIsDesktop";
  * grid (About at col4, Apply pill at col8) overlaps the wordmark at phone
  * widths, the same breakpoint switch the home page already uses.
  *
- * `hideApply` on SiteNav: this page already has its own larger in-content
- * CTAs (ApplyHero's, Entry Criteria's), so the nav's Apply pill would be a
- * redundant smaller duplicate — MobileSiteNav never had an Apply button
- * to begin with, so nothing to hide there.
+ * `hideApply` (passed to both SiteNav and MobileSiteNav): this page
+ * already has its own larger in-content CTAs (ApplyHero's, Entry
+ * Criteria's), so the nav's Apply pill would be a redundant smaller
+ * duplicate.
  *
  * Key Dates is this page's one dark fold — its ref is passed as
  * `darkSectionRef` so the nav swaps to its on-dark (cream) treatment
@@ -40,7 +40,7 @@ export default function ApplyPage() {
       {isDesktop ? (
         <SiteNav hideApply darkSectionRef={keyDatesRef} />
       ) : (
-        <MobileSiteNav darkSectionRef={keyDatesRef} />
+        <MobileSiteNav hideApply darkSectionRef={keyDatesRef} />
       )}
       {isDesktop ? <ApplyHero /> : <ApplyHeroMobile />}
       <KeyDates sectionRef={keyDatesRef} />

@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 type Variant = "cta" | "nav";
-type Size = "md";
+type Size = "md" | "navMobile";
 
 const baseClassName =
   "relative inline-flex items-center justify-center overflow-hidden " +
@@ -30,6 +30,11 @@ const variantHoverClassName: Record<Variant, string> = {
 // Criteria) are ButtonXL, not a size here — see that component for why.
 const sizeClassName: Record<Size, string> = {
   md: "px-6 py-3 min-w-[130px]",
+  // No min-w — mobile nav's Apply pill should hug the word "Apply"
+  // instead of matching desktop's fixed 130px footprint (that width
+  // exists to match the longer copy elsewhere; there's no such
+  // constraint on the mobile nav bar).
+  navMobile: "px-4 py-1.5",
 };
 
 interface ButtonProps {

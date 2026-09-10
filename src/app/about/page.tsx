@@ -99,7 +99,7 @@ export default function AboutPage() {
   if (!isDesktop) {
     return (
       <>
-        <MobileSiteNav darkSectionRefs={darkSectionRefs} />
+        <MobileSiteNav activeAbout darkSectionRefs={darkSectionRefs} />
 
         <div aria-hidden className="h-16" />
 

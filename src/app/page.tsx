@@ -59,8 +59,8 @@ export default function Home() {
   if (!isDesktop) {
     return (
       <>
-        <MobileSiteNav darkSectionRefs={[partnersStripRefMobile, progressionRefMobile]} />
-        <Fold1HeroMobile />
+        <MobileSiteNav heroRef={heroRef} darkSectionRefs={[partnersStripRefMobile, progressionRefMobile]} />
+        <Fold1HeroMobile heroRef={heroRef} />
         <PartnersStrip sectionRef={partnersStripRefMobile} />
         <Fold2IntroMobile />
         <ProgressionSectionMobile steps={progressionSteps} sectionRef={progressionRefMobile} />
