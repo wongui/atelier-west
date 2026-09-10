@@ -106,13 +106,14 @@ export function Fold1HeroMobile({ heroRef }: Fold1HeroMobileProps) {
       >
         <div
           className="relative w-full shrink-0"
-          // min(65%, 100% - 260px): 260px is close to the text panel's
-          // real minimum content height, so typical/tall phones get the
-          // full 65% and only genuinely short viewports (e.g. iPhone SE)
-          // back off from it.
+          // min(65%, 100% - 320px): 320px is close to the text panel's
+          // real minimum content height (bumped up from 260px to make
+          // room for the caret's larger bottom clearance below), so
+          // typical/tall phones get the full 65% and only genuinely short
+          // viewports (e.g. iPhone SE) back off from it.
           style={{
             height:
-              "min(calc(var(--dvh, 1dvh) * 65), calc(var(--dvh, 1dvh) * 100 - 260px))",
+              "min(calc(var(--dvh, 1dvh) * 65), calc(var(--dvh, 1dvh) * 100 - 320px))",
           }}
         >
           <ScrollVideoMobile
@@ -154,7 +155,10 @@ export function Fold1HeroMobile({ heroRef }: Fold1HeroMobileProps) {
 
         <div
           className="relative z-10 flex flex-1 flex-col items-center justify-between gap-4 bg-[#e8e8e8] px-(--spacing-page) pt-4 text-center"
-          style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
+          // Generous flat floor (not just env(safe-area-inset-bottom)) so
+          // the caret clears Safari's bottom toolbar on load with room to
+          // spare, rather than relying on precise viewport math.
+          style={{ paddingBottom: "max(4rem, calc(env(safe-area-inset-bottom) + 3rem))" }}
         >
           <div className="flex flex-col items-center gap-4">
             <h1 className="font-display text-[48px] leading-[52px] text-text-on-light">
