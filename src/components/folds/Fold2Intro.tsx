@@ -1,5 +1,8 @@
+"use client";
+
 import { FoldGrid } from "@/components/FoldGrid";
 import { withBasePath } from "@/lib/basePath";
+import { useReveal } from "@/lib/useReveal";
 
 /**
  * Fold2 — intro/fellowship statement. `fold-2.png` is already
@@ -9,10 +12,22 @@ import { withBasePath } from "@/lib/basePath";
  * col1-3, text in col4-8, matching the Figma Fold2 frame.
  */
 export function Fold2Intro() {
+  const image = useReveal<HTMLImageElement>();
+  const text = useReveal<HTMLDivElement>();
+
   return (
     <FoldGrid id="fold-2" className="bg-surface-light h-screen content-center">
-      <img src={withBasePath("/images/fold-2.png")} alt="" className="col-start-1 col-span-3 self-center w-full" />
-      <div className="col-start-4 col-span-5 self-center flex flex-col gap-6 max-w-(--max-width-content)">
+      <img
+        ref={image.ref}
+        src={withBasePath("/images/fold-2.png")}
+        alt=""
+        className={`col-start-1 col-span-3 self-center w-full ${image.revealClassName}`}
+        style={{ transitionDelay: "100ms" }}
+      />
+      <div
+        ref={text.ref}
+        className={`col-start-4 col-span-5 self-center flex flex-col gap-6 max-w-(--max-width-content) ${text.revealClassName}`}
+      >
         <h2 className="font-display text-h2 text-text-on-light">
           A fellowship for founders building machines with real specs and
           real instinct.

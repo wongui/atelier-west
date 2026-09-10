@@ -1,6 +1,9 @@
+"use client";
+
 import type { RefObject } from "react";
 import { FoldGrid } from "@/components/FoldGrid";
 import { withBasePath } from "@/lib/basePath";
+import { useReveal } from "@/lib/useReveal";
 
 interface Lab {
   title: string;
@@ -25,11 +28,37 @@ interface LabFacilitiesGridProps {
  * (docs/FOUNDATIONS.md's "no Cards" call predates this wireframe) — kept
  * minimal: just this one grid, not a general Card family.
  */
+function LabCard({ lab }: { lab: Lab }) {
+  const photo = useReveal<HTMLImageElement>();
+  const text = useReveal<HTMLDivElement>();
+
+  return (
+    <div className="flex flex-col gap-4">
+      <img
+        ref={photo.ref}
+        src={withBasePath(lab.image)}
+        alt=""
+        className={`w-full h-auto ${photo.revealClassName}`}
+        style={{ transitionDelay: "100ms" }}
+      />
+      <div ref={text.ref} className={`flex flex-col gap-1 ${text.revealClassName}`}>
+        <h3 className="font-display text-h3">{lab.title}</h3>
+        <p className="font-body text-body">{lab.body}</p>
+      </div>
+    </div>
+  );
+}
+
 export function LabFacilitiesGrid({ heading, intro, labs, sectionRef }: LabFacilitiesGridProps) {
+  const introText = useReveal<HTMLDivElement>();
+
   return (
     <div ref={sectionRef} className="bg-surface-dark text-text-on-dark py-24">
       <FoldGrid>
-        <div className="col-start-1 col-span-8 sm:col-span-4 flex flex-col gap-6 max-w-(--max-width-content)">
+        <div
+          ref={introText.ref}
+          className={`col-start-1 col-span-8 sm:col-span-4 flex flex-col gap-6 max-w-(--max-width-content) ${introText.revealClassName}`}
+        >
           <h2 className="font-display text-h1">{heading}</h2>
           <p className="font-body text-body">{intro}</p>
         </div>
@@ -42,11 +71,7 @@ export function LabFacilitiesGrid({ heading, intro, labs, sectionRef }: LabFacil
           point here, not alignment to the 8-col system's own breakpoints. */}
       <div className="mt-16 grid grid-cols-1 gap-x-6 gap-y-16 px-(--spacing-page) sm:grid-cols-2 lg:grid-cols-3">
         {labs.map((lab) => (
-          <div key={lab.title} className="flex flex-col gap-4">
-            <img src={withBasePath(lab.image)} alt="" className="w-full h-auto" />
-            <h3 className="font-display text-h3">{lab.title}</h3>
-            <p className="font-body text-body">{lab.body}</p>
-          </div>
+          <LabCard key={lab.title} lab={lab} />
         ))}
       </div>
     </div>

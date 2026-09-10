@@ -1,5 +1,8 @@
+"use client";
+
 import { TextLink } from "@/components/TextLink";
 import { withBasePath } from "@/lib/basePath";
+import { useReveal } from "@/lib/useReveal";
 
 /**
  * Mobile Fold8 — Belief. Desktop centers the brain render as a full-bleed
@@ -8,6 +11,8 @@ import { withBasePath } from "@/lib/basePath";
  * (matching desktop's treatment), per Figma's mobile frame.
  */
 export function Fold8BeliefMobile() {
+  const text = useReveal<HTMLDivElement>();
+
   return (
     <div className="relative flex min-h-screen flex-col justify-end overflow-hidden bg-surface-accent px-(--spacing-page) pb-16 pt-24">
       <img
@@ -16,7 +21,7 @@ export function Fold8BeliefMobile() {
         className="absolute inset-0 h-full w-full object-cover"
       />
 
-      <div className="relative flex flex-col items-start gap-6">
+      <div ref={text.ref} className={`relative flex flex-col items-start gap-6 ${text.revealClassName}`}>
         <h2 className="font-display text-[30px] leading-[1.1] text-text-on-light">
           We believe that the future of AI is physical
         </h2>

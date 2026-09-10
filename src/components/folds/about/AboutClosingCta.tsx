@@ -1,6 +1,9 @@
+"use client";
+
 import { Button } from "@/components/Button";
 import { FoldGrid } from "@/components/FoldGrid";
 import { withBasePath } from "@/lib/basePath";
+import { useReveal } from "@/lib/useReveal";
 
 interface AboutClosingCtaProps {
   heading: string;
@@ -16,6 +19,8 @@ interface AboutClosingCtaProps {
  * text-on-light choice on the same coral.
  */
 export function AboutClosingCta({ heading, body }: AboutClosingCtaProps) {
+  const text = useReveal<HTMLDivElement>();
+
   return (
     <div className="relative min-h-screen bg-surface-accent">
       <img
@@ -24,7 +29,10 @@ export function AboutClosingCta({ heading, body }: AboutClosingCtaProps) {
         className="absolute inset-0 h-full w-full object-cover"
       />
       <FoldGrid className="relative h-full min-h-screen items-center py-24 text-text-on-light">
-        <div className="col-start-1 col-span-8 sm:col-span-3 flex flex-col items-start gap-8">
+        <div
+          ref={text.ref}
+          className={`col-start-1 col-span-8 sm:col-span-3 flex flex-col items-start gap-8 ${text.revealClassName}`}
+        >
           <h2 className="font-display text-h2">{heading}</h2>
           <div className="flex flex-col gap-4">
             {body.map((paragraph, i) => (

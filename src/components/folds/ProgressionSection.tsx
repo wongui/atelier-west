@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { StepProgress } from "@/components/StepProgress";
 import { FoldGrid } from "@/components/FoldGrid";
+import { useReveal } from "@/lib/useReveal";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -39,6 +40,9 @@ export function ProgressionSection({ steps, sectionRef }: ProgressionSectionProp
   const wrapperRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
   const [activeStep, setActiveStep] = useState(0);
+  const number = useReveal<HTMLDivElement>();
+  const title = useReveal<HTMLDivElement>();
+  const body = useReveal<HTMLDivElement>();
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
@@ -83,7 +87,10 @@ export function ProgressionSection({ steps, sectionRef }: ProgressionSectionProp
         <div className="absolute inset-0 bg-black/50" />
 
         <FoldGrid className="absolute inset-0 content-start pt-24 pb-16">
-          <div className="relative col-start-1 col-span-2 row-start-1 mt-[26vh]">
+          <div
+            ref={number.ref}
+            className={`relative col-start-1 col-span-2 row-start-1 mt-[26vh] ${number.revealClassName}`}
+          >
             {steps.map((step, i) => (
               <span
                 key={step.number}
@@ -104,7 +111,10 @@ export function ProgressionSection({ steps, sectionRef }: ProgressionSectionProp
             className="col-start-1 col-span-8 row-start-1 mt-[calc(26vh+4.375rem)] -mx-(--spacing-page) text-text-on-dark"
           />
 
-          <div className="relative col-start-1 col-span-3 row-start-1 mt-[calc(26vh+4.375rem+0.5rem)]">
+          <div
+            ref={title.ref}
+            className={`relative col-start-1 col-span-3 row-start-1 mt-[calc(26vh+4.375rem+0.5rem)] ${title.revealClassName}`}
+          >
             {steps.map((step, i) => (
               <h3
                 key={step.number}
@@ -120,7 +130,10 @@ export function ProgressionSection({ steps, sectionRef }: ProgressionSectionProp
             </h3>
           </div>
 
-          <div className="relative col-start-4 col-span-2 row-start-1 mt-[calc(26vh+4.375rem+0.5rem)]">
+          <div
+            ref={body.ref}
+            className={`relative col-start-4 col-span-2 row-start-1 mt-[calc(26vh+4.375rem+0.5rem)] ${body.revealClassName}`}
+          >
             {steps.map((step, i) => (
               <p
                 key={step.number}

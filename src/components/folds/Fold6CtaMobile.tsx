@@ -1,5 +1,8 @@
+"use client";
+
 import { Button } from "@/components/Button";
 import { withBasePath } from "@/lib/basePath";
+import { useReveal } from "@/lib/useReveal";
 
 /**
  * Mobile Fold6 — CTA. Desktop splits image/text side by side; mobile
@@ -8,6 +11,8 @@ import { withBasePath } from "@/lib/basePath";
  * scrim (matching desktop's treatment).
  */
 export function Fold6CtaMobile() {
+  const text = useReveal<HTMLDivElement>();
+
   return (
     <div className="relative flex min-h-screen flex-col justify-end overflow-hidden bg-surface-light px-(--spacing-page) pb-16 pt-24">
       <img
@@ -16,7 +21,7 @@ export function Fold6CtaMobile() {
         className="absolute inset-0 h-full w-full object-cover"
       />
 
-      <div className="relative flex flex-col items-start gap-6">
+      <div ref={text.ref} className={`relative flex flex-col items-start gap-6 ${text.revealClassName}`}>
         <h2 className="font-display text-[40px] leading-[50px] text-text-on-light">
           Shape the future of Physical AI with us
         </h2>

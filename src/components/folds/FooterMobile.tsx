@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { FoldGrid } from "@/components/FoldGrid";
 import { withBasePath } from "@/lib/basePath";
+import { useReveal } from "@/lib/useReveal";
 
 const WORDMARK_TEXT = "Atelier West";
 
@@ -25,6 +26,7 @@ const legalLinks = [
 export function FooterMobile() {
   const wordmarkRef = useRef<HTMLSpanElement>(null);
   const measureRef = useRef<HTMLSpanElement>(null);
+  const info = useReveal<HTMLDivElement>();
 
   useEffect(() => {
     const wordmark = wordmarkRef.current;
@@ -73,7 +75,10 @@ export function FooterMobile() {
         </span>
       </FoldGrid>
 
-      <FoldGrid className="mt-16 flex flex-1 flex-col justify-between">
+      <FoldGrid
+        ref={info.ref}
+        className={`mt-16 flex flex-1 flex-col justify-between ${info.revealClassName}`}
+      >
         <nav className="flex flex-col gap-3 col-start-1 col-span-8">
           <Link href="/about" className="font-body text-body font-medium w-fit">
             About

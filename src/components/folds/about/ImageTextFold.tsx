@@ -1,5 +1,8 @@
+"use client";
+
 import type { RefObject } from "react";
 import { FoldGrid } from "@/components/FoldGrid";
+import { useReveal } from "@/lib/useReveal";
 
 type Bg = "light" | "dark";
 
@@ -47,6 +50,8 @@ export function ImageTextFold({
   sectionRef,
 }: ImageTextFoldProps) {
   const paragraphs = Array.isArray(body) ? body : [body];
+  const photo = useReveal<HTMLImageElement>();
+  const text = useReveal<HTMLDivElement>();
 
   return (
     <FoldGrid
@@ -55,11 +60,16 @@ export function ImageTextFold({
       className={`min-h-[65vh] items-center py-16 ${bgClassName[bg]}`}
     >
       <img
+        ref={photo.ref}
         src={image}
         alt={imageAlt}
-        className="col-start-1 col-span-3 self-center w-full h-auto"
+        className={`col-start-1 col-span-3 self-center w-full h-auto ${photo.revealClassName}`}
+        style={{ transitionDelay: "100ms" }}
       />
-      <div className="col-start-4 col-span-5 self-center flex flex-col gap-6 max-w-(--max-width-content)">
+      <div
+        ref={text.ref}
+        className={`col-start-4 col-span-5 self-center flex flex-col gap-6 max-w-(--max-width-content) ${text.revealClassName}`}
+      >
         <h2 className="font-display text-h2">{heading}</h2>
         <div className="flex flex-col gap-4">
           {paragraphs.map((paragraph, i) => (
