@@ -42,9 +42,8 @@ function MentorCard({ mentor }: { mentor: Mentor }) {
         // this needs to nudge any dark-section ScrollTrigger to re-measure.
         onLoad={() => ScrollTrigger.refresh()}
         className={`w-full h-auto ${photo.revealClassName}`}
-        style={{ transitionDelay: "100ms" }}
       />
-      <div ref={text.ref} className={`flex flex-col gap-1 ${text.revealClassName}`}>
+      <div ref={text.ref} style={{ transitionDelay: "100ms" }} className={`flex flex-col gap-1 ${text.revealClassName}`}>
         <h3 className="font-display text-h3">{mentor.name}</h3>
         <p className="font-body text-body">{mentor.role}</p>
       </div>

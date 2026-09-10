@@ -114,6 +114,7 @@ export function ProgressionSectionMobile({ steps, sectionRef }: ProgressionSecti
             {steps.map((step, i) => (
               <span
                 key={step.number}
+                style={{ transitionDelay: i === activeStep ? "100ms" : undefined }}
                 className={`absolute inset-x-0 top-0 font-display text-[30px] leading-none ${
                   i === activeStep ? activeItemClass : "transition-opacity duration-500 opacity-0"
                 }`}
@@ -130,6 +131,7 @@ export function ProgressionSectionMobile({ steps, sectionRef }: ProgressionSecti
             {steps.map((step, i) => (
               <h3
                 key={step.number}
+                style={{ transitionDelay: i === activeStep ? "100ms" : undefined }}
                 className={`absolute inset-x-0 top-0 font-display text-[30px] leading-none ${
                   i === activeStep ? activeItemClass : "transition-opacity duration-500 opacity-0"
                 }`}
@@ -152,6 +154,7 @@ export function ProgressionSectionMobile({ steps, sectionRef }: ProgressionSecti
             {steps.map((step, i) => (
               <p
                 key={step.number}
+                style={{ transitionDelay: i === activeStep ? "100ms" : undefined }}
                 className={`absolute inset-x-0 top-0 font-body text-body leading-[28px] ${
                   i === activeStep ? activeItemClass : "transition-opacity duration-500 opacity-0"
                 }`}
