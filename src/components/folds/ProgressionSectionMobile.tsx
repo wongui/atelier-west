@@ -62,7 +62,13 @@ export function ProgressionSectionMobile({ steps, sectionRef }: ProgressionSecti
           fillRef.current.style.width = `${effective * 100}%`;
         }
         const next = Math.min(steps.length - 1, Math.floor(effective * steps.length));
-        setActiveStep((prev) => (prev === next ? prev : next));
+        setActiveStep((prev) => {
+          if (prev === next) return prev;
+          // Reset in the SAME render that switches steps — see desktop
+          // ProgressionSection for why this can't live in a separate effect.
+          setStepRevealed(false);
+          return next;
+        });
       },
     });
 
@@ -71,7 +77,6 @@ export function ProgressionSectionMobile({ steps, sectionRef }: ProgressionSecti
 
   useEffect(() => {
     if (!sectionReveal.isVisible) return;
-    setStepRevealed(false);
     let raf2 = 0;
     const raf1 = requestAnimationFrame(() => {
       raf2 = requestAnimationFrame(() => setStepRevealed(true));
@@ -102,9 +107,8 @@ export function ProgressionSectionMobile({ steps, sectionRef }: ProgressionSecti
             key={step.number}
             src={step.image}
             alt=""
-            className={`absolute inset-0 h-full w-full object-cover transition-all duration-500 ${
-              i === activeStep ? (stepRevealed ? "opacity-100 blur-none" : "opacity-0 blur-md") : "opacity-0"
-            }`}
+            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
+            style={{ opacity: i === activeStep ? 1 : 0 }}
           />
         ))}
         <div className="absolute inset-0 bg-black/50" />
