@@ -59,28 +59,58 @@ export function Fold1HeroMobile({ heroRef }: Fold1HeroMobileProps) {
     return () => window.removeEventListener("resize", recompute);
   }, []);
 
+  useEffect(() => {
+    // iOS Safari's `dvh` unit is wrong on first paint — it computes
+    // against a stale viewport height and only self-corrects once the
+    // user scrolls (which is why the caret below only showed up after
+    // the first scroll: the sticky block above it was sized too tall on
+    // load, and overflow-hidden clipped the caret off the bottom).
+    // window.innerHeight itself is accurate immediately, so we mirror it
+    // into a CSS var and use that instead of `dvh` for this fold's
+    // load-bearing heights; it's kept live the same way dvh normally
+    // would be, via resize (fires when Safari's chrome collapses/expands
+    // the layout viewport).
+    const setVh = () => {
+      document.documentElement.style.setProperty("--dvh", `${window.innerHeight / 100}px`);
+    };
+    setVh();
+    window.addEventListener("resize", setVh);
+    window.visualViewport?.addEventListener("resize", setVh);
+    return () => {
+      window.removeEventListener("resize", setVh);
+      window.visualViewport?.removeEventListener("resize", setVh);
+    };
+  }, []);
+
   const scrollToFold2 = () => {
     document.getElementById("fold-2-mobile")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    // dvh (not svh) on both the scroll runway and the sticky child: svh is
-    // pinned to the *smallest* possible viewport and doesn't grow back when
-    // Safari's chrome collapses mid-scroll, so the pinned block fell short
-    // of the real (bigger) viewport and Fold2's cream showed through the
-    // gap underneath it. dvh tracks the actual current viewport instead.
-    // bg-[#c9c7c7] on this outer wrapper matches the sticky child's own
-    // resting bg, so if a sliver is ever revealed below the pinned block
-    // it still reads as hero background, not a flash of Fold2's cream.
-    <div ref={heroRef} className="relative h-[175dvh] bg-[#c9c7c7]">
-      <div className="sticky top-0 flex h-dvh flex-col overflow-hidden bg-[#c9c7c7]">
+    // Heights below use calc(var(--dvh) * N) rather than Ndvh — see the
+    // --dvh effect above for why. bg-[#c9c7c7] on this outer wrapper
+    // matches the sticky child's own resting bg, so if a sliver is ever
+    // revealed below the pinned block it still reads as hero background,
+    // not a flash of Fold2's cream.
+    <div
+      ref={heroRef}
+      className="relative bg-[#c9c7c7]"
+      style={{ height: "calc(var(--dvh, 1dvh) * 175)" }}
+    >
+      <div
+        className="sticky top-0 flex flex-col overflow-hidden bg-[#c9c7c7]"
+        style={{ height: "calc(var(--dvh, 1dvh) * 100)" }}
+      >
         <div
           className="relative w-full shrink-0"
-          // min(65dvh, 100dvh - 260px): 260px is close to the text panel's
+          // min(65%, 100% - 260px): 260px is close to the text panel's
           // real minimum content height, so typical/tall phones get the
           // full 65% and only genuinely short viewports (e.g. iPhone SE)
           // back off from it.
-          style={{ height: "min(65dvh, calc(100dvh - 260px))" }}
+          style={{
+            height:
+              "min(calc(var(--dvh, 1dvh) * 65), calc(var(--dvh, 1dvh) * 100 - 260px))",
+          }}
         >
           <ScrollVideoMobile
             framesPath={withBasePath("/frames/octopus")}
@@ -121,19 +151,7 @@ export function Fold1HeroMobile({ heroRef }: Fold1HeroMobileProps) {
 
         <div
           className="relative z-10 flex flex-1 flex-col items-center justify-between gap-4 bg-[#e8e8e8] px-(--spacing-page) pt-4 text-center"
-          // env(safe-area-inset-bottom) alone doesn't cover Safari's
-          // collapsible bottom toolbar (only the home-indicator gutter),
-          // so on load — before any scroll collapses the toolbar — the
-          // caret rendered underneath it. 100lvh - 100svh is exactly the
-          // toolbar's height envelope (lvh assumes chrome hidden, svh
-          // assumes chrome fully shown; the two are equal, so this is a
-          // no-op, on browsers without a dynamic toolbar), so this reserves
-          // precisely the space Safari's chrome can occupy instead of
-          // guessing a fixed value.
-          style={{
-            paddingBottom:
-              "max(1rem, calc(env(safe-area-inset-bottom) + (100lvh - 100svh)))",
-          }}
+          style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
         >
           <div className="flex flex-col items-center gap-4">
             <h1 className="font-display text-[48px] leading-[52px] text-text-on-light">
