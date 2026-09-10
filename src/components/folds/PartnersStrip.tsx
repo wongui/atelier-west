@@ -1,8 +1,11 @@
+"use client";
+
 import type { RefObject } from "react";
 import { EyebrowLabel } from "@/components/EyebrowLabel";
 import { TextLink } from "@/components/TextLink";
 import { FoldGrid } from "@/components/FoldGrid";
 import { withBasePath } from "@/lib/basePath";
+import { useReveal } from "@/lib/useReveal";
 
 interface LogoMarkProps {
   src: string;
@@ -63,11 +66,18 @@ interface PartnersStripProps {
 }
 
 export function PartnersStrip({ sectionRef }: PartnersStripProps) {
+  const hostedBy = useReveal<HTMLDivElement>();
+  const supportedBy = useReveal<HTMLDivElement>();
+  const together = useReveal<HTMLDivElement>();
+
   return (
     <div ref={sectionRef as RefObject<HTMLDivElement>} className="bg-surface-dark text-text-on-dark">
       <FoldGrid className="py-12 lg:py-10">
         <div className="col-start-1 col-span-8 flex flex-col divide-y divide-current/20 lg:flex-row lg:divide-x lg:divide-y-0">
-          <div className="flex min-w-0 flex-col items-center gap-6 pb-10 text-center lg:flex-1 lg:gap-8 lg:px-8 lg:pb-0 xl:px-10">
+          <div
+            ref={hostedBy.ref}
+            className={`flex min-w-0 flex-col items-center gap-6 pb-10 text-center lg:flex-1 lg:gap-8 lg:px-8 lg:pb-0 xl:px-10 ${hostedBy.revealClassName}`}
+          >
             <EyebrowLabel>Hosted by</EyebrowLabel>
             <LogoMark
               src={withBasePath("/images/logos/capgemini-cream.svg")}
@@ -79,7 +89,11 @@ export function PartnersStrip({ sectionRef }: PartnersStripProps) {
             <TextLink href="#">Named a Market Shaper in Physical AI</TextLink>
           </div>
 
-          <div className="flex min-w-0 flex-col items-center gap-6 py-10 text-center lg:flex-1 lg:gap-8 lg:px-8 lg:py-0 xl:px-10">
+          <div
+            ref={supportedBy.ref}
+            style={{ transitionDelay: "100ms" }}
+            className={`flex min-w-0 flex-col items-center gap-6 py-10 text-center lg:flex-1 lg:gap-8 lg:px-8 lg:py-0 xl:px-10 ${supportedBy.revealClassName}`}
+          >
             <EyebrowLabel>With support from</EyebrowLabel>
             <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
               <LogoMark
@@ -99,7 +113,11 @@ export function PartnersStrip({ sectionRef }: PartnersStripProps) {
             </div>
           </div>
 
-          <div className="flex min-w-0 flex-col items-center gap-6 pt-10 text-center lg:flex-[1.15] lg:gap-8 lg:px-8 lg:pt-0 xl:px-10">
+          <div
+            ref={together.ref}
+            style={{ transitionDelay: "200ms" }}
+            className={`flex min-w-0 flex-col items-center gap-6 pt-10 text-center lg:flex-[1.15] lg:gap-8 lg:px-8 lg:pt-0 xl:px-10 ${together.revealClassName}`}
+          >
             <EyebrowLabel className="max-w-full lg:max-w-none">
               Together, our teams know how to build and bring new products to market:
             </EyebrowLabel>

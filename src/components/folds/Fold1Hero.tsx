@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ScrollVideo } from "@/components/ScrollVideo";
 import { FoldGrid } from "@/components/FoldGrid";
 import { withBasePath } from "@/lib/basePath";
+import { useRevealOnMount } from "@/lib/useReveal";
 
 interface Fold1HeroProps {
   heroRef: RefObject<HTMLDivElement | null>;
@@ -39,6 +40,10 @@ function ArrowDownIcon({ className = "" }: { className?: string }) {
 export function Fold1Hero({ heroRef }: Fold1HeroProps) {
   const measureRef = useRef<HTMLSpanElement>(null);
   const [heroTracking, setHeroTracking] = useState(0);
+  const wordmark = useRevealOnMount<HTMLAnchorElement>();
+  const eyebrow = useRevealOnMount<HTMLParagraphElement>();
+  const headline = useRevealOnMount<HTMLDivElement>();
+  const scrollHint = useRevealOnMount<HTMLButtonElement>();
 
   useEffect(() => {
     const measure = measureRef.current;
@@ -71,8 +76,9 @@ export function Fold1Hero({ heroRef }: Fold1HeroProps) {
 
       <FoldGrid className="absolute inset-x-0 top-0 h-screen pt-(--spacing-page)">
         <Link
+          ref={wordmark.ref}
           href="/"
-          className="col-start-1 col-span-3 row-start-1 font-display uppercase whitespace-nowrap text-text-on-light"
+          className={`col-start-1 col-span-3 row-start-1 font-display uppercase whitespace-nowrap text-text-on-light ${wordmark.revealClassName}`}
           style={{ fontSize: WORDMARK_HERO_SIZE, letterSpacing: heroTracking }}
         >
           {WORDMARK_TEXT}
@@ -94,7 +100,11 @@ export function Fold1Hero({ heroRef }: Fold1HeroProps) {
             match the headline's much taller cap-height — sharing the
             exact same top offset otherwise makes the eyebrow look like
             it's floating above the headline instead of level with it. */}
-        <p className="col-start-1 col-span-2 row-start-1 mt-[73vh] pt-3 font-body text-body text-text-on-light">
+        <p
+          ref={eyebrow.ref}
+          style={{ transitionDelay: "80ms" }}
+          className={`col-start-1 col-span-2 row-start-1 mt-[73vh] pt-3 font-body text-body text-text-on-light ${eyebrow.revealClassName}`}
+        >
           A 12-week equity-free residency for Physical AI founders
         </p>
 
@@ -108,7 +118,11 @@ export function Fold1Hero({ heroRef }: Fold1HeroProps) {
             container querying its own inline-size is a self-reference
             browsers resolve as invalid, silently falling back to the
             clamp's max and ignoring the fluid middle term entirely. */}
-        <div className="col-start-4 col-span-5 row-start-1 mt-[73vh] [container-type:inline-size]">
+        <div
+          ref={headline.ref}
+          style={{ transitionDelay: "160ms" }}
+          className={`col-start-4 col-span-5 row-start-1 mt-[73vh] [container-type:inline-size] ${headline.revealClassName}`}
+        >
           <h1 className="font-display leading-none text-[clamp(4rem,11.77cqw,6.875rem)] text-text-on-light whitespace-nowrap">
             Where AI takes shape
           </h1>
@@ -118,10 +132,12 @@ export function Fold1Hero({ heroRef }: Fold1HeroProps) {
             so its bottom edge matches SiteNav's About/Apply bottom edge.
             A real button (not a styled <p>) since it now scrolls to Fold2. */}
         <button
+          ref={scrollHint.ref}
           id="fold1-scroll-hint"
           type="button"
           onClick={scrollToFold2}
-          className="col-start-1 row-start-1 self-end mb-6 flex w-fit cursor-pointer items-center justify-start gap-2 whitespace-nowrap font-body text-body text-text-on-light"
+          style={{ transitionDelay: "240ms" }}
+          className={`col-start-1 row-start-1 self-end mb-6 flex w-fit cursor-pointer items-center justify-start gap-2 whitespace-nowrap font-body text-body text-text-on-light ${scrollHint.revealClassName}`}
         >
           Scroll to learn more
           <ArrowDownIcon className="size-[18px] animate-bob" />

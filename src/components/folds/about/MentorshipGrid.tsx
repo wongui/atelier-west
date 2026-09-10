@@ -1,5 +1,6 @@
 "use client";
 
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FoldGrid } from "@/components/FoldGrid";
 import { withBasePath } from "@/lib/basePath";
 import { useReveal } from "@/lib/useReveal";
@@ -37,6 +38,9 @@ function MentorCard({ mentor }: { mentor: Mentor }) {
         ref={photo.ref}
         src={withBasePath(mentor.image)}
         alt=""
+        // Natural-height image — see LabFacilitiesGrid's LabCard for why
+        // this needs to nudge any dark-section ScrollTrigger to re-measure.
+        onLoad={() => ScrollTrigger.refresh()}
         className={`w-full h-auto ${photo.revealClassName}`}
         style={{ transitionDelay: "100ms" }}
       />

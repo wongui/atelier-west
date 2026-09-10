@@ -40,9 +40,13 @@ export function ProgressionSection({ steps, sectionRef }: ProgressionSectionProp
   const wrapperRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
   const [activeStep, setActiveStep] = useState(0);
-  const number = useReveal<HTMLDivElement>();
-  const title = useReveal<HTMLDivElement>();
-  const body = useReveal<HTMLDivElement>();
+  // Gates the per-step reveal below on the section actually having scrolled
+  // into view, so step 0 doesn't play its entrance while still off-screen.
+  const sectionReveal = useReveal<HTMLDivElement>();
+  // Re-plays the blur+rise reveal every time the active step changes (not
+  // just once) — reset to hidden then flipped back on a couple of frames
+  // later so the CSS transition has a hidden state to animate from.
+  const [stepRevealed, setStepRevealed] = useState(false);
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
@@ -65,10 +69,28 @@ export function ProgressionSection({ steps, sectionRef }: ProgressionSectionProp
     return () => trigger.kill();
   }, [steps.length]);
 
+  useEffect(() => {
+    if (!sectionReveal.isVisible) return;
+    setStepRevealed(false);
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => setStepRevealed(true));
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+    };
+  }, [activeStep, sectionReveal.isVisible]);
+
+  const revealedStepClass = "opacity-100 blur-none translate-y-0";
+  const hiddenStepClass = "opacity-0 blur-md translate-y-6";
+  const activeItemClass = `transition-all duration-500 ${stepRevealed ? revealedStepClass : hiddenStepClass}`;
+
   return (
     <div
       ref={(node) => {
         wrapperRef.current = node;
+        sectionReveal.ref.current = node;
         if (sectionRef) sectionRef.current = node;
       }}
       className="relative"
@@ -80,22 +102,21 @@ export function ProgressionSection({ steps, sectionRef }: ProgressionSectionProp
             key={step.number}
             src={step.image}
             alt=""
-            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
-            style={{ opacity: i === activeStep ? 1 : 0 }}
+            className={`absolute inset-0 h-full w-full object-cover transition-all duration-500 ${
+              i === activeStep ? (stepRevealed ? "opacity-100 blur-none" : "opacity-0 blur-md") : "opacity-0"
+            }`}
           />
         ))}
         <div className="absolute inset-0 bg-black/50" />
 
         <FoldGrid className="absolute inset-0 content-start pt-24 pb-16">
-          <div
-            ref={number.ref}
-            className={`relative col-start-1 col-span-2 row-start-1 mt-[26vh] ${number.revealClassName}`}
-          >
+          <div className="relative col-start-1 col-span-2 row-start-1 mt-[26vh]">
             {steps.map((step, i) => (
               <span
                 key={step.number}
-                className="absolute inset-x-0 top-0 font-display text-h1 text-text-on-dark transition-opacity duration-500"
-                style={{ opacity: i === activeStep ? 1 : 0 }}
+                className={`absolute inset-x-0 top-0 font-display text-h1 text-text-on-dark ${
+                  i === activeStep ? activeItemClass : "transition-opacity duration-500 opacity-0"
+                }`}
               >
                 {step.number}
               </span>
@@ -111,15 +132,13 @@ export function ProgressionSection({ steps, sectionRef }: ProgressionSectionProp
             className="col-start-1 col-span-8 row-start-1 mt-[calc(26vh+4.375rem)] -mx-(--spacing-page) text-text-on-dark"
           />
 
-          <div
-            ref={title.ref}
-            className={`relative col-start-1 col-span-3 row-start-1 mt-[calc(26vh+4.375rem+0.5rem)] ${title.revealClassName}`}
-          >
+          <div className="relative col-start-1 col-span-3 row-start-1 mt-[calc(26vh+4.375rem+0.5rem)]">
             {steps.map((step, i) => (
               <h3
                 key={step.number}
-                className="absolute inset-x-0 top-0 font-display text-h1 text-text-on-dark transition-opacity duration-500"
-                style={{ opacity: i === activeStep ? 1 : 0 }}
+                className={`absolute inset-x-0 top-0 font-display text-h1 text-text-on-dark ${
+                  i === activeStep ? activeItemClass : "transition-opacity duration-500 opacity-0"
+                }`}
               >
                 {step.title}
               </h3>
@@ -130,15 +149,13 @@ export function ProgressionSection({ steps, sectionRef }: ProgressionSectionProp
             </h3>
           </div>
 
-          <div
-            ref={body.ref}
-            className={`relative col-start-4 col-span-2 row-start-1 mt-[calc(26vh+4.375rem+0.5rem)] ${body.revealClassName}`}
-          >
+          <div className="relative col-start-4 col-span-2 row-start-1 mt-[calc(26vh+4.375rem+0.5rem)]">
             {steps.map((step, i) => (
               <p
                 key={step.number}
-                className="absolute inset-x-0 top-0 font-body text-body text-text-on-dark transition-opacity duration-500"
-                style={{ opacity: i === activeStep ? 1 : 0 }}
+                className={`absolute inset-x-0 top-0 font-body text-body text-text-on-dark ${
+                  i === activeStep ? activeItemClass : "transition-opacity duration-500 opacity-0"
+                }`}
               >
                 {step.body}
               </p>

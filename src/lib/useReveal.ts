@@ -13,6 +13,12 @@ import { useEffect, useRef, useState } from "react";
  * transition/state classes), keeping any of the element's own layout
  * classes (grid placement, sizing, etc.) alongside via `className`.
  */
+function revealClassNameFor(isVisible: boolean): string {
+  return `transition-all duration-700 ease-out ${
+    isVisible ? "opacity-100 blur-none translate-y-0" : "opacity-0 blur-md translate-y-6"
+  }`;
+}
+
 export function useReveal<T extends HTMLElement = HTMLDivElement>() {
   const ref = useRef<T>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -33,9 +39,30 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>() {
     return () => observer.disconnect();
   }, []);
 
-  const revealClassName = `transition-all duration-700 ease-out ${
-    isVisible ? "opacity-100 blur-none translate-y-0" : "opacity-0 blur-md translate-y-6"
-  }`;
+  return { ref, isVisible, revealClassName: revealClassNameFor(isVisible) };
+}
 
-  return { ref, isVisible, revealClassName };
+/**
+ * Same "blur + rise" treatment, but triggered on mount (a double
+ * requestAnimationFrame later, so the hidden state actually paints first
+ * and the transition has something to animate from) rather than on
+ * scroll-into-view — for content that's already on screen when the page
+ * loads (the hero) instead of scrolled to later.
+ */
+export function useRevealOnMount<T extends HTMLElement = HTMLDivElement>() {
+  const ref = useRef<T>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => setIsVisible(true));
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+    };
+  }, []);
+
+  return { ref, isVisible, revealClassName: revealClassNameFor(isVisible) };
 }
