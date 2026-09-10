@@ -14,7 +14,7 @@ export function Fold2IntroMobile() {
   const image = useReveal<HTMLImageElement>();
 
   return (
-    <section id="fold-2-mobile" className="bg-surface-light px-(--spacing-page) py-16">
+    <section id="fold-3-mobile" className="bg-surface-light px-(--spacing-page) py-16">
       <div ref={text.ref} style={{ transitionDelay: "100ms" }} className={`flex flex-col gap-6 ${text.revealClassName}`}>
         <h2 className="font-display text-[30px] leading-[1.1] text-text-on-light">
           Shaping the future of Physical AI startups

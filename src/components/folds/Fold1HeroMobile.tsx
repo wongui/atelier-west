@@ -86,7 +86,7 @@ export function Fold1HeroMobile({ heroRef }: Fold1HeroMobileProps) {
   }, []);
 
   const scrollToFold2 = () => {
-    document.getElementById("fold-2-mobile")?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("fold-2")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
