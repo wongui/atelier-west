@@ -29,8 +29,7 @@ export function Fold2Intro() {
         className={`col-start-4 col-span-5 self-center flex flex-col gap-6 max-w-(--max-width-content) ${text.revealClassName}`}
       >
         <h2 className="font-display text-h2 text-text-on-light">
-          A fellowship for founders building machines with real specs and
-          real instinct.
+          Shaping the future of Physical AI startups
         </h2>
         <p className="font-body text-body text-text-on-light">
           Atelier West is a 12-week, cash- and equity-free, cohort-based

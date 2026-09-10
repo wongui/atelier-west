@@ -86,7 +86,7 @@ export function PartnersStrip({ sectionRef }: PartnersStripProps) {
               height={46}
               className="h-10 w-32"
             />
-            <TextLink href="#">Named a Market Shaper in Physical AI</TextLink>
+            <TextLink href="#">Named a Market Shaper in Physical AI by Gartner</TextLink>
           </div>
 
           <div
@@ -98,7 +98,7 @@ export function PartnersStrip({ sectionRef }: PartnersStripProps) {
             // space left below it instead of centered in the row.
             className={`flex min-w-0 flex-col items-center gap-6 py-10 text-center lg:flex-1 lg:justify-center lg:gap-8 lg:px-8 lg:py-0 xl:px-10 ${supportedBy.revealClassName}`}
           >
-            <EyebrowLabel>With support from</EyebrowLabel>
+            <EyebrowLabel>In partnership with</EyebrowLabel>
             <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
               <LogoMark
                 src={withBasePath("/images/logos/nvidia-cream.svg")}

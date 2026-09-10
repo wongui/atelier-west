@@ -121,16 +121,23 @@ export function Fold1HeroMobile({ heroRef }: Fold1HeroMobileProps) {
 
         <div
           className="relative z-10 flex flex-1 flex-col items-center justify-between gap-4 bg-[#e8e8e8] px-(--spacing-page) pt-4 text-center"
-          style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
+          // Safari's collapsible bottom toolbar isn't fully reflected in
+          // env(safe-area-inset-bottom) while it's transiently showing/
+          // hiding mid-scroll, so the caret ended up rendered underneath
+          // it. A flat floor (2rem) on top of the safe-area inset gives
+          // the caret guaranteed clearance regardless of toolbar state.
+          style={{
+            paddingBottom: "max(2rem, calc(env(safe-area-inset-bottom) + 1rem))",
+          }}
         >
           <div className="flex flex-col items-center gap-4">
             <h1 className="font-display text-[48px] leading-[52px] text-text-on-light">
               Where AI
               <br />
-              Takes Shape
+              Takes Shape.
             </h1>
             <p className="max-w-[286px] font-body text-body text-text-on-light">
-              A 12-week equity-free residency for Physical AI founders
+              A 12-week equity-free residency for Physical AI founders.
             </p>
             <Button variant="cta" size="md" onClick={scrollToFold2}>
               Apply

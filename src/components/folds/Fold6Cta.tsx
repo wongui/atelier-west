@@ -30,7 +30,7 @@ export function Fold6Cta() {
           <p className="font-body text-body text-text-on-light">
             Designed for committed, ambitious teams building AI that
             operates in the physical world to solve validated problems,
-            with proof of traction
+            with proof of traction.
           </p>
           <Button variant="cta" size="md">
             Apply

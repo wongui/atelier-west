@@ -143,11 +143,11 @@ export function Fold1Hero({ heroRef }: Fold1HeroProps) {
                 middle term entirely. */}
             <div className="w-full shrink-0 [container-type:inline-size]">
               <h1 className="font-display leading-none text-[clamp(4rem,7.9cqw,6.875rem)] text-text-on-light">
-                Where AI Takes Shape
+                Where AI Takes Shape.
               </h1>
             </div>
             <p className="max-w-(--max-width-content) shrink-0 font-body text-body text-text-on-light">
-              A 12-week equity-free residency for Physical AI founders
+              A 12-week equity-free residency for Physical AI founders.
             </p>
             <Button variant="cta" size="md" href="/apply">
               Apply Now

@@ -17,8 +17,7 @@ export function Fold2IntroMobile() {
     <section id="fold-2-mobile" className="bg-surface-light px-(--spacing-page) py-16">
       <div ref={text.ref} style={{ transitionDelay: "100ms" }} className={`flex flex-col gap-6 ${text.revealClassName}`}>
         <h2 className="font-display text-[30px] leading-[1.1] text-text-on-light">
-          A fellowship for founders building machines with real specs and
-          real instinct.
+          Shaping the future of Physical AI startups
         </h2>
         <p className="font-body text-body text-text-on-light">
           Atelier West is a 12-week, cash- and equity-free, cohort-based

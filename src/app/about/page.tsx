@@ -33,7 +33,7 @@ const programSteps = [
   {
     number: "Week 12",
     title: "Demo Day",
-    body: "Show what you built to enterprise partners and investors",
+    body: "Show what you built to enterprise partners and investors.",
     image: withBasePath("/images/about-fold-5.png"),
   },
 ];
