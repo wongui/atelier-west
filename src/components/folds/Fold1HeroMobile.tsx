@@ -95,7 +95,11 @@ export function Fold1HeroMobile({ heroRef }: Fold1HeroMobileProps) {
             <Link
               ref={wordmarkRef}
               href="/"
-              className="font-display text-wordmark uppercase whitespace-nowrap text-text-on-light"
+              // Half --text-wordmark (not the full lockup size) — the
+              // headline below is the dominant element on this fold, per
+              // desktop's hero where the wordmark reads as a small
+              // signature above a much larger headline.
+              className="font-display text-[length:calc(var(--text-wordmark)/2)] uppercase whitespace-nowrap text-text-on-light"
             >
               {WORDMARK_TEXT}
             </Link>
@@ -103,7 +107,7 @@ export function Fold1HeroMobile({ heroRef }: Fold1HeroMobileProps) {
             <span
               ref={measureRef}
               aria-hidden
-              className="fixed top-0 left-[-9999px] font-display text-wordmark uppercase whitespace-nowrap"
+              className="fixed top-0 left-[-9999px] font-display text-[length:calc(var(--text-wordmark)/2)] uppercase whitespace-nowrap"
               style={{ letterSpacing: 0 }}
             >
               {WORDMARK_TEXT}
@@ -120,7 +124,7 @@ export function Fold1HeroMobile({ heroRef }: Fold1HeroMobileProps) {
           style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
         >
           <div className="flex flex-col items-center gap-4">
-            <h1 className="font-display text-[38px] leading-[42px] text-text-on-light">
+            <h1 className="font-display text-[48px] leading-[52px] text-text-on-light">
               Where AI
               <br />
               Takes Shape
