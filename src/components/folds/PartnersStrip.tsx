@@ -71,7 +71,11 @@ export function PartnersStrip({ sectionRef }: PartnersStripProps) {
   const together = useReveal<HTMLDivElement>();
 
   return (
-    <div ref={sectionRef as RefObject<HTMLDivElement>} className="bg-surface-dark text-text-on-dark">
+    <div
+      id="fold-2"
+      ref={sectionRef as RefObject<HTMLDivElement>}
+      className="bg-surface-dark text-text-on-dark"
+    >
       <FoldGrid className="py-12 lg:py-10">
         <div className="col-start-1 col-span-8 flex flex-col divide-y divide-current/20 lg:flex-row lg:divide-x lg:divide-y-0">
           <div

@@ -20,7 +20,7 @@ export function Fold1HeroMobile() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scrollToFold2 = () => {
-    document.getElementById("fold-2-mobile")?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("fold-2")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
