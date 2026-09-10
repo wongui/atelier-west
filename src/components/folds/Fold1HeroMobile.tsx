@@ -121,13 +121,18 @@ export function Fold1HeroMobile({ heroRef }: Fold1HeroMobileProps) {
 
         <div
           className="relative z-10 flex flex-1 flex-col items-center justify-between gap-4 bg-[#e8e8e8] px-(--spacing-page) pt-4 text-center"
-          // Safari's collapsible bottom toolbar isn't fully reflected in
-          // env(safe-area-inset-bottom) while it's transiently showing/
-          // hiding mid-scroll, so the caret ended up rendered underneath
-          // it. A flat floor (2rem) on top of the safe-area inset gives
-          // the caret guaranteed clearance regardless of toolbar state.
+          // env(safe-area-inset-bottom) alone doesn't cover Safari's
+          // collapsible bottom toolbar (only the home-indicator gutter),
+          // so on load — before any scroll collapses the toolbar — the
+          // caret rendered underneath it. 100lvh - 100svh is exactly the
+          // toolbar's height envelope (lvh assumes chrome hidden, svh
+          // assumes chrome fully shown; the two are equal, so this is a
+          // no-op, on browsers without a dynamic toolbar), so this reserves
+          // precisely the space Safari's chrome can occupy instead of
+          // guessing a fixed value.
           style={{
-            paddingBottom: "max(2rem, calc(env(safe-area-inset-bottom) + 1rem))",
+            paddingBottom:
+              "max(1rem, calc(env(safe-area-inset-bottom) + (100lvh - 100svh)))",
           }}
         >
           <div className="flex flex-col items-center gap-4">
