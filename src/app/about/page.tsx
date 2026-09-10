@@ -70,16 +70,16 @@ const labs = [
 ];
 
 const mentors = [
-  { name: "Antonello Crimi", role: "UX/UI Design", image: "/images/image 383.png" },
-  { name: "Bethany Brown", role: "Service Design", image: "/images/image 384.png" },
-  { name: "Chris Blower", role: "Mechanical Eng.", image: "/images/image 385.png" },
-  { name: "Fabrice Pouani", role: "RF Engineering", image: "/images/image 386.png" },
-  { name: "John Staskevitch", role: "Firmware Eng.", image: "/images/image 387.png" },
-  { name: "Martha Calderon", role: "Electrical Eng.", image: "/images/image 388.png" },
-  { name: "Josh Baillon", role: "SV Ecosystem", image: "/images/image 389.png" },
-  { name: "Ryan Starling", role: "Industrial Design", image: "/images/image 390.png" },
-  { name: "Kamil Klamann", role: "Strategy", image: "/images/image 391.png" },
-  { name: "Peter Hauser", role: "N.P.I.", image: "/images/image 392.png" },
+  { name: "Antonello Crimi", role: "UX/UI Design", image: "/images/image 383-v2.png" },
+  { name: "Bethany Brown", role: "Service Design", image: "/images/image 384-v2.png" },
+  { name: "Chris Blower", role: "Mechanical Eng.", image: "/images/image 385-v2.png" },
+  { name: "Fabrice Pouani", role: "RF Engineering", image: "/images/image 386-v2.png" },
+  { name: "John Staskevitch", role: "Firmware Eng.", image: "/images/image 387-v2.png" },
+  { name: "Martha Calderon", role: "Electrical Eng.", image: "/images/image 388-v2.png" },
+  { name: "Josh Baillon", role: "SV Ecosystem", image: "/images/image 389-v2.png" },
+  { name: "Ryan Starling", role: "Industrial Design", image: "/images/image 390-v2.png" },
+  { name: "Kamil Klamann", role: "Strategy", image: "/images/image 391-v2.png" },
+  { name: "Peter Hauser", role: "N.P.I.", image: "/images/image 392-v2.png" },
 ];
 
 export default function AboutPage() {
