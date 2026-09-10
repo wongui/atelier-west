@@ -1,6 +1,7 @@
 "use client";
 
 import type { RefObject } from "react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FoldGrid } from "@/components/FoldGrid";
 import { withBasePath } from "@/lib/basePath";
 import { useReveal } from "@/lib/useReveal";
@@ -38,6 +39,13 @@ function LabCard({ lab }: { lab: Lab }) {
         ref={photo.ref}
         src={withBasePath(lab.image)}
         alt=""
+        // These render at their natural (unreserved) height, so each image
+        // finishing its download shifts this section's total height —
+        // without a refresh, SiteNav's dark-section ScrollTrigger keeps the
+        // "bottom top" end position it measured before the images loaded,
+        // so the nav flips back to the on-light treatment partway through
+        // the section instead of staying on-dark for its whole real height.
+        onLoad={() => ScrollTrigger.refresh()}
         className={`w-full h-auto ${photo.revealClassName}`}
         style={{ transitionDelay: "100ms" }}
       />

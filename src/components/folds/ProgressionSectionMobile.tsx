@@ -38,9 +38,8 @@ export function ProgressionSectionMobile({ steps, sectionRef }: ProgressionSecti
   const wrapperRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
   const [activeStep, setActiveStep] = useState(0);
-  const number = useReveal<HTMLDivElement>();
-  const title = useReveal<HTMLDivElement>();
-  const body = useReveal<HTMLDivElement>();
+  const sectionReveal = useReveal<HTMLDivElement>();
+  const [stepRevealed, setStepRevealed] = useState(false);
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
@@ -70,10 +69,28 @@ export function ProgressionSectionMobile({ steps, sectionRef }: ProgressionSecti
     return () => trigger.kill();
   }, [steps.length]);
 
+  useEffect(() => {
+    if (!sectionReveal.isVisible) return;
+    setStepRevealed(false);
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => setStepRevealed(true));
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+    };
+  }, [activeStep, sectionReveal.isVisible]);
+
+  const revealedStepClass = "opacity-100 blur-none translate-y-0";
+  const hiddenStepClass = "opacity-0 blur-md translate-y-6";
+  const activeItemClass = `transition-all duration-500 ${stepRevealed ? revealedStepClass : hiddenStepClass}`;
+
   return (
     <div
       ref={(node) => {
         wrapperRef.current = node;
+        sectionReveal.ref.current = node;
         if (sectionRef) sectionRef.current = node;
       }}
       className="relative"
@@ -85,19 +102,21 @@ export function ProgressionSectionMobile({ steps, sectionRef }: ProgressionSecti
             key={step.number}
             src={step.image}
             alt=""
-            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
-            style={{ opacity: i === activeStep ? 1 : 0 }}
+            className={`absolute inset-0 h-full w-full object-cover transition-all duration-500 ${
+              i === activeStep ? (stepRevealed ? "opacity-100 blur-none" : "opacity-0 blur-md") : "opacity-0"
+            }`}
           />
         ))}
         <div className="absolute inset-0 bg-black/50" />
 
         <div className="relative flex h-full flex-col justify-center gap-4 px-(--spacing-page)">
-          <div ref={number.ref} className={`relative ${number.revealClassName}`}>
+          <div className="relative">
             {steps.map((step, i) => (
               <span
                 key={step.number}
-                className="absolute inset-x-0 top-0 font-display text-[30px] leading-none transition-opacity duration-500"
-                style={{ opacity: i === activeStep ? 1 : 0 }}
+                className={`absolute inset-x-0 top-0 font-display text-[30px] leading-none ${
+                  i === activeStep ? activeItemClass : "transition-opacity duration-500 opacity-0"
+                }`}
               >
                 {step.number}
               </span>
@@ -107,12 +126,13 @@ export function ProgressionSectionMobile({ steps, sectionRef }: ProgressionSecti
             </span>
           </div>
 
-          <div ref={title.ref} className={`relative ${title.revealClassName}`}>
+          <div className="relative">
             {steps.map((step, i) => (
               <h3
                 key={step.number}
-                className="absolute inset-x-0 top-0 font-display text-[30px] leading-none transition-opacity duration-500"
-                style={{ opacity: i === activeStep ? 1 : 0 }}
+                className={`absolute inset-x-0 top-0 font-display text-[30px] leading-none ${
+                  i === activeStep ? activeItemClass : "transition-opacity duration-500 opacity-0"
+                }`}
               >
                 {step.title}
               </h3>
@@ -128,12 +148,13 @@ export function ProgressionSectionMobile({ steps, sectionRef }: ProgressionSecti
             className="-mx-(--spacing-page)"
           />
 
-          <div ref={body.ref} className={`relative ${body.revealClassName}`}>
+          <div className="relative">
             {steps.map((step, i) => (
               <p
                 key={step.number}
-                className="absolute inset-x-0 top-0 font-body text-body leading-[28px] transition-opacity duration-500"
-                style={{ opacity: i === activeStep ? 1 : 0 }}
+                className={`absolute inset-x-0 top-0 font-body text-body leading-[28px] ${
+                  i === activeStep ? activeItemClass : "transition-opacity duration-500 opacity-0"
+                }`}
               >
                 {step.body}
               </p>
