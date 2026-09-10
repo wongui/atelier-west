@@ -198,6 +198,24 @@ export function MobileSiteNav({
         isVisible ? "opacity-100" : "pointer-events-none opacity-0"
       }`}
     >
+      {/* Backdrop blur only — no tint, no solid fill — just enough to
+          separate the wordmark/links from whatever scrolls underneath.
+          Same technique as desktop SiteNav's own blur layer; taller when
+          stacked (two rows) so the fade still starts below the content
+          instead of cutting through it. Negative z-index (within this
+          div's own stacking context, set by its fixed position + z-50
+          above) keeps it behind the nav content without needing z-index
+          there too. */}
+      <div
+        aria-hidden
+        className={`absolute inset-x-0 top-0 -z-10 backdrop-blur-[8px] ${
+          isStacked ? "h-44" : "h-28"
+        }`}
+        style={{
+          maskImage: "linear-gradient(to bottom, black 0%, black 35%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 35%, transparent 100%)",
+        }}
+      />
       <div className={`flex items-center gap-4 ${isStacked ? "" : "justify-between"}`}>
         {/* Same font-size as "About" (text-body) — letter-spacing is what
             gives it presence as a lockup, solved above to hit

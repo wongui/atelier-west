@@ -95,49 +95,64 @@ export function SiteNav({ heroRef, darkSectionRef, darkSectionRefs, activeAbout 
   }, [darkSectionRef, darkSectionRefs]);
 
   return (
-    <FoldGrid
+    <div
       // Nav's own vertical offset from the viewport top, independent of
       // --spacing-page (that token is the page's horizontal content
       // margin — widening it for v2 shouldn't also push the nav further
       // down the page).
-      className={`fixed inset-x-0 top-0 z-50 pt-4 pb-4 transition-opacity duration-300 ease-out ${
+      className={`fixed inset-x-0 top-0 z-50 transition-opacity duration-300 ease-out ${
         isVisible ? "opacity-100" : "pointer-events-none opacity-0"
       }`}
-      gridClassName="items-start"
     >
-      <Link
-        id="site-nav-wordmark"
-        href="/"
-        className={`col-start-1 col-span-3 font-display uppercase whitespace-nowrap text-wordmark-nav tracking-wordmark-nav ${
-          isOverDark ? "text-text-on-dark" : "text-text-on-light"
-        }`}
-      >
-        {WORDMARK_TEXT}
-      </Link>
-      {/* About and Apply are grouped as one right-justified cluster,
-          per Figma (About and Apply sit ~38px apart, both flush to the
-          frame's right margin), not spread across separate grid columns.
-          On the Apply page (hideApply), About is the cluster's only
-          child, so justify-end naturally lands it at the far right where
-          Apply would otherwise be — no separate positioning needed. */}
-      <div className="col-start-4 col-span-5 flex items-center justify-end gap-9">
+      {/* Backdrop blur only — no tint, no solid fill — just enough to
+          separate the wordmark/links from whatever scrolls underneath.
+          Negative z-index (within this div's own stacking context, set
+          by its fixed position + the z-50 above) keeps it behind the
+          nav content below without needing z-index there too. Masked to
+          fade to nothing rather than ending in a hard edge. */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 -z-10 h-28 backdrop-blur-[8px]"
+        style={{
+          maskImage: "linear-gradient(to bottom, black 0%, black 35%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 35%, transparent 100%)",
+        }}
+      />
+      <FoldGrid className="pt-4 pb-4" gridClassName="items-start">
         <Link
-          id="site-nav-about"
-          href="/about"
-          className={`font-body text-body ${activeAbout ? "underline underline-offset-2" : ""} ${
+          id="site-nav-wordmark"
+          href="/"
+          className={`col-start-1 col-span-3 font-display uppercase whitespace-nowrap text-wordmark-nav tracking-wordmark-nav ${
             isOverDark ? "text-text-on-dark" : "text-text-on-light"
           }`}
         >
-          About
+          {WORDMARK_TEXT}
         </Link>
-        {!hideApply && (
-          <div id="site-nav-apply">
-            <Button variant="nav" href="/apply" invert={isOverDark}>
-              Apply
-            </Button>
-          </div>
-        )}
-      </div>
-    </FoldGrid>
+        {/* About and Apply are grouped as one right-justified cluster,
+            per Figma (About and Apply sit ~38px apart, both flush to the
+            frame's right margin), not spread across separate grid columns.
+            On the Apply page (hideApply), About is the cluster's only
+            child, so justify-end naturally lands it at the far right where
+            Apply would otherwise be — no separate positioning needed. */}
+        <div className="col-start-4 col-span-5 flex items-center justify-end gap-9">
+          <Link
+            id="site-nav-about"
+            href="/about"
+            className={`font-body text-body ${activeAbout ? "underline underline-offset-2" : ""} ${
+              isOverDark ? "text-text-on-dark" : "text-text-on-light"
+            }`}
+          >
+            About
+          </Link>
+          {!hideApply && (
+            <div id="site-nav-apply">
+              <Button variant="nav" href="/apply" invert={isOverDark}>
+                Apply
+              </Button>
+            </div>
+          )}
+        </div>
+      </FoldGrid>
+    </div>
   );
 }
