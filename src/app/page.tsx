@@ -44,6 +44,8 @@ export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
   const progressionRef = useRef<HTMLDivElement>(null);
   const progressionRefMobile = useRef<HTMLDivElement>(null);
+  const partnersStripRef = useRef<HTMLDivElement>(null);
+  const partnersStripRefMobile = useRef<HTMLDivElement>(null);
 
   // Resolves to null until the first client-side check runs, then stays
   // true/false for the session. Rendering nothing until it resolves keeps
@@ -57,9 +59,9 @@ export default function Home() {
   if (!isDesktop) {
     return (
       <>
-        <MobileSiteNav darkSectionRef={progressionRefMobile} />
+        <MobileSiteNav darkSectionRefs={[partnersStripRefMobile, progressionRefMobile]} />
         <Fold1HeroMobile />
-        <PartnersStrip />
+        <PartnersStrip sectionRef={partnersStripRefMobile} />
         <Fold2IntroMobile />
         <ProgressionSectionMobile steps={progressionSteps} sectionRef={progressionRefMobile} />
         <Fold6CtaMobile />
@@ -71,14 +73,14 @@ export default function Home() {
 
   return (
     <>
-      <SiteNav heroRef={heroRef} darkSectionRef={progressionRef} />
+      <SiteNav heroRef={heroRef} darkSectionRefs={[partnersStripRef, progressionRef]} />
       <Fold1Hero heroRef={heroRef} />
       {/* Everything after the hero needs its own stacking context — the
           hero video canvas is `fixed`, and positioned elements always
           paint above later static-flow siblings regardless of DOM order
           or z-index value, so without this the video bleeds through. */}
       <div className="relative z-10">
-        <PartnersStrip />
+        <PartnersStrip sectionRef={partnersStripRef} />
         <Fold2Intro />
         <ProgressionSection steps={progressionSteps} sectionRef={progressionRef} />
         <Fold6Cta />

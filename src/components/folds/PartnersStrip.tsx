@@ -1,3 +1,4 @@
+import type { RefObject } from "react";
 import { EyebrowLabel } from "@/components/EyebrowLabel";
 import { TextLink } from "@/components/TextLink";
 import { FoldGrid } from "@/components/FoldGrid";
@@ -54,9 +55,16 @@ function LogoMark({ src, alt, width, height, className = "" }: LogoMarkProps) {
  * `/system` style-guide and PartnerLogoStrip still use, which were
  * authored for a light surface.
  */
-export function PartnersStrip() {
+interface PartnersStripProps {
+  /** Passed through to SiteNav/MobileSiteNav's darkSectionRef(s) so the
+   * nav switches to the on-dark (cream) treatment while this strip's dark
+   * surface is under it — same idea as the ProgressionSection dark folds. */
+  sectionRef?: RefObject<HTMLElement | null>;
+}
+
+export function PartnersStrip({ sectionRef }: PartnersStripProps) {
   return (
-    <div className="bg-surface-dark text-text-on-dark">
+    <div ref={sectionRef as RefObject<HTMLDivElement>} className="bg-surface-dark text-text-on-dark">
       <FoldGrid className="py-12 lg:py-10">
         <div className="col-start-1 col-span-8 flex flex-col divide-y divide-current/20 lg:flex-row lg:divide-x lg:divide-y-0">
           <div className="flex min-w-0 flex-col items-center gap-6 pb-10 text-center lg:flex-1 lg:gap-8 lg:px-8 lg:pb-0 xl:px-10">

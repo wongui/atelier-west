@@ -1,6 +1,7 @@
 "use client";
 
-import type { RefObject } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
+import Link from "next/link";
 import { ScrollVideo } from "@/components/ScrollVideo";
 import { FoldGrid } from "@/components/FoldGrid";
 import { withBasePath } from "@/lib/basePath";
@@ -8,6 +9,9 @@ import { withBasePath } from "@/lib/basePath";
 interface Fold1HeroProps {
   heroRef: RefObject<HTMLDivElement | null>;
 }
+
+const WORDMARK_TEXT = "Atelier West";
+const WORDMARK_HERO_SIZE = 42.4;
 
 /**
  * Down arrow next to "Scroll to learn more" — real path data from the
@@ -25,13 +29,38 @@ function ArrowDownIcon({ className = "" }: { className?: string }) {
 }
 
 /**
- * Fold1 — the video-scrub hero. Only the headline/eyebrow/scroll-hint are
- * in normal flow (so they scroll away naturally); the wordmark and
- * About/Apply are owned by SiteNav, which is mounted once at the page
- * level and morphs over this section's scroll range. Content positions
- * (column + vh offset) match the Figma Fold1 frame exactly.
+ * Fold1 — the video-scrub hero. The wordmark, headline/eyebrow/scroll-hint
+ * are all in normal flow here, so they scroll away naturally with the rest
+ * of the hero; only the compact nav wordmark that appears once About/Apply
+ * stick to the top is owned by SiteNav (see its own comment — it's a plain
+ * appear, not a scale-up of this one). Content positions (column + vh
+ * offset) match the Figma Fold1 frame exactly.
  */
 export function Fold1Hero({ heroRef }: Fold1HeroProps) {
+  const measureRef = useRef<HTMLSpanElement>(null);
+  const [heroTracking, setHeroTracking] = useState(0);
+
+  useEffect(() => {
+    const measure = measureRef.current;
+    if (!measure) return;
+
+    // Same technique as the compact nav wordmark used to use: a hidden
+    // 0-tracking clone gives the natural width at this font-size, then
+    // letter-spacing is solved so the tracked-out text exactly fills the
+    // grid's content width at any viewport size.
+    const recompute = () => {
+      const availableWidth = window.innerWidth - 48; // 2x --spacing-page (24px)
+      const naturalWidth = measure.getBoundingClientRect().width;
+      // Divide by (length - 1), not length: letter-spacing adds a trailing
+      // gap after the LAST character too, which doesn't count as a visible
+      // "edge-to-edge" gap.
+      setHeroTracking(Math.max(0, (availableWidth - naturalWidth) / (WORDMARK_TEXT.length - 1)));
+    };
+    recompute();
+    window.addEventListener("resize", recompute);
+    return () => window.removeEventListener("resize", recompute);
+  }, []);
+
   const scrollToFold2 = () => {
     document.getElementById("fold-2")?.scrollIntoView({ behavior: "smooth" });
   };
@@ -40,7 +69,25 @@ export function Fold1Hero({ heroRef }: Fold1HeroProps) {
     <div ref={heroRef} className="relative h-[200vh] overflow-x-hidden bg-surface-light">
       <ScrollVideo framesPath={withBasePath("/frames/octopus")} frameCount={96} scrollContainerRef={heroRef} />
 
-      <FoldGrid className="absolute inset-x-0 top-0 h-screen">
+      <FoldGrid className="absolute inset-x-0 top-0 h-screen pt-(--spacing-page)">
+        <Link
+          href="/"
+          className="col-start-1 col-span-3 row-start-1 font-display uppercase whitespace-nowrap text-text-on-light"
+          style={{ fontSize: WORDMARK_HERO_SIZE, letterSpacing: heroTracking }}
+        >
+          {WORDMARK_TEXT}
+        </Link>
+        {/* Hidden 0-tracking clone used only to measure the wordmark's
+            natural width, to solve the tracking above. */}
+        <span
+          ref={measureRef}
+          aria-hidden
+          className="fixed top-0 left-[-9999px] font-display uppercase whitespace-nowrap"
+          style={{ fontSize: WORDMARK_HERO_SIZE, letterSpacing: 0 }}
+        >
+          {WORDMARK_TEXT}
+        </span>
+
         {/* Eyebrow + headline share the same top offset so they align to
             each other, not to independently-tuned vh guesses. The extra
             pt nudges the eyebrow's small-font line box down to visually
@@ -71,6 +118,7 @@ export function Fold1Hero({ heroRef }: Fold1HeroProps) {
             so its bottom edge matches SiteNav's About/Apply bottom edge.
             A real button (not a styled <p>) since it now scrolls to Fold2. */}
         <button
+          id="fold1-scroll-hint"
           type="button"
           onClick={scrollToFold2}
           className="col-start-1 row-start-1 self-end mb-6 flex w-fit cursor-pointer items-center justify-start gap-2 whitespace-nowrap font-body text-body text-text-on-light"
