@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { useLayoutEffect, useRef, useState, type RefObject } from "react";
 import Link from "next/link";
 import { ScrollVideo } from "@/components/ScrollVideo";
 import { FoldGrid } from "@/components/FoldGrid";
@@ -45,7 +45,7 @@ export function Fold1Hero({ heroRef }: Fold1HeroProps) {
   const headline = useRevealOnMount<HTMLDivElement>();
   const scrollHint = useRevealOnMount<HTMLButtonElement>();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const measure = measureRef.current;
     if (!measure) return;
 
@@ -53,6 +53,13 @@ export function Fold1Hero({ heroRef }: Fold1HeroProps) {
     // 0-tracking clone gives the natural width at this font-size, then
     // letter-spacing is solved so the tracked-out text exactly fills the
     // grid's content width at any viewport size.
+    //
+    // useLayoutEffect (not useEffect) so this runs before the browser
+    // paints — otherwise the wordmark visibly paints at 0 tracking first,
+    // then jumps to the real value, and since it shares the reveal's
+    // transition-all, that jump animates too (reads as the letter-spacing
+    // "growing" on load) instead of the reveal being the only visible
+    // animation.
     const recompute = () => {
       const availableWidth = window.innerWidth - 48; // 2x --spacing-page (24px)
       const naturalWidth = measure.getBoundingClientRect().width;
