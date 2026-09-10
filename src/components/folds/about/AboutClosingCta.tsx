@@ -19,7 +19,7 @@ export function AboutClosingCta({ heading, body }: AboutClosingCtaProps) {
   return (
     <div className="relative min-h-screen bg-surface-accent">
       <img
-        src={withBasePath("/images/about-closing-cta-bg.png")}
+        src={withBasePath("/images/about-closing-cta-bg-v2.png")}
         alt=""
         className="absolute inset-0 h-full w-full object-cover"
       />
