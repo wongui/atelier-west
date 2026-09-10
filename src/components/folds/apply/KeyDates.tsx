@@ -27,20 +27,24 @@ const dates = [
  * (cream) treatment while it's under the fixed nav, same mechanism as
  * ProgressionSection/ImageTextFold elsewhere.
  *
- * Desktop only: `lg:min-h-[32vh]` + `lg:content-center` so this fold and
- * ApplyHero's `min-h-[68vh]` together fill exactly one viewport
- * (68 + 32 = 100), content vertically centered in the remaining space —
- * mobile keeps its own natural `py-16` height, untouched.
+ * v2: hugs its content (`lg:py-16`) instead of forcing a fixed
+ * `lg:min-h-[32vh]` — the fold no longer needs to pair with ApplyHero to
+ * fill exactly one viewport, so its height is just whatever the content
+ * needs. Mobile keeps its own natural `py-16` height, untouched.
  */
 function KeyDateItem({ date, label }: { date: string; label: string }) {
   const reveal = useReveal<HTMLDivElement>();
 
   return (
-    <div ref={reveal.ref} className={`flex flex-col ${reveal.revealClassName}`}>
+    <div ref={reveal.ref} className={`flex flex-col gap-1 ${reveal.revealClassName}`}>
       <span className="font-display text-[23px] leading-[1.4] lg:text-h3 lg:leading-none">
         {date}
       </span>
-      <span className="font-display text-[23px] leading-[1.4] lg:text-h3 lg:leading-none">
+      {/* Plain body copy per Figma (BentonSansF, 18px) at desktop — this
+          previously matched the date's h3/display size, which Figma
+          doesn't show for the label. Mobile untouched (not covered by
+          this Figma check). */}
+      <span className="font-display text-[23px] leading-[1.4] lg:font-body lg:text-body">
         {label}
       </span>
     </div>
@@ -53,16 +57,21 @@ export function KeyDates({ sectionRef }: { sectionRef?: RefObject<HTMLDivElement
   return (
     <FoldGrid
       ref={sectionRef}
-      className="bg-surface-dark py-16 text-text-on-dark lg:min-h-[32vh] lg:content-center lg:py-0"
+      className="bg-surface-dark py-16 text-text-on-dark"
     >
       <div
         ref={eyebrow.ref}
         className={`col-start-1 col-span-8 flex flex-col gap-6 ${eyebrow.revealClassName}`}
       >
-        <Divider />
         <EyebrowLabel>Key Dates</EyebrowLabel>
+        {/* Full opacity per Figma (solid #FBFAE4 stroke) — Divider's
+            default opacity-20 is meant for StepProgress's faint
+            background track, not a plain section-label rule like this
+            one, which should read as a solid line. Below the label, not
+            above it, per the updated wireframe. */}
+        <Divider className="opacity-100" />
       </div>
-      <div className="col-start-1 col-span-8 mt-10 flex flex-col gap-6 lg:grid lg:grid-cols-4 lg:gap-x-6 lg:gap-y-10">
+      <div className="col-start-1 col-span-8 mt-6 flex flex-col gap-6 lg:grid lg:grid-cols-4 lg:gap-x-6 lg:gap-y-10">
         {dates.map((d) => (
           <KeyDateItem key={d.label} date={d.date} label={d.label} />
         ))}

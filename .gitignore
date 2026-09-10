@@ -42,3 +42,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# auto-generated from public/images/mentors/ (see scripts/generate-mentors.mjs)
+/src/data/mentors.generated.ts

@@ -28,7 +28,10 @@ export function ApplyHeroMobile() {
         alt=""
         className="absolute inset-0 h-full w-full object-cover object-top"
       />
-      <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-surface-light via-surface-light/70 to-transparent" />
+      {/* Pink/coral scrim (--color-wash-warm), not beige surface-light —
+          matches the warm duotone wash on the hero photo itself instead
+          of reading as a mismatched cream patch over it. */}
+      <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-wash-warm via-wash-warm/70 to-transparent" />
       <div
         ref={text.ref}
         className={`relative flex min-h-[68vh] flex-col items-start justify-end gap-4 px-(--spacing-page) pt-24 pb-16 ${text.revealClassName}`}

@@ -66,7 +66,7 @@ export function MentorshipGrid({ heading, intro, mentors }: MentorshipGridProps)
         </div>
       </FoldGrid>
 
-      <div className="mt-16 grid grid-cols-2 gap-x-6 gap-y-16 px-(--spacing-page) sm:grid-cols-3 lg:grid-cols-5">
+      <div className="mx-auto mt-16 grid max-w-(--max-width-page) grid-cols-2 gap-x-6 gap-y-16 px-(--spacing-page) sm:grid-cols-3 lg:grid-cols-5">
         {mentors.map((mentor, i) => (
           <MentorCard key={`${mentor.name}-${i}`} mentor={mentor} />
         ))}

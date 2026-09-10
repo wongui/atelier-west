@@ -12,27 +12,29 @@ import { ProgressionSectionMobile } from "@/components/folds/ProgressionSectionM
 import { LabFacilitiesGrid } from "@/components/folds/about/LabFacilitiesGrid";
 import { MentorshipGrid } from "@/components/folds/about/MentorshipGrid";
 import { AboutClosingCta } from "@/components/folds/about/AboutClosingCta";
+import { AboutClosingCtaMobile } from "@/components/folds/about/AboutClosingCtaMobile";
 import { withBasePath } from "@/lib/basePath";
 import { useIsDesktop } from "@/lib/useIsDesktop";
+import { mentors } from "@/data/mentors.generated";
 
 const programSteps = [
   {
     number: "Weeks 0-1",
     title: "Onboarding & Lab Training",
     body: "Get access to your lab space, meet your expert mentors, and get trained on the equipment you'll be using.",
-    image: withBasePath("/images/about-program-1.png"),
+    image: withBasePath("/images/about-fold-3.png"),
   },
   {
     number: "Weeks 2-11",
     title: "Build",
     body: "Utilize the space to push your solution forward together with experts. There will also be a handful of cohort events built around your specific problem set.",
-    image: withBasePath("/images/about-program-2.png"),
+    image: withBasePath("/images/about-fold-4.png"),
   },
   {
     number: "Week 12",
     title: "Demo Day",
     body: "Show what you built to enterprise partners and investors",
-    image: withBasePath("/images/about-program-3.png"),
+    image: withBasePath("/images/about-fold-5.png"),
   },
 ];
 
@@ -69,19 +71,6 @@ const labs = [
   },
 ];
 
-const mentors = [
-  { name: "Antonello Crimi", role: "UX/UI Design", image: "/images/image 383-v2.png" },
-  { name: "Bethany Brown", role: "Service Design", image: "/images/image 384-v2.png" },
-  { name: "Chris Blower", role: "Mechanical Eng.", image: "/images/image 385-v2.png" },
-  { name: "Fabrice Pouani", role: "RF Engineering", image: "/images/image 386-v2.png" },
-  { name: "John Staskevitch", role: "Firmware Eng.", image: "/images/image 387-v2.png" },
-  { name: "Martha Calderon", role: "Electrical Eng.", image: "/images/image 388-v2.png" },
-  { name: "Josh Baillon", role: "SV Ecosystem", image: "/images/image 389-v2.png" },
-  { name: "Ryan Starling", role: "Industrial Design", image: "/images/image 390-v2.png" },
-  { name: "Kamil Klamann", role: "Strategy", image: "/images/image 391-v2.png" },
-  { name: "Peter Hauser", role: "N.P.I.", image: "/images/image 392-v2.png" },
-];
-
 export default function AboutPage() {
   const costCommitmentRef = useRef<HTMLDivElement>(null);
   const progressionRef = useRef<HTMLDivElement>(null);
@@ -91,8 +80,11 @@ export default function AboutPage() {
   // Refs are stable across renders, so this array's identity is too —
   // keeps SiteNav's watcher effect from tearing down/recreating its
   // ScrollTriggers on every re-render (e.g. each isOverDark toggle).
+  // progressionRef is NOT included — this section is beige/light on
+  // About (unlike Home's dark treatment), so the nav should stay in its
+  // on-light state while scrolling over it, not switch to on-dark.
   const darkSectionRefs = useMemo(
-    () => [costCommitmentRef, progressionRef, labFacilitiesRef, eventsEnterpriseRef],
+    () => [costCommitmentRef, labFacilitiesRef, eventsEnterpriseRef],
     []
   );
 
@@ -132,7 +124,7 @@ export default function AboutPage() {
           ]}
         />
 
-        <ProgressionSectionMobile steps={programSteps} sectionRef={progressionRef} />
+        <ProgressionSectionMobile steps={programSteps} sectionRef={progressionRef} bg="light" />
 
         <LabFacilitiesGrid
           heading="Lab & Facilities Access"
@@ -164,7 +156,7 @@ export default function AboutPage() {
           body="Cohort participants will also be prioritized to join NVIDIA's Inception Program. Companies in this program get access to the latest developer tools and training, preferred pricing on NVIDIA hardware and software, exclusive offers from partners, and exposure to a global ecosystem of investors. Participants will need to submit a separate, short application for Inception, which will be linked to from our Application form."
         />
 
-        <AboutClosingCta
+        <AboutClosingCtaMobile
           heading="We're looking for committed teams building in Physical AI and solving a clear, named problem."
           body={[
             "Physical AI refers to artificial intelligence systems that are embodied in or directly interact with the physical world, perceiving the environment through sensors, making context-aware decisions, and taking actions autonomously. This could include robotics, autonomous machines, computer vision systems, agent-first or edge AI devices.",
@@ -207,7 +199,7 @@ export default function AboutPage() {
         ]}
       />
 
-      <ProgressionSection steps={programSteps} sectionRef={progressionRef} />
+      <ProgressionSection steps={programSteps} sectionRef={progressionRef} bg="light" />
 
       <LabFacilitiesGrid
         heading="Lab & Facilities Access"

@@ -73,8 +73,9 @@
      canvas, and hard-coding that height would break the equal
      desktop/mobile responsive requirement. Folds size themselves to
      content + viewport instead. */
-  --spacing-page: 1.5rem;        /* 24px — horizontal page padding, consistent across every fold */
+  --spacing-page: 4rem;          /* 64px — horizontal page padding, consistent across every fold (v2: widened from 24px) */
   --max-width-content: 38.375rem; /* 614px — text column max-width (headline/body), vs. full-bleed photography */
+  --max-width-page: 90rem;       /* 1440px — every fold's grid content stops growing past this and centers; only backgrounds/photography (outside FoldGrid's grid) stay full-bleed past it */
 
   /* Shape */
   --radius-pill: 55px;
@@ -120,6 +121,7 @@
 
   --spacing-page: var(--spacing-page);
   --max-width-content: var(--max-width-content);
+  --max-width-page: var(--max-width-page);
 
   --radius-pill: var(--radius-pill);
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { useEffect, useRef, type RefObject } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { StepProgress } from "@/components/StepProgress";
@@ -21,36 +21,67 @@ interface ProgressionSectionProps {
   /** Exposes the section's wrapper so SiteNav can watch it and swap the
    * nav to its cream/beige treatment while it's the pinned backdrop. */
   sectionRef?: RefObject<HTMLDivElement | null>;
+  /** "dark" (default) matches Home's charcoal/cream treatment. "light"
+   * flips to the beige/charcoal (surface-light/text-on-light) pairing —
+   * About's own request, kept independent of Home's styling. */
+  bg?: "dark" | "light";
 }
 
+// Extra scroll distance, ahead of AND behind the steps.length x 100vh
+// needed for the horizontal traversal itself, spent fully static on step
+// 1 / step N — a reading pause right as the pin engages (before the
+// first rightward move) and another right as the last panel finishes
+// arriving (before the pin releases into normal vertical scroll), so the
+// hand-off never reads as still-sliding.
+const HOLD_VH = 50;
+
 /**
- * Folds 3-5 — Floema-style pinned "How it works" progression. Content
- * (image/number/title/body) changes discretely between the 3 steps —
- * activeStep only updates on an actual threshold crossing, so each step
- * holds fully static while pinned, with a quick crossfade to the next —
- * but the scroll position itself is NOT snapped (no ScrollTrigger
- * `snap`): the progress-bar fill and the user's actual scroll stay 1:1,
- * so a small scroll gesture only moves the bar a little instead of
- * jumping the page to the next step. Each step gets exactly one full
- * viewport height of scroll. Column layout matches Figma exactly:
- * number+title in col1, a full-bleed divider between them, body copy in
- * col4.
+ * Folds 3-5 — pinned horizontal-scroll progression (Figma frame 748:884 /
+ * 748:1127): the 3 steps sit side by side in one wide track, each its own
+ * full-width panel with its own photo, and vertical scroll while the
+ * section is pinned drives the track's translateX 1:1 (scrubbed, not
+ * snapped — same "small scroll only moves things a little" feel the old
+ * crossfade version deliberately used, just applied to horizontal
+ * position instead of opacity). A HOLD_VH-tall dead zone at each end of
+ * the pin holds fully static (on step 1, then on step N) so there's a
+ * beat to read before the first move and a beat to settle after the
+ * last one; in between, steps.length x 100vh maps 1:1 to the horizontal
+ * traversal. Only once the trailing hold finishes does the pin release
+ * and normal vertical scroll continue to the next fold.
  */
-export function ProgressionSection({ steps, sectionRef }: ProgressionSectionProps) {
+export function ProgressionSection({ steps, sectionRef, bg = "dark" }: ProgressionSectionProps) {
+  const bgClassName = bg === "light" ? "bg-surface-light text-text-on-light" : "bg-surface-dark text-text-on-dark";
+  const progressTextClassName = bg === "light" ? "text-text-on-light" : "text-text-on-dark";
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
-  const [activeStep, setActiveStep] = useState(0);
-  // Gates the per-step reveal below on the section actually having scrolled
-  // into view, so step 0 doesn't play its entrance while still off-screen.
+  // Gates the entrance reveal below on the section actually having
+  // scrolled into view. Deliberately watches the STICKY INNER div (a
+  // fixed 100vh), not the outer pinned wrapper — IntersectionObserver's
+  // ratio is relative to the target's OWN height, and the wrapper here
+  // spans several screens (hold + traversal + hold), so as that grows
+  // the visible fraction keeps shrinking and can drop under the
+  // observer's threshold before it ever fires, leaving the reveal (and
+  // the whole track, which carries its opacity/blur classes) stuck
+  // hidden. The inner div's height never changes, so this stays reliable
+  // regardless of how long the pin ends up being.
   const sectionReveal = useReveal<HTMLDivElement>();
-  // Re-plays the blur+rise reveal every time the active step changes (not
-  // just once) — reset to hidden then flipped back on a couple of frames
-  // later so the CSS transition has a hidden state to animate from.
-  const [stepRevealed, setStepRevealed] = useState(false);
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
-    if (!wrapper) return;
+    const track = trackRef.current;
+    if (!wrapper || !track) return;
+
+    const traversalVh = steps.length * 100;
+    // The actual scrubbed range while pinned is (wrapper height - one
+    // viewport) — the sticky child only holds for as long as the
+    // wrapper still has a viewport's worth of extra height above it to
+    // "spend" — not the wrapper's full height. pinDurationVh is exactly
+    // that scrubbed range, and the wrapper below is sized to match
+    // (pinDurationVh + 100vh) so self.progress covers hold + traversal +
+    // hold precisely, with the trailing hold actually finishing before
+    // the pin releases instead of getting cut short.
+    const pinDurationVh = traversalVh + HOLD_VH * 2;
 
     const trigger = ScrollTrigger.create({
       trigger: wrapper,
@@ -58,123 +89,87 @@ export function ProgressionSection({ steps, sectionRef }: ProgressionSectionProp
       end: "bottom bottom",
       scrub: true,
       onUpdate: (self) => {
+        const scrolledVh = self.progress * pinDurationVh;
+        const traversalScrolled = Math.min(traversalVh, Math.max(0, scrolledVh - HOLD_VH));
+        const traversalProgress = traversalScrolled / traversalVh;
+
         if (fillRef.current) {
-          fillRef.current.style.width = `${self.progress * 100}%`;
+          fillRef.current.style.width = `${traversalProgress * 100}%`;
         }
-        const next = Math.min(steps.length - 1, Math.floor(self.progress * steps.length));
-        setActiveStep((prev) => {
-          if (prev === next) return prev;
-          // Reset in the SAME render that switches steps — resetting from a
-          // separate effect one render later let the incoming item briefly
-          // render already-revealed (stale `stepRevealed` from the previous
-          // step) before flipping hidden then back, a flash-then-hide-then-
-          // show glitch instead of a clean single reveal.
-          setStepRevealed(false);
-          return next;
-        });
+        // Track is steps.length x the panel width, so to land the last
+        // panel flush against the right edge, translate by
+        // -(steps.length-1)/steps.length of the TRACK's own width.
+        const xPercent = -(traversalProgress * (steps.length - 1) * 100) / steps.length;
+        track.style.transform = `translateX(${xPercent}%)`;
       },
     });
 
     return () => trigger.kill();
   }, [steps.length]);
 
-  useEffect(() => {
-    if (!sectionReveal.isVisible) return;
-    let raf2 = 0;
-    const raf1 = requestAnimationFrame(() => {
-      raf2 = requestAnimationFrame(() => setStepRevealed(true));
-    });
-    return () => {
-      cancelAnimationFrame(raf1);
-      cancelAnimationFrame(raf2);
-    };
-  }, [activeStep, sectionReveal.isVisible]);
-
-  const revealedStepClass = "opacity-100 blur-none translate-y-0";
-  const hiddenStepClass = "opacity-0 blur-md translate-y-6";
-  const activeItemClass = `transition-all duration-500 ${stepRevealed ? revealedStepClass : hiddenStepClass}`;
-
   return (
     <div
       ref={(node) => {
         wrapperRef.current = node;
-        sectionReveal.ref.current = node;
         if (sectionRef) sectionRef.current = node;
       }}
       className="relative"
-      style={{ height: `${steps.length * 100}vh` }}
+      style={{ height: `${steps.length * 100 + HOLD_VH * 2 + 100}vh` }}
     >
-      <div className="sticky top-0 h-screen overflow-hidden bg-surface-dark text-text-on-dark">
-        {steps.map((step, i) => (
-          <img
-            key={step.number}
-            src={step.image}
-            alt=""
-            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
-            style={{ opacity: i === activeStep ? 1 : 0 }}
-          />
-        ))}
-        <div className="absolute inset-0 bg-black/50" />
+      <div
+        ref={sectionReveal.ref}
+        className={`sticky top-0 h-screen overflow-hidden ${bgClassName}`}
+      >
+        {/* Rhythm below the (now shorter, pt-4/pb-4) fixed SiteNav is one
+            consistent 2rem (32px) gap, repeated three times: nav→progress
+            (this top offset), progress→text (pt-[8.5rem] below == this
+            top-[103px] + the bar's ~1px + 2rem), and text→image (the
+            grid's row-gap). Nav's own rendered height varies slightly
+            with content, so this is tuned to its current ~71px bottom
+            edge rather than derived from a shared token. */}
+        <StepProgress
+          fillRef={fillRef}
+          className={`absolute inset-x-0 top-[103px] mx-(--spacing-page) ${progressTextClassName}`}
+        />
 
-        <FoldGrid className="absolute inset-0 content-start pt-24 pb-16">
-          <div className="relative col-start-1 col-span-2 row-start-1 mt-[26vh]">
-            {steps.map((step, i) => (
-              <span
-                key={step.number}
-                style={{ transitionDelay: i === activeStep ? "100ms" : undefined }}
-                className={`absolute inset-x-0 top-0 font-display text-h1 text-text-on-dark ${
-                  i === activeStep ? activeItemClass : "transition-opacity duration-500 opacity-0"
-                }`}
+        <div
+          ref={trackRef}
+          className={`flex h-full ${sectionReveal.revealClassName}`}
+          style={{ width: `${steps.length * 100}%`, willChange: "transform" }}
+        >
+          {steps.map((step) => (
+            <div key={step.number} className="h-full shrink-0" style={{ width: `${100 / steps.length}%` }}>
+              <FoldGrid
+                className="h-full pt-[8.5rem] pb-8"
+                // Row 1 is sized to the tallest realistic case — number +
+                // gap + a 2-line-wrapped title (70 + 16 + 140 = 226px).
+                gridClassName="grid-rows-[14.125rem_1fr] gap-y-8"
               >
-                {step.number}
-              </span>
-            ))}
-            <span className="font-display text-h1 opacity-0" aria-hidden>
-              {steps[0].number}
-            </span>
-          </div>
-
-          {/* The divider-with-fill sits between the number and the title, per Figma — not a separate progress UI at the bottom. Fill tracks continuous scroll position, not the discrete step. */}
-          <StepProgress
-            fillRef={fillRef}
-            className="col-start-1 col-span-8 row-start-1 mt-[calc(26vh+4.375rem)] -mx-(--spacing-page) text-text-on-dark"
-          />
-
-          <div className="relative col-start-1 col-span-3 row-start-1 mt-[calc(26vh+4.375rem+0.5rem)]">
-            {steps.map((step, i) => (
-              <h3
-                key={step.number}
-                style={{ transitionDelay: i === activeStep ? "100ms" : undefined }}
-                className={`absolute inset-x-0 top-0 font-display text-h1 text-text-on-dark ${
-                  i === activeStep ? activeItemClass : "transition-opacity duration-500 opacity-0"
-                }`}
-              >
-                {step.title}
-              </h3>
-            ))}
-            {/* Sizing spacer sized to the longest title (may wrap to 2 lines) so the absolutely-positioned crossfade above always has room. */}
-            <h3 className="font-display text-h1 opacity-0" aria-hidden>
-              {steps.reduce((longest, s) => (s.title.length > longest.length ? s.title : longest), "")}
-            </h3>
-          </div>
-
-          <div className="relative col-start-4 col-span-2 row-start-1 mt-[calc(26vh+4.375rem+0.5rem)]">
-            {steps.map((step, i) => (
-              <p
-                key={step.number}
-                style={{ transitionDelay: i === activeStep ? "100ms" : undefined }}
-                className={`absolute inset-x-0 top-0 font-body text-body text-text-on-dark ${
-                  i === activeStep ? activeItemClass : "transition-opacity duration-500 opacity-0"
-                }`}
-              >
-                {step.body}
-              </p>
-            ))}
-            <p className="font-body text-body opacity-0" aria-hidden>
-              {steps[0].body}
-            </p>
-          </div>
-        </FoldGrid>
+                <span className="col-start-1 col-span-4 row-start-1 font-display text-h1">{step.number}</span>
+                {/* Both number and title sit in the same grid cell
+                    (row-start-1), stacked via margin rather than normal
+                    flow — so this offset must clear the number's OWN
+                    70px line box, not just the gap: 70px (number) + 16px
+                    (gap) = 86px. */}
+                <h3 className="col-start-1 col-span-4 row-start-1 mt-[5.375rem] font-display text-h1">
+                  {step.title}
+                </h3>
+                <p className="col-start-5 col-span-3 row-start-1 font-body text-body">{step.body}</p>
+                {/* min-h-0 overrides the grid item's automatic minimum
+                    size — without it, an <img>'s intrinsic aspect ratio
+                    inflates this 1fr row past the space actually
+                    available, and the overflow-hidden sticky container
+                    then clips the excess off the bottom, which reads as
+                    the image being cropped from the top. */}
+                <img
+                  src={step.image}
+                  alt=""
+                  className="col-start-1 col-span-8 row-start-2 h-full w-full min-h-0 object-cover"
+                />
+              </FoldGrid>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

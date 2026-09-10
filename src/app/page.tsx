@@ -24,19 +24,19 @@ const progressionSteps = [
     number: "01",
     title: "Built to Build",
     body: "We have six labs for rapid prototyping, industrial design, mechanical and electrical engineering, metrology, and new product introduction. Space to build intelligent systems that sense, decide, and act like they belong in the world.",
-    image: withBasePath("/images/fold-3.jpg"),
+    image: withBasePath("/images/fold-3.png"),
   },
   {
     number: "02",
     title: "Hands-On Experts",
     body: "You get structured working sessions with frog, Synapse, and Capgemini Experience Engineering experts, across strategy, design, hardware, AI, simulation, and embedded software. People who build alongside you, not just advice from the sidelines.",
-    image: withBasePath("/images/fold-4.jpg"),
+    image: withBasePath("/images/fold-4.png"),
   },
   {
     number: "03",
     title: "A Straight Line to Enterprise",
     body: "We work with 85% of the 200 largest public companies on the Forbes Global 2000 list. We bring real world applications for what you build here.",
-    image: withBasePath("/images/fold-5.jpg"),
+    image: withBasePath("/images/fold-5.png"),
   },
 ];
 

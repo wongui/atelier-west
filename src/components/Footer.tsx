@@ -24,9 +24,11 @@ const legalLinks = [
  * min-h (not a full viewport height) with the nav/copyright/image row
  * as a flex-1 block below the wordmark — per Figma's 797px fold vs. the
  * 973px full-viewport reference, taller than the old content-hugging
- * layout but not a full screen. Nav sits just under the wordmark and
- * copyright is pinned to the bottom via justify-between, independent of
- * viewport height.
+ * layout but not a full screen. v2: nav links, legal line, and the
+ * decorative image are bottom-anchored together as one group (grid
+ * `items-end`), not split apart via justify-between — the gap above them
+ * is just whatever flex-1 leaves over, so it grows/shrinks with viewport
+ * height on its own instead of being pinned by an explicit top margin.
  *
  * Letter-spacing is computed (not the fixed --tracking-wordmark token)
  * so the wordmark fills the grid's content width exactly at any
@@ -45,7 +47,17 @@ export function Footer() {
     if (!wordmark || !measure) return;
 
     const recompute = () => {
-      const availableWidth = window.innerWidth - 48; // 2x --spacing-page (24px)
+      // Measured off the actual grid container's padding rather than a
+      // hardcoded 2x--spacing-page px value — that hardcoded value went
+      // stale (and overflowed the frame) the moment --spacing-page
+      // changed for v2's wider margins. clientWidth already reflects the
+      // --max-width-page cap at any viewport size, so subtracting the
+      // real resolved padding gives the exact available content width.
+      const grid = wordmark.parentElement;
+      const gridStyles = grid ? getComputedStyle(grid) : null;
+      const paddingLeft = gridStyles ? parseFloat(gridStyles.paddingLeft) || 0 : 0;
+      const paddingRight = gridStyles ? parseFloat(gridStyles.paddingRight) || 0 : 0;
+      const availableWidth = (grid?.clientWidth ?? window.innerWidth) - paddingLeft - paddingRight;
       const naturalWidth = measure.getBoundingClientRect().width;
       // Divide by (length - 1), not length: letter-spacing adds a trailing
       // gap after the LAST character too, which doesn't count as a visible
@@ -84,10 +96,26 @@ export function Footer() {
         </span>
       </FoldGrid>
 
-      <FoldGrid className="mt-12 flex-1">
+      {/* No fixed top margin here — the gap between the wordmark above and
+          this block is whatever `flex-1` leaves over, so it grows/shrinks
+          with viewport height on its own. FoldGrid's inner grid is
+          hardcoded to `h-full`, but that percentage height doesn't
+          reliably resolve through this wrapper (measured: it collapses to
+          the grid's own content height instead of the wrapper's full
+          632px+ flex-grown height) — rather than depend on that, `flex
+          flex-col justify-end` on the OUTER wrapper pushes its single
+          child (the grid, whatever height it ends up being) flush to the
+          wrapper's own bottom edge directly, sidestepping the percentage
+          question entirely. `content-end` on the grid itself is kept as a
+          belt-and-suspenders in case the percentage height does resolve.
+          Each child then gets its own `self-end` so it keeps its natural
+          height instead of stretching to fill the row (grid's default
+          cross-axis alignment). Only the footer's own bottom padding
+          (`py-(--spacing-page)` on the <footer>) sets the bottom margin. */}
+      <FoldGrid className="flex-1 flex flex-col justify-end" gridClassName="content-end">
         <div
           ref={nav.ref}
-          className={`col-start-1 col-span-3 flex h-full flex-col justify-between gap-16 ${nav.revealClassName}`}
+          className={`col-start-1 col-span-3 flex flex-col gap-16 self-end ${nav.revealClassName}`}
         >
           <nav className="flex flex-col gap-2">
             <Link href="/about" className="font-body text-body font-medium w-fit">
