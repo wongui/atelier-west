@@ -114,6 +114,7 @@ export function ProgressionSection({ steps, sectionRef }: ProgressionSectionProp
             {steps.map((step, i) => (
               <span
                 key={step.number}
+                style={{ transitionDelay: i === activeStep ? "100ms" : undefined }}
                 className={`absolute inset-x-0 top-0 font-display text-h1 text-text-on-dark ${
                   i === activeStep ? activeItemClass : "transition-opacity duration-500 opacity-0"
                 }`}
@@ -136,6 +137,7 @@ export function ProgressionSection({ steps, sectionRef }: ProgressionSectionProp
             {steps.map((step, i) => (
               <h3
                 key={step.number}
+                style={{ transitionDelay: i === activeStep ? "100ms" : undefined }}
                 className={`absolute inset-x-0 top-0 font-display text-h1 text-text-on-dark ${
                   i === activeStep ? activeItemClass : "transition-opacity duration-500 opacity-0"
                 }`}
@@ -153,6 +155,7 @@ export function ProgressionSection({ steps, sectionRef }: ProgressionSectionProp
             {steps.map((step, i) => (
               <p
                 key={step.number}
+                style={{ transitionDelay: i === activeStep ? "100ms" : undefined }}
                 className={`absolute inset-x-0 top-0 font-body text-body text-text-on-dark ${
                   i === activeStep ? activeItemClass : "transition-opacity duration-500 opacity-0"
                 }`}

@@ -22,10 +22,10 @@ export function Fold2Intro() {
         src={withBasePath("/images/fold-2.png")}
         alt=""
         className={`col-start-1 col-span-3 self-center w-full ${image.revealClassName}`}
-        style={{ transitionDelay: "100ms" }}
       />
       <div
         ref={text.ref}
+        style={{ transitionDelay: "100ms" }}
         className={`col-start-4 col-span-5 self-center flex flex-col gap-6 max-w-(--max-width-content) ${text.revealClassName}`}
       >
         <h2 className="font-display text-h2 text-text-on-light">

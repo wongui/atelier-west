@@ -15,7 +15,7 @@ export function Fold2IntroMobile() {
 
   return (
     <section id="fold-2-mobile" className="bg-surface-light px-(--spacing-page) py-16">
-      <div ref={text.ref} className={`flex flex-col gap-6 ${text.revealClassName}`}>
+      <div ref={text.ref} style={{ transitionDelay: "100ms" }} className={`flex flex-col gap-6 ${text.revealClassName}`}>
         <h2 className="font-display text-[30px] leading-[1.1] text-text-on-light">
           A fellowship for founders building machines with real specs and
           real instinct.
@@ -33,7 +33,6 @@ export function Fold2IntroMobile() {
         src={withBasePath("/images/fold-2.png")}
         alt=""
         className={`mt-9 w-full rounded-2xl ${image.revealClassName}`}
-        style={{ transitionDelay: "100ms" }}
       />
     </section>
   );
