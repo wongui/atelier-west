@@ -85,7 +85,16 @@ export function Fold1Hero({ heroRef }: Fold1HeroProps) {
         <Link
           ref={wordmark.ref}
           href="/"
-          className={`col-start-1 col-span-3 row-start-1 font-display uppercase whitespace-nowrap text-text-on-light ${wordmark.revealClassName}`}
+          // Its own explicit transition-property list (opacity/filter/
+          // transform only), NOT revealClassName's `transition-all` — this
+          // element also carries a dynamically-computed letterSpacing, and
+          // transition-all made any correction to that value (e.g. a resize,
+          // or the measurement settling) visibly animate over 700ms, which
+          // read as the letter-spacing "growing"/stretching on load instead
+          // of being instant like a normal layout property.
+          className={`col-start-1 col-span-3 row-start-1 font-display uppercase whitespace-nowrap text-text-on-light transition-[opacity,filter,transform] duration-700 ease-out ${
+            wordmark.isVisible ? "opacity-100 blur-none translate-y-0" : "opacity-0 blur-md translate-y-6"
+          }`}
           style={{ fontSize: WORDMARK_HERO_SIZE, letterSpacing: heroTracking }}
         >
           {WORDMARK_TEXT}
