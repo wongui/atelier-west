@@ -36,7 +36,9 @@ export function Fold8BeliefMobile() {
           itself and scale.
         </p>
         <TextLink href="#">
-          Learn more about our commitment to Physical AI
+          Learn more about our commitment
+          <br />
+          to Physical AI
         </TextLink>
       </div>
     </div>
