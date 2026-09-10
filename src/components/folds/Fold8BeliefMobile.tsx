@@ -14,7 +14,7 @@ export function Fold8BeliefMobile() {
   const text = useReveal<HTMLDivElement>();
 
   return (
-    <div className="relative flex min-h-screen flex-col justify-end overflow-hidden bg-surface-accent px-(--spacing-page) pb-16 pt-24">
+    <div className="relative flex min-h-[115dvh] flex-col justify-end overflow-hidden bg-surface-accent px-(--spacing-page) pb-16 pt-24">
       <img
         src={withBasePath("/images/fold-8-mobile.png")}
         alt=""
