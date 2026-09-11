@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { SiteNav } from "@/components/SiteNav";
 import { MobileSiteNav } from "@/components/MobileSiteNav";
 import { Footer } from "@/components/Footer";
+import { FooterMobile } from "@/components/folds/FooterMobile";
 import { ApplyHero } from "@/components/folds/apply/ApplyHero";
 import { ApplyHeroMobile } from "@/components/folds/apply/ApplyHeroMobile";
 import { KeyDates } from "@/components/folds/apply/KeyDates";
@@ -45,7 +46,7 @@ export default function ApplyPage() {
       {isDesktop ? <ApplyHero /> : <ApplyHeroMobile />}
       <KeyDates sectionRef={keyDatesRef} />
       <EntryCriteria />
-      <Footer />
+      {isDesktop ? <Footer /> : <FooterMobile />}
     </>
   );
 }

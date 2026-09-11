@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/Button";
 import { withBasePath } from "@/lib/basePath";
 import { useReveal } from "@/lib/useReveal";
 
@@ -17,6 +16,9 @@ import { useReveal } from "@/lib/useReveal";
  * 68vh height as desktop's ApplyHero (see that file for the Figma-derived
  * ratio) — this fold stays shorter than a full viewport on both
  * breakpoints, not just desktop.
+ *
+ * v2 parity with ApplyHero: no CTA here (Entry Criteria already carries
+ * the page's CTA) and the subhead is plain body copy, not display type.
  */
 export function ApplyHeroMobile() {
   const text = useReveal<HTMLDivElement>();
@@ -39,11 +41,10 @@ export function ApplyHeroMobile() {
         <h1 className="font-display text-[40px] leading-[50px] text-text-on-light">
           Shape what&rsquo;s next
         </h1>
-        <p className="font-display text-[23px] leading-[1.4] text-text-on-light">
+        <p className="font-body text-body text-text-on-light">
           Apply for the inaugural cohort taking place between October 2026
           and January 2027.
         </p>
-        <Button variant="cta">Apply Now</Button>
       </div>
     </div>
   );

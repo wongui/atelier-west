@@ -42,11 +42,9 @@ function KeyDateItem({ date, label }: { date: string; label: string }) {
       </span>
       {/* Plain body copy per Figma (BentonSansF, 18px) at desktop — this
           previously matched the date's h3/display size, which Figma
-          doesn't show for the label. Mobile untouched (not covered by
-          this Figma check). */}
-      <span className="font-display text-[23px] leading-[1.4] lg:font-body lg:text-body">
-        {label}
-      </span>
+          doesn't show for the label. Now applied at mobile too, for
+          parity with the desktop update. */}
+      <span className="font-body text-body">{label}</span>
     </div>
   );
 }
