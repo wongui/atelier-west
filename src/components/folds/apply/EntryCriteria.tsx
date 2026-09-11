@@ -30,7 +30,9 @@ export function EntryCriteria() {
         ref={text.ref}
         className={`col-start-1 col-span-8 flex flex-col items-start gap-8 lg:col-start-3 lg:col-span-4 ${text.revealClassName}`}
       >
-        <h2 className="font-display text-h2">Entry Criteria &amp; Selection Process</h2>
+        <h2 className="font-display text-[30px] leading-[1.1] lg:text-h2">
+          Entry Criteria &amp; Selection Process
+        </h2>
         <div className="flex flex-col gap-4">
           <p className="font-body text-body">
             Applicants must meet the following criteria to be considered:

@@ -44,7 +44,7 @@ function MentorCard({ mentor }: { mentor: Mentor }) {
         className={`w-full h-auto ${photo.revealClassName}`}
       />
       <div ref={text.ref} style={{ transitionDelay: "100ms" }} className={`flex flex-col gap-1 ${text.revealClassName}`}>
-        <h3 className="font-display text-h3">{mentor.name}</h3>
+        <h3 className="font-display text-[30px] leading-none lg:text-h3">{mentor.name}</h3>
         <p className="font-body text-body">{mentor.role}</p>
       </div>
     </div>
@@ -61,7 +61,7 @@ export function MentorshipGrid({ heading, intro, mentors }: MentorshipGridProps)
           ref={introText.ref}
           className={`col-start-1 col-span-8 sm:col-span-5 flex flex-col gap-6 max-w-(--max-width-content) ${introText.revealClassName}`}
         >
-          <h2 className="font-display text-h2">{heading}</h2>
+          <h2 className="font-display text-[30px] leading-[1.1] lg:text-h2">{heading}</h2>
           <p className="font-body text-body">{intro}</p>
         </div>
       </FoldGrid>

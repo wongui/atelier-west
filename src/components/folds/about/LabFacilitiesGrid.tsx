@@ -49,7 +49,7 @@ function LabCard({ lab }: { lab: Lab }) {
         className={`w-full h-auto ${photo.revealClassName}`}
       />
       <div ref={text.ref} style={{ transitionDelay: "100ms" }} className={`flex flex-col gap-1 ${text.revealClassName}`}>
-        <h3 className="font-display text-h3">{lab.title}</h3>
+        <h3 className="font-display text-[30px] leading-none lg:text-h3">{lab.title}</h3>
         <p className="font-body text-body">{lab.body}</p>
       </div>
     </div>
@@ -66,7 +66,7 @@ export function LabFacilitiesGrid({ heading, intro, labs, sectionRef }: LabFacil
           ref={introText.ref}
           className={`col-start-1 col-span-8 sm:col-span-4 flex flex-col gap-6 max-w-(--max-width-content) ${introText.revealClassName}`}
         >
-          <h2 className="font-display text-h1">{heading}</h2>
+          <h2 className="font-display text-[40px] leading-[50px] lg:text-h1">{heading}</h2>
           <p className="font-body text-body">{intro}</p>
         </div>
       </FoldGrid>
