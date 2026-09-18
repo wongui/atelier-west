@@ -107,7 +107,9 @@ export function PartnersStrip({ sectionRef }: PartnersStripProps) {
               className="h-10 w-32"
               href="https://www.capgemini.com/us-en/about-us/who-we-are/our-brands/capgemini-invent/"
             />
-            <TextLink href="#">Named a Market Shaper in Physical AI by Gartner</TextLink>
+            <TextLink href="https://www.gartner.com/en/documents/7990537" external>
+              Named a Market Shaper in Physical AI by Gartner
+            </TextLink>
           </div>
 
           <div
