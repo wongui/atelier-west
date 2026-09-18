@@ -1,7 +1,9 @@
 "use client";
 
+import { TextLink } from "@/components/TextLink";
 import { withBasePath } from "@/lib/basePath";
 import { useReveal } from "@/lib/useReveal";
+import { EVENTS_URL } from "@/lib/links";
 
 /**
  * Mobile Fold2 — text stacks above the imagery (desktop is a side-by-side
@@ -26,6 +28,8 @@ export function Fold2IntroMobile() {
           partners, designed to give your technology a place to prove
           itself and scale.
         </p>
+        <TextLink href="/about">Program Details</TextLink>
+        <TextLink href={EVENTS_URL} external>Upcoming Events</TextLink>
       </div>
       <img
         ref={image.ref}

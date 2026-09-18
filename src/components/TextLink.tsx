@@ -29,20 +29,35 @@ interface TextLinkProps {
   href: string;
   children: ReactNode;
   className?: string;
+  /** Opens in a new tab (target="_blank") — for links off to another
+   * site, so visitors don't lose their place on this one. */
+  external?: boolean;
 }
 
 /**
  * Underlined text link with a trailing arrow — used for "Learn more"
  * (Fold8) and "Named a Market Shaper..." (Fold7).
  */
-export function TextLink({ href, children, className = "" }: TextLinkProps) {
-  return (
-    <Link
-      href={href}
-      className={`inline-flex items-center gap-2 font-body text-body underline underline-offset-2 hover:opacity-80 transition-opacity ${className}`}
-    >
+export function TextLink({ href, children, className = "", external = false }: TextLinkProps) {
+  const classes = `inline-flex items-center gap-2 font-body text-body underline underline-offset-2 hover:opacity-80 transition-opacity ${className}`;
+  const content = (
+    <>
       <span>{children}</span>
       <ArrowIcon />
+    </>
+  );
+
+  if (external) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" className={classes}>
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={href} className={classes}>
+      {content}
     </Link>
   );
 }

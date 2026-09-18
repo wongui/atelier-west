@@ -153,7 +153,21 @@ export default function AboutPage() {
           bg="light"
           image={withBasePath("/images/about-partner-benefits.png")}
           heading="Partner Benefits"
-          body="Cohort participants will also be prioritized to join NVIDIA's Inception Program. Companies in this program get access to the latest developer tools and training, preferred pricing on NVIDIA hardware and software, exclusive offers from partners, and exposure to a global ecosystem of investors. Participants will need to submit a separate, short application for Inception, which will be linked to from our Application form."
+          body={[
+            "Cohort participants will get cloud credits and expert support from AWS.",
+            <>
+              Cohort participants will also be prioritized to join NVIDIA&apos;s{" "}
+              <a
+                href="https://www.nvidia.com/en-us/startups/?ncid=pa-srch-goog-816-prsp-txt-en-us-1-l1-top-performing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:opacity-80 transition-opacity"
+              >
+                Inception
+              </a>{" "}
+              Program. Companies in this program get access to the latest developer tools and training, preferred pricing on NVIDIA hardware and software, exclusive offers from partners, and exposure to a global ecosystem of investors. Participants will need to submit a separate, short application for Inception, which will be linked to from our Application form.
+            </>,
+          ]}
         />
 
         <AboutClosingCtaMobile
@@ -228,7 +242,21 @@ export default function AboutPage() {
         bg="light"
         image={withBasePath("/images/about-partner-benefits.png")}
         heading="Partner Benefits"
-        body="Cohort participants will also be prioritized to join NVIDIA's Inception Program. Companies in this program get access to the latest developer tools and training, preferred pricing on NVIDIA hardware and software, exclusive offers from partners, and exposure to a global ecosystem of investors. Participants will need to submit a separate, short application for Inception, which will be linked to from our Application form."
+        body={[
+          "Cohort participants will get cloud credits and expert support from AWS.",
+          <>
+            Cohort participants will also be prioritized to join NVIDIA&apos;s{" "}
+            <a
+              href="https://www.nvidia.com/en-us/startups/?ncid=pa-srch-goog-816-prsp-txt-en-us-1-l1-top-performing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:opacity-80 transition-opacity"
+            >
+              Inception
+            </a>{" "}
+            Program. Companies in this program get access to the latest developer tools and training, preferred pricing on NVIDIA hardware and software, exclusive offers from partners, and exposure to a global ecosystem of investors. Participants will need to submit a separate, short application for Inception, which will be linked to from our Application form.
+          </>,
+        ]}
       />
 
       <AboutClosingCta

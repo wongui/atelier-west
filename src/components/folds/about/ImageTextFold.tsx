@@ -1,6 +1,6 @@
 "use client";
 
-import type { RefObject } from "react";
+import type { ReactNode, RefObject } from "react";
 import { FoldGrid } from "@/components/FoldGrid";
 import { useReveal } from "@/lib/useReveal";
 
@@ -18,8 +18,10 @@ interface ImageTextFoldProps {
   imageAlt?: string;
   heading: string;
   /** One paragraph, or several rendered with gaps between — matches the
-   * blank-line-separated paragraphs in the Figma copy (e.g. Cost & Commitment). */
-  body: string | string[];
+   * blank-line-separated paragraphs in the Figma copy (e.g. Cost & Commitment).
+   * ReactNode (not just string) so a paragraph can carry an inline link
+   * (e.g. Partner Benefits' NVIDIA Inception link). */
+  body: ReactNode | ReactNode[];
   /** Exposes the section's wrapper — for `bg="dark"` instances, lets
    * SiteNav watch it and swap to the on-dark treatment while it's the
    * pinned backdrop, same mechanism as ProgressionSection. */

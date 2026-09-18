@@ -5,14 +5,13 @@ import Link from "next/link";
 import { FoldGrid } from "@/components/FoldGrid";
 import { withBasePath } from "@/lib/basePath";
 import { useReveal } from "@/lib/useReveal";
+import { APPLY_URL, EVENTS_URL } from "@/lib/links";
 
 const WORDMARK_TEXT = "Atelier West";
 
 const legalLinks = [
-  { label: "Privacy Policy", href: "/privacy" },
-  { label: "Terms of Use", href: "/terms" },
-  { label: "Cookie Policy", href: "/cookies" },
-  { label: "Cookie Settings", href: "/cookie-settings" },
+  { label: "Privacy Policy", href: "https://www.capgemini.com/privacy-notice/" },
+  { label: "Terms of Use", href: "https://www.capgemini.com/terms-of-use/" },
 ];
 
 /**
@@ -83,17 +82,31 @@ export function FooterMobile() {
           <Link href="/about" className="font-body text-body font-medium w-fit">
             About
           </Link>
-          <Link href="/apply" className="font-body text-body font-medium w-fit">
+          <Link href={APPLY_URL} className="font-body text-body font-medium w-fit">
             Apply Now
           </Link>
+          <a
+            href={EVENTS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-body text-body font-medium w-fit"
+          >
+            Events
+          </a>
         </nav>
 
         <p className="font-body text-ui text-text-on-dark/70 col-start-1 col-span-8">
           © 2026 frog, part of Capgemini Invent{" "}
           {legalLinks.map((link) => (
-            <Link key={link.href} href={link.href} className="ml-2 hover:text-text-on-dark">
+            <a
+              key={link.href}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-2 hover:text-text-on-dark"
+            >
               {link.label}
-            </Link>
+            </a>
           ))}
         </p>
       </FoldGrid>

@@ -26,16 +26,44 @@ export function Fold8BeliefMobile() {
 
       <div ref={text.ref} className={`relative flex flex-col items-start gap-6 ${text.revealClassName}`}>
         <h2 className="font-display text-[30px] leading-[1.1] text-text-on-light">
-          We believe that the future of AI is physical
+          The future of AI is physical
         </h2>
-        <p className="font-body text-body text-text-on-light">
-          Atelier West is a 12-week, cash- and equity-free, cohort-based
-          residency based in San Francisco Mission Rock for Physical AI
-          startups with lab access, expert mentorship, and enterprise
-          partners, designed to give your technology a place to prove
-          itself and scale.
-        </p>
-        <TextLink href="#">
+        <div className="flex flex-col gap-4">
+          <p className="font-body text-body text-text-on-light">
+            We are physical beings, in a physical world, with physical
+            problems.
+          </p>
+          <p className="font-body text-body text-text-on-light">
+            For years, AI got smarter on a screen, delivering better
+            answers, faster and at scale. That mattered.
+          </p>
+          <p className="font-body text-body text-text-on-light">
+            The next chapter is intelligence that acts, sensing its
+            environment, understanding what&apos;s needed, and taking
+            action in the physical world where people live, work, and
+            move.
+          </p>
+          <p className="font-body text-body text-text-on-light">
+            We believe the biggest opportunities emerge where Physical AI
+            meets human need: factories, hospitals, warehouses, homes,
+            infrastructure, and everything in between.
+          </p>
+          <p className="font-body text-body text-text-on-light">
+            But that belief only means something once it&apos;s made
+            real. So we built a place where founders, researchers,
+            enterprises, and operators work side by side to build,
+            validate, and deploy what comes next.
+          </p>
+          <p className="font-body text-body text-text-on-light">
+            It&apos;s also why there&apos;s no equity or cash exchanged.
+            Just access to the environments and expertise needed to
+            jointly turn promising technology into real-world impact.
+          </p>
+        </div>
+        <TextLink
+          href="https://www.frog.co/designmind/design-mind-frogcast-ep-60-co-evolving-with-physical-ai"
+          external
+        >
           Learn more about our commitment
           <br />
           to Physical AI

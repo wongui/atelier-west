@@ -4,6 +4,7 @@ import { Button } from "@/components/Button";
 import { FoldGrid } from "@/components/FoldGrid";
 import { withBasePath } from "@/lib/basePath";
 import { useReveal } from "@/lib/useReveal";
+import { APPLY_URL } from "@/lib/links";
 
 interface AboutClosingCtaProps {
   heading: string;
@@ -41,7 +42,7 @@ export function AboutClosingCta({ heading, body }: AboutClosingCtaProps) {
               </p>
             ))}
           </div>
-          <Button variant="cta" size="md" href="/apply">
+          <Button variant="cta" size="md" href={APPLY_URL}>
             Apply
           </Button>
         </div>

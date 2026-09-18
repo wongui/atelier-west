@@ -1,6 +1,6 @@
 "use client";
 
-import type { RefObject } from "react";
+import type { ReactNode, RefObject } from "react";
 import { useReveal } from "@/lib/useReveal";
 
 type Bg = "light" | "dark";
@@ -16,7 +16,9 @@ interface ImageTextFoldMobileProps {
   image: string;
   imageAlt?: string;
   heading: string;
-  body: string | string[];
+  /** ReactNode (not just string) so a paragraph can carry an inline link
+   * (e.g. Partner Benefits' NVIDIA Inception link). */
+  body: ReactNode | ReactNode[];
   /** Exposes the section's wrapper — for `bg="dark"` instances, lets
    * MobileSiteNav watch it and swap to the on-dark treatment, same
    * mechanism as desktop ImageTextFold. */

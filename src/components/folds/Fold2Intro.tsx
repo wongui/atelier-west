@@ -1,8 +1,10 @@
 "use client";
 
 import { FoldGrid } from "@/components/FoldGrid";
+import { TextLink } from "@/components/TextLink";
 import { withBasePath } from "@/lib/basePath";
 import { useReveal } from "@/lib/useReveal";
+import { EVENTS_URL } from "@/lib/links";
 
 /**
  * Fold2 — intro/fellowship statement. `fold-2.png` is already
@@ -38,6 +40,8 @@ export function Fold2Intro() {
           partners, designed to give your technology a place to prove
           itself and scale.
         </p>
+        <TextLink href="/about">Program Details</TextLink>
+        <TextLink href={EVENTS_URL} external>Upcoming Events</TextLink>
       </div>
     </FoldGrid>
   );

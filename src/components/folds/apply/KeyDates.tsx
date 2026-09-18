@@ -7,7 +7,7 @@ import { FoldGrid } from "@/components/FoldGrid";
 import { useReveal } from "@/lib/useReveal";
 
 const dates = [
-  { date: "9/14/26", label: "Applications open" },
+  { date: "9/21/26", label: "Applications open" },
   { date: "10/11/26", label: "Applications close" },
   { date: "10/01 - 10/15", label: "Cohort selection" },
   { date: "10/26", label: "Cohort begins" },

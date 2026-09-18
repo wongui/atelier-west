@@ -3,6 +3,7 @@
 import { Button } from "@/components/Button";
 import { withBasePath } from "@/lib/basePath";
 import { useReveal } from "@/lib/useReveal";
+import { APPLY_URL } from "@/lib/links";
 
 /**
  * Mobile Fold6 — CTA. Desktop splits image/text side by side; mobile
@@ -23,14 +24,14 @@ export function Fold6CtaMobile() {
 
       <div ref={text.ref} className={`relative flex flex-col items-start gap-6 ${text.revealClassName}`}>
         <h2 className="font-display text-[40px] leading-[50px] text-text-on-light">
-          Shape the future of Physical AI with us
+          Join us
         </h2>
         <p className="font-body text-body text-text-on-light">
           Designed for committed, ambitious teams building AI that
           operates in the physical world to solve validated problems,
           with proof of traction.
         </p>
-        <Button variant="cta" size="md">
+        <Button variant="cta" size="md" href={APPLY_URL}>
           Apply
         </Button>
       </div>

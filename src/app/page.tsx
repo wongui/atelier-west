@@ -34,7 +34,7 @@ const progressionSteps = [
   },
   {
     number: "03",
-    title: "A Straight Line to Enterprise",
+    title: "A Straight Line to Enterprises",
     body: "We work with 85% of the 200 largest public companies on the Forbes Global 2000 list. We bring real world applications for what you build here.",
     image: withBasePath("/images/fold-5.png"),
   },

@@ -3,6 +3,7 @@
 import { ButtonXL } from "@/components/ButtonXL";
 import { FoldGrid } from "@/components/FoldGrid";
 import { useReveal } from "@/lib/useReveal";
+import { APPLY_URL } from "@/lib/links";
 
 const criteria = [
   "You're building in Physical AI, defined as artificial intelligence systems that are embodied in or directly interact with the physical world, perceiving their environment through sensors, making context-aware decisions, and taking actions autonomously. This could include robotics, autonomous machines, computer vision systems, agent-first or edge AI devices.",
@@ -44,8 +45,13 @@ export function EntryCriteria() {
               </li>
             ))}
           </ul>
+          <p className="font-body text-body">
+            Applications are reviewed by a committee that includes Atelier
+            West staff and subject matter experts. We review on a rolling
+            basis within the application window below.
+          </p>
         </div>
-        <ButtonXL className="w-full">Apply Now</ButtonXL>
+        <ButtonXL href={APPLY_URL} className="w-full">Apply Now</ButtonXL>
       </div>
     </FoldGrid>
   );

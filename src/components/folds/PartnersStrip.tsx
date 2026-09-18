@@ -13,6 +13,9 @@ interface LogoMarkProps {
   width: number;
   height: number;
   className?: string;
+  /** Each partner mark links out to that partner's own site, opening in
+   * a new tab so visitors don't lose their place on this one. */
+  href?: string;
 }
 
 /**
@@ -24,18 +27,31 @@ interface LogoMarkProps {
  * every mark occupy the same visual footprint regardless of its native
  * proportions.
  */
-function LogoMark({ src, alt, width, height, className = "" }: LogoMarkProps) {
-  return (
-    <span className={`flex items-center justify-center ${className}`}>
-      <img
-        src={src}
-        alt={alt}
-        width={width}
-        height={height}
-        className="h-full max-h-full w-full max-w-full object-contain"
-      />
-    </span>
+function LogoMark({ src, alt, width, height, className = "", href }: LogoMarkProps) {
+  const image = (
+    <img
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      className="h-full max-h-full w-full max-w-full object-contain"
+    />
   );
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`flex items-center justify-center transition-opacity hover:opacity-80 ${className}`}
+      >
+        {image}
+      </a>
+    );
+  }
+
+  return <span className={`flex items-center justify-center ${className}`}>{image}</span>;
 }
 
 /**
@@ -89,6 +105,7 @@ export function PartnersStrip({ sectionRef }: PartnersStripProps) {
               width={209}
               height={46}
               className="h-10 w-32"
+              href="https://www.capgemini.com/us-en/about-us/who-we-are/our-brands/capgemini-invent/"
             />
             <TextLink href="#">Named a Market Shaper in Physical AI by Gartner</TextLink>
           </div>
@@ -105,18 +122,20 @@ export function PartnersStrip({ sectionRef }: PartnersStripProps) {
             <EyebrowLabel>In partnership with</EyebrowLabel>
             <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
               <LogoMark
-                src={withBasePath("/images/logos/nvidia-cream.svg")}
-                alt="NVIDIA"
-                width={150}
-                height={28}
+                src={withBasePath("/images/logos/nvidia-inception-program-logo-cream.png")}
+                alt="NVIDIA Inception Program"
+                width={2422}
+                height={847}
                 className="h-10 w-32"
+                href="https://www.nvidia.com/en-us/startups/"
               />
               <LogoMark
-                src={withBasePath("/images/logos/hsbc-cream.svg")}
-                alt="HSBC"
-                width={111}
-                height={27}
+                src={withBasePath("/images/logos/aws-logo-cream.png")}
+                alt="AWS"
+                width={1481}
+                height={318}
                 className="h-10 w-32"
+                href="https://aws.amazon.com/startups/"
               />
             </div>
           </div>
@@ -137,6 +156,7 @@ export function PartnersStrip({ sectionRef }: PartnersStripProps) {
                   width={68}
                   height={41}
                   className="h-8 w-16"
+                  href="https://www.frog.co/"
                 />
                 <LogoMark
                   src={withBasePath("/images/logos/synapse-cream.svg")}
@@ -144,6 +164,7 @@ export function PartnersStrip({ sectionRef }: PartnersStripProps) {
                   width={156}
                   height={19}
                   className="h-8 w-24"
+                  href="https://www.synapse.com/"
                 />
                 <LogoMark
                   src={withBasePath("/images/logos/aie-cream.svg")}
@@ -151,6 +172,7 @@ export function PartnersStrip({ sectionRef }: PartnersStripProps) {
                   width={118}
                   height={44}
                   className="h-8 w-20"
+                  href="https://www.capgemini.com/about-us/who-we-are/innovation-ecosystem/applied-innovation-exchange/"
                 />
               </div>
               <LogoMark
@@ -159,6 +181,7 @@ export function PartnersStrip({ sectionRef }: PartnersStripProps) {
                 width={249}
                 height={40}
                 className="h-7 w-32 opacity-70"
+                href="https://www.capgemini.com/us-en/about-us/who-we-are/our-brands/capgemini-engineering/"
               />
             </div>
           </div>

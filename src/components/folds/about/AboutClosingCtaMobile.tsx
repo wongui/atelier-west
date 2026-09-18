@@ -3,6 +3,7 @@
 import { Button } from "@/components/Button";
 import { withBasePath } from "@/lib/basePath";
 import { useReveal } from "@/lib/useReveal";
+import { APPLY_URL } from "@/lib/links";
 
 interface AboutClosingCtaMobileProps {
   heading: string;
@@ -42,7 +43,7 @@ export function AboutClosingCtaMobile({ heading, body }: AboutClosingCtaMobilePr
             </p>
           ))}
         </div>
-        <Button variant="cta" size="md" href="/apply">
+        <Button variant="cta" size="md" href={APPLY_URL}>
           Apply
         </Button>
       </div>
