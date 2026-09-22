@@ -136,7 +136,7 @@ export function PartnersStrip({ sectionRef }: PartnersStripProps) {
                 alt="AWS"
                 width={1481}
                 height={318}
-                className="h-10 w-32"
+                className="h-10 w-48"
                 href="https://aws.amazon.com/startups/"
               />
             </div>

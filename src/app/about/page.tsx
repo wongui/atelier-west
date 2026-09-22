@@ -17,6 +17,78 @@ import { withBasePath } from "@/lib/basePath";
 import { useIsDesktop } from "@/lib/useIsDesktop";
 import { mentors } from "@/data/mentors.generated";
 
+interface PartnerBenefitProps {
+  logoSrc: string;
+  logoAlt: string;
+  name: string;
+  href: string;
+  paragraphs: string[];
+}
+
+/**
+ * One partner's block within Partner Benefits — logo, then a lead
+ * sentence linking the partner's own program name out to their site,
+ * then the program's specifics. Reused identically for AWS and NVIDIA,
+ * on both desktop and mobile (see partnerBenefits below).
+ */
+function PartnerBenefit({ logoSrc, logoAlt, name, href, paragraphs }: PartnerBenefitProps) {
+  return (
+    <div className="flex flex-col gap-4">
+      {/* self-start: the parent is a flex column, whose default
+          align-items:stretch treats "w-auto" as still-auto and stretches
+          this image to the column's full width — self-start opts it out,
+          letting it size to its own natural aspect ratio instead. */}
+      <img src={logoSrc} alt={logoAlt} className="h-9 w-auto self-start object-contain" />
+      <p className="font-body text-body">
+        Atelier West participants will be prioritized for{" "}
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline hover:opacity-80 transition-opacity"
+        >
+          {name}
+        </a>
+        .
+      </p>
+      {paragraphs.map((paragraph, i) => (
+        <p key={i} className="font-body text-body">
+          {paragraph}
+        </p>
+      ))}
+    </div>
+  );
+}
+
+// Same two blocks render on both the desktop and mobile Partner Benefits
+// sections — defined once here rather than duplicating the props at each
+// of the two call sites below.
+const awsBenefit = (
+  <PartnerBenefit
+    logoSrc={withBasePath("/images/logos/aws-logo-grey.png")}
+    logoAlt="AWS Startups"
+    name="AWS for Startups"
+    href="https://aws.amazon.com/startups/"
+    paragraphs={[
+      "Companies in this program get $100,000-200,000 in AWS Activate Credits and expert support to build what's next.",
+      "Participants will be connected directly with the AWS team for support in accessing benefits.",
+    ]}
+  />
+);
+
+const nvidiaBenefit = (
+  <PartnerBenefit
+    logoSrc={withBasePath("/images/logos/nvidia-inception-program-logo-grey.png")}
+    logoAlt="NVIDIA Inception Program"
+    name="NVIDIA's Inception Program"
+    href="https://www.nvidia.com/en-us/startups/"
+    paragraphs={[
+      "Companies in this program get access to the latest developer tools and training, preferred pricing on NVIDIA hardware and software, exclusive offers from partners, and exposure to a global ecosystem of investors.",
+      "Participants will need to submit a separate, short application for Inception, which will be linked to from our Application form.",
+    ]}
+  />
+);
+
 const programSteps = [
   {
     number: "Weeks 0-1",
@@ -154,19 +226,9 @@ export default function AboutPage() {
           image={withBasePath("/images/about-partner-benefits.png")}
           heading="Partner Benefits"
           body={[
-            "Cohort participants will get cloud credits and expert support from AWS.",
-            <>
-              Cohort participants will also be prioritized to join NVIDIA&apos;s{" "}
-              <a
-                href="https://www.nvidia.com/en-us/startups/?ncid=pa-srch-goog-816-prsp-txt-en-us-1-l1-top-performing"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline hover:opacity-80 transition-opacity"
-              >
-                Inception
-              </a>{" "}
-              Program. Companies in this program get access to the latest developer tools and training, preferred pricing on NVIDIA hardware and software, exclusive offers from partners, and exposure to a global ecosystem of investors. Participants will need to submit a separate, short application for Inception, which will be linked to from our Application form.
-            </>,
+            "Cohort participants will also be prioritized to join our partner's programs, opening access to cloud credits, preferred pricing on hardware and software, and exposure to experts and investors.",
+            awsBenefit,
+            nvidiaBenefit,
           ]}
         />
 
@@ -243,19 +305,9 @@ export default function AboutPage() {
         image={withBasePath("/images/about-partner-benefits.png")}
         heading="Partner Benefits"
         body={[
-          "Cohort participants will get cloud credits and expert support from AWS.",
-          <>
-            Cohort participants will also be prioritized to join NVIDIA&apos;s{" "}
-            <a
-              href="https://www.nvidia.com/en-us/startups/?ncid=pa-srch-goog-816-prsp-txt-en-us-1-l1-top-performing"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:opacity-80 transition-opacity"
-            >
-              Inception
-            </a>{" "}
-            Program. Companies in this program get access to the latest developer tools and training, preferred pricing on NVIDIA hardware and software, exclusive offers from partners, and exposure to a global ecosystem of investors. Participants will need to submit a separate, short application for Inception, which will be linked to from our Application form.
-          </>,
+          "Cohort participants will also be prioritized to join our partner's programs, opening access to cloud credits, preferred pricing on hardware and software, and exposure to experts and investors.",
+          awsBenefit,
+          nvidiaBenefit,
         ]}
       />
 

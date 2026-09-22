@@ -19,8 +19,11 @@ interface ImageTextFoldProps {
   heading: string;
   /** One paragraph, or several rendered with gaps between — matches the
    * blank-line-separated paragraphs in the Figma copy (e.g. Cost & Commitment).
-   * ReactNode (not just string) so a paragraph can carry an inline link
-   * (e.g. Partner Benefits' NVIDIA Inception link). */
+   * ReactNode (not just string) so an item can carry more than plain text —
+   * an inline link, or a whole sub-block like Partner Benefits' logo +
+   * linked name + copy per partner. Each item renders inside a `<div>`,
+   * not a `<p>`, since a plain paragraph tag can't legally contain that
+   * kind of block content. */
   body: ReactNode | ReactNode[];
   /** Exposes the section's wrapper — for `bg="dark"` instances, lets
    * SiteNav watch it and swap to the on-dark treatment while it's the
@@ -85,9 +88,9 @@ export function ImageTextFold({
         <h2 className="font-display text-h2">{heading}</h2>
         <div className="flex flex-col gap-4">
           {paragraphs.map((paragraph, i) => (
-            <p key={i} className="font-body text-body">
+            <div key={i} className="font-body text-body">
               {paragraph}
-            </p>
+            </div>
           ))}
         </div>
       </div>
