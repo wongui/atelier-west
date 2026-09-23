@@ -5,14 +5,9 @@ import Link from "next/link";
 import { FoldGrid } from "@/components/FoldGrid";
 import { withBasePath } from "@/lib/basePath";
 import { useReveal } from "@/lib/useReveal";
-import { APPLY_URL, EVENTS_URL } from "@/lib/links";
+import { APPLY_URL, EVENTS_URL, FOOTER_LEGAL_LINKS } from "@/lib/links";
 
 const WORDMARK_TEXT = "Atelier West";
-
-const legalLinks = [
-  { label: "Privacy Policy", href: "https://www.capgemini.com/privacy-notice/" },
-  { label: "Terms of Use", href: "https://www.capgemini.com/terms-of-use/" },
-];
 
 /**
  * Mobile footer — same wordmark lockup and edge-to-edge tracking technique
@@ -95,20 +90,22 @@ export function FooterMobile() {
           </a>
         </nav>
 
-        <p className="font-body text-ui text-text-on-dark/70 col-start-1 col-span-8">
-          © 2026 frog, part of Capgemini Invent{" "}
-          {legalLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ml-2 hover:text-text-on-dark"
-            >
-              {link.label}
-            </a>
-          ))}
-        </p>
+        <div className="flex flex-col gap-2 font-body text-ui text-text-on-dark/70 col-start-1 col-span-8">
+          <p>© 2026 frog, part of Capgemini Invent</p>
+          <div className="flex flex-wrap gap-x-4 gap-y-1">
+            {FOOTER_LEGAL_LINKS.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-text-on-dark"
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+        </div>
       </FoldGrid>
 
       <div className="mt-12 px-(--spacing-page)">
