@@ -6,25 +6,38 @@ import { useReveal } from "@/lib/useReveal";
 
 /**
  * Mobile Fold8 — Belief. Desktop centers the brain render as a full-bleed
- * background with text at col6-8; mobile instead caps the image at the top
- * 70% of the section, blending into the solid coral bg behind the text
- * below it — same treatment as the mobile hero's image-to-bg blend.
+ * background with text at col6-8; mobile instead caps the image to a fixed
+ * viewport-relative band at the top, blending into the solid coral bg
+ * behind the text below it — same treatment as the mobile hero's
+ * image-to-bg blend.
+ *
+ * The image band is a fixed dvh height (not a % of the whole section) so
+ * it stays a constant, "safe" size no matter how tall the copy below
+ * runs — the section itself just grows to fit the text underneath. An
+ * earlier version sized the image as a % of a min-height section, which
+ * fell over once the copy grew past that minimum: percentage heights on
+ * an absolutely-positioned child don't resolve reliably against an
+ * intrinsically-sized (min-height only) ancestor, so the image and text
+ * ended up overlapping.
  */
 export function Fold8BeliefMobile() {
   const text = useReveal<HTMLDivElement>();
 
   return (
-    <div className="relative flex min-h-[115dvh] flex-col justify-end overflow-hidden bg-surface-accent px-(--spacing-page) pb-16 pt-24">
-      <img
-        src={withBasePath("/images/fold-8-mobile.png")}
-        alt=""
-        className="absolute inset-x-0 top-0 h-[70%] w-full object-cover"
-      />
-      {/* Blends the image's bottom edge into the solid coral bg behind the
-          text, same technique as Fold1HeroMobile's image-to-bg blend. */}
-      <div className="absolute inset-x-0 top-[calc(70%-8rem)] h-32 bg-gradient-to-b from-surface-accent/0 to-surface-accent" />
+    <div className="relative flex flex-col overflow-hidden bg-surface-accent">
+      <div className="relative h-[70dvh] w-full shrink-0">
+        <img
+          src={withBasePath("/images/fold-8-mobile.png")}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        {/* Blends the image's bottom edge into the solid coral bg behind
+            the text, same technique as Fold1HeroMobile's image-to-bg
+            blend. */}
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-surface-accent/0 to-surface-accent" />
+      </div>
 
-      <div ref={text.ref} className={`relative flex flex-col items-start gap-6 ${text.revealClassName}`}>
+      <div ref={text.ref} className={`relative flex flex-col items-start gap-6 px-(--spacing-page) pt-10 pb-16 ${text.revealClassName}`}>
         <h2 className="font-display text-[30px] leading-[1.1] text-text-on-light">
           The future of AI is physical
         </h2>
