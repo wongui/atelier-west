@@ -5,7 +5,7 @@ import Link from "next/link";
 import { FoldGrid } from "./FoldGrid";
 import { withBasePath } from "@/lib/basePath";
 import { useReveal } from "@/lib/useReveal";
-import { APPLY_URL, EVENTS_URL, FOOTER_LEGAL_LINKS } from "@/lib/links";
+import { EVENTS_URL, FOOTER_LEGAL_LINKS } from "@/lib/links";
 
 const WORDMARK_TEXT = "Atelier West";
 
@@ -115,7 +115,7 @@ export function Footer() {
             <Link href="/about" className="font-body text-body font-medium w-fit">
               About
             </Link>
-            <Link href={APPLY_URL} className="font-body text-body font-medium w-fit">
+            <Link href="/apply" className="font-body text-body font-medium w-fit">
               Apply Now
             </Link>
             <a

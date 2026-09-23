@@ -1,6 +1,10 @@
 // Shared external destinations referenced from multiple components — kept
 // in one place so the URLs only need updating once if they ever change.
-export const APPLY_URL = "https://atelierwestapply.typeform.com/to/CB8SK6iM";
+// Only the big "Apply Now" CTA on the /apply page (EntryCriteria) should
+// link here directly — every other "Apply"/"Apply Now" link/button on
+// the site should point at the internal "/apply" page instead.
+export const APPLY_URL =
+  "https://atelierwestapply.typeform.com/to/CB8SK6iM?typeform-source=atelierwest.ai";
 export const EVENTS_URL = "https://luma.com/atelierwest";
 
 // Footer legal links — same list on desktop (Footer) and mobile

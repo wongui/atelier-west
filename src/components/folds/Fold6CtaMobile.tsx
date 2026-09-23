@@ -3,7 +3,6 @@
 import { Button } from "@/components/Button";
 import { withBasePath } from "@/lib/basePath";
 import { useReveal } from "@/lib/useReveal";
-import { APPLY_URL } from "@/lib/links";
 
 /**
  * Mobile Fold6 — CTA. Desktop splits image/text side by side; mobile
@@ -31,7 +30,7 @@ export function Fold6CtaMobile() {
           operates in the physical world to solve validated problems,
           with proof of traction.
         </p>
-        <Button variant="cta" size="md" href={APPLY_URL}>
+        <Button variant="cta" size="md" href="/apply">
           Apply
         </Button>
       </div>

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Button } from "@/components/Button";
 import { ScrollVideoMobile } from "@/components/ScrollVideoMobile";
 import { withBasePath } from "@/lib/basePath";
-import { APPLY_URL } from "@/lib/links";
 
 const WORDMARK_TEXT = "Atelier West";
 
@@ -170,7 +169,7 @@ export function Fold1HeroMobile({ heroRef }: Fold1HeroMobileProps) {
             <p className="max-w-[286px] font-body text-body text-text-on-light">
               A 12-week equity-free residency for Physical AI founders.
             </p>
-            <Button variant="cta" size="md" href={APPLY_URL}>
+            <Button variant="cta" size="md" href="/apply">
               Apply
             </Button>
           </div>

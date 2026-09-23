@@ -7,8 +7,6 @@ import { ScrollVideo } from "@/components/ScrollVideo";
 import { FoldGrid } from "@/components/FoldGrid";
 import { withBasePath } from "@/lib/basePath";
 import { useRevealOnMount } from "@/lib/useReveal";
-import { APPLY_URL } from "@/lib/links";
-
 interface Fold1HeroProps {
   heroRef: RefObject<HTMLDivElement | null>;
 }
@@ -150,7 +148,7 @@ export function Fold1Hero({ heroRef }: Fold1HeroProps) {
             <p className="max-w-(--max-width-content) shrink-0 font-body text-body text-text-on-light">
               A 12-week equity-free residency for Physical AI founders.
             </p>
-            <Button variant="cta" size="md" href={APPLY_URL}>
+            <Button variant="cta" size="md" href="/apply">
               Apply Now
             </Button>
           </div>

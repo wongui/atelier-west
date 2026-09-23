@@ -4,7 +4,6 @@ import { Button } from "@/components/Button";
 import { FoldGrid } from "@/components/FoldGrid";
 import { withBasePath } from "@/lib/basePath";
 import { useReveal } from "@/lib/useReveal";
-import { APPLY_URL } from "@/lib/links";
 
 /**
  * Fold6 — CTA. Full-viewport section with the frog render as a full-bleed
@@ -33,7 +32,7 @@ export function Fold6Cta() {
             operates in the physical world to solve validated problems,
             with proof of traction.
           </p>
-          <Button variant="cta" size="md" href={APPLY_URL}>
+          <Button variant="cta" size="md" href="/apply">
             Apply
           </Button>
         </div>
