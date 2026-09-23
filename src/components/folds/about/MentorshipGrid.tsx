@@ -2,6 +2,7 @@
 
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FoldGrid } from "@/components/FoldGrid";
+import { TextLink } from "@/components/TextLink";
 import { withBasePath } from "@/lib/basePath";
 import { useReveal } from "@/lib/useReveal";
 
@@ -9,6 +10,7 @@ interface Mentor {
   name: string;
   role: string;
   image: string;
+  linkedin?: string;
 }
 
 interface MentorshipGridProps {
@@ -46,6 +48,11 @@ function MentorCard({ mentor }: { mentor: Mentor }) {
       <div ref={text.ref} style={{ transitionDelay: "100ms" }} className={`flex flex-col gap-1 ${text.revealClassName}`}>
         <h3 className="font-display text-[30px] leading-none lg:text-h3">{mentor.name}</h3>
         <p className="font-body text-body">{mentor.role}</p>
+        {mentor.linkedin && (
+          <TextLink href={mentor.linkedin} external className="mt-1">
+            LinkedIn
+          </TextLink>
+        )}
       </div>
     </div>
   );

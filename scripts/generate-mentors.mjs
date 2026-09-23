@@ -1,9 +1,12 @@
 // Scans public/images/mentors/ and generates src/data/mentors.generated.ts.
 // Filename format: "<order>-<Name>-<Role>.<ext>", e.g. "01-John Robins-Physical AI.png".
+// LinkedIn URLs come from src/data/mentor-linkedin.json (name -> URL),
+// kept separate since that's hand-maintained rather than derived from a
+// filename.
 // Runs automatically before `dev`/`build` (see package.json) so dropping a
 // correctly-named photo in the folder is enough to update the About page —
 // no code changes needed.
-import { readdirSync, mkdirSync, writeFileSync } from "node:fs";
+import { readdirSync, mkdirSync, writeFileSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -11,6 +14,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
 const mentorsDir = path.join(root, "public/images/mentors");
 const outFile = path.join(root, "src/data/mentors.generated.ts");
+const linkedinFile = path.join(root, "src/data/mentor-linkedin.json");
+
+// Name -> LinkedIn URL, hand-maintained separately from the photo
+// filenames since not every mentor necessarily has one on file.
+const linkedinUrls = JSON.parse(readFileSync(linkedinFile, "utf-8"));
 
 const FILENAME_PATTERN = /^(\d+)-(.+?)-(.+)\.(png|jpg|jpeg|webp)$/i;
 
@@ -18,11 +26,13 @@ function parseMentorFile(filename) {
   const match = FILENAME_PATTERN.exec(filename);
   if (!match) return null;
   const [, order, name, role] = match;
+  const trimmedName = name.trim();
   return {
     order: Number(order),
-    name: name.trim(),
+    name: trimmedName,
     role: role.trim(),
     image: `/images/mentors/${encodeURIComponent(filename)}`,
+    linkedin: linkedinUrls[trimmedName],
   };
 }
 
@@ -65,9 +75,10 @@ const body =
   `  name: string;\n` +
   `  role: string;\n` +
   `  image: string;\n` +
+  `  linkedin?: string;\n` +
   `}\n\n` +
   `export const mentors: Mentor[] = ${JSON.stringify(
-    mentors.map(({ name, role, image }) => ({ name, role, image })),
+    mentors.map(({ name, role, image, linkedin }) => ({ name, role, image, linkedin })),
     null,
     2
   )};\n`;
