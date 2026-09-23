@@ -132,43 +132,56 @@ export function ProgressionSection({ steps, sectionRef, bg = "dark" }: Progressi
           className={`absolute inset-x-0 top-[103px] mx-(--spacing-page) ${progressTextClassName}`}
         />
 
-        <div
-          ref={trackRef}
-          className={`flex h-full ${sectionReveal.revealClassName}`}
-          style={{ width: `${steps.length * 100}%`, willChange: "transform" }}
-        >
-          {steps.map((step) => (
-            <div key={step.number} className="h-full shrink-0" style={{ width: `${100 / steps.length}%` }}>
-              <FoldGrid
-                className="h-full pt-[8.5rem] pb-8"
-                // Row 1 is sized to the tallest realistic case — number +
-                // gap + a 2-line-wrapped title (70 + 16 + 140 = 226px).
-                gridClassName="grid-rows-[14.125rem_1fr] gap-y-8"
-              >
-                <span className="col-start-1 col-span-4 row-start-1 font-display text-h1">{step.number}</span>
-                {/* Both number and title sit in the same grid cell
-                    (row-start-1), stacked via margin rather than normal
-                    flow — so this offset must clear the number's OWN
-                    70px line box, not just the gap: 70px (number) + 16px
-                    (gap) = 86px. */}
-                <h3 className="col-start-1 col-span-4 row-start-1 mt-[5.375rem] font-display text-h1">
-                  {step.title}
-                </h3>
-                <p className="col-start-5 col-span-3 row-start-1 font-body text-body">{step.body}</p>
-                {/* min-h-0 overrides the grid item's automatic minimum
-                    size — without it, an <img>'s intrinsic aspect ratio
-                    inflates this 1fr row past the space actually
-                    available, and the overflow-hidden sticky container
-                    then clips the excess off the bottom, which reads as
-                    the image being cropped from the top. */}
-                <img
-                  src={step.image}
-                  alt=""
-                  className="col-start-1 col-span-8 row-start-2 h-full w-full min-h-0 object-cover"
-                />
-              </FoldGrid>
-            </div>
-          ))}
+        {/* Reveal (opacity/blur/translate-y transition) lives on this
+            wrapper, not on trackRef itself — trackRef's own transform is
+            driven imperatively by the scrub above on every scroll tick,
+            and Tailwind's revealClassName carries a `transition-all` that
+            never gets removed after the entrance fires. Put that
+            transition on the SAME element GSAP is calling
+            `style.transform =` on every frame and every one of those
+            updates gets re-interpreted as something to ease into over
+            700ms instead of applying instantly — Safari in particular
+            visibly stutters/lags behind the scroll position because of
+            it (Chrome's compositor mostly hides the same conflict). */}
+        <div className={`h-full ${sectionReveal.revealClassName}`}>
+          <div
+            ref={trackRef}
+            className="flex h-full"
+            style={{ width: `${steps.length * 100}%`, willChange: "transform" }}
+          >
+            {steps.map((step) => (
+              <div key={step.number} className="h-full shrink-0" style={{ width: `${100 / steps.length}%` }}>
+                <FoldGrid
+                  className="h-full pt-[8.5rem] pb-8"
+                  // Row 1 is sized to the tallest realistic case — number +
+                  // gap + a 2-line-wrapped title (70 + 16 + 140 = 226px).
+                  gridClassName="grid-rows-[14.125rem_1fr] gap-y-8"
+                >
+                  <span className="col-start-1 col-span-4 row-start-1 font-display text-h1">{step.number}</span>
+                  {/* Both number and title sit in the same grid cell
+                      (row-start-1), stacked via margin rather than normal
+                      flow — so this offset must clear the number's OWN
+                      70px line box, not just the gap: 70px (number) + 16px
+                      (gap) = 86px. */}
+                  <h3 className="col-start-1 col-span-4 row-start-1 mt-[5.375rem] font-display text-h1">
+                    {step.title}
+                  </h3>
+                  <p className="col-start-5 col-span-3 row-start-1 font-body text-body">{step.body}</p>
+                  {/* min-h-0 overrides the grid item's automatic minimum
+                      size — without it, an <img>'s intrinsic aspect ratio
+                      inflates this 1fr row past the space actually
+                      available, and the overflow-hidden sticky container
+                      then clips the excess off the bottom, which reads as
+                      the image being cropped from the top. */}
+                  <img
+                    src={step.image}
+                    alt=""
+                    className="col-start-1 col-span-8 row-start-2 h-full w-full min-h-0 object-cover"
+                  />
+                </FoldGrid>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

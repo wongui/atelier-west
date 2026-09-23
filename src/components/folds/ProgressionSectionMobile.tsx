@@ -111,36 +111,45 @@ export function ProgressionSectionMobile({ steps, sectionRef, bg = "dark" }: Pro
             text→image (mt-8 on the image block). */}
         <StepProgress fillRef={fillRef} className={`absolute inset-x-0 top-[91px] mx-(--spacing-page) ${progressTextClassName}`} />
 
-        <div
-          ref={trackRef}
-          className={`flex h-full ${sectionReveal.revealClassName}`}
-          style={{ width: `${steps.length * 100}%`, willChange: "transform" }}
-        >
-          {steps.map((step) => (
-            <div key={step.number} className="flex h-full shrink-0 flex-col px-(--spacing-page) pt-[124px] pb-8" style={{ width: `${100 / steps.length}%` }}>
-              <div className="relative shrink-0">
-                {/* Invisible spacer reserving the worst-case height (see
-                    longestTitle/longestBody above) — real content is the
-                    absolutely-positioned block below it. */}
-                <div aria-hidden className="invisible">
-                  <span className="font-display text-[30px] leading-none">{step.number}</span>
-                  <h3 className="mt-2 font-display text-[30px] leading-none">{longestTitle}</h3>
-                  <p className="mt-3 font-body text-body leading-[28px]">{longestBody}</p>
+        {/* Reveal (opacity/blur/translate-y transition) lives on this
+            wrapper, not on trackRef itself — see ProgressionSection's
+            desktop twin for why: trackRef's transform is driven
+            imperatively by the scrub above on every scroll tick, and
+            revealClassName's `transition-all` (which never gets removed
+            after the entrance fires) would otherwise fight every one of
+            those updates by easing into it instead of applying instantly. */}
+        <div className={`h-full ${sectionReveal.revealClassName}`}>
+          <div
+            ref={trackRef}
+            className="flex h-full"
+            style={{ width: `${steps.length * 100}%`, willChange: "transform" }}
+          >
+            {steps.map((step) => (
+              <div key={step.number} className="flex h-full shrink-0 flex-col px-(--spacing-page) pt-[124px] pb-8" style={{ width: `${100 / steps.length}%` }}>
+                <div className="relative shrink-0">
+                  {/* Invisible spacer reserving the worst-case height (see
+                      longestTitle/longestBody above) — real content is the
+                      absolutely-positioned block below it. */}
+                  <div aria-hidden className="invisible">
+                    <span className="font-display text-[30px] leading-none">{step.number}</span>
+                    <h3 className="mt-2 font-display text-[30px] leading-none">{longestTitle}</h3>
+                    <p className="mt-3 font-body text-body leading-[28px]">{longestBody}</p>
+                  </div>
+                  <div className="absolute inset-0">
+                    <span className="font-display text-[30px] leading-none">{step.number}</span>
+                    <h3 className="mt-2 font-display text-[30px] leading-none">{step.title}</h3>
+                    <p className="mt-3 font-body text-body leading-[28px]">{step.body}</p>
+                  </div>
                 </div>
-                <div className="absolute inset-0">
-                  <span className="font-display text-[30px] leading-none">{step.number}</span>
-                  <h3 className="mt-2 font-display text-[30px] leading-none">{step.title}</h3>
-                  <p className="mt-3 font-body text-body leading-[28px]">{step.body}</p>
+                {/* min-h-0 overrides flex's automatic minimum size — without
+                    it, the <img>'s intrinsic aspect ratio inflates this
+                    flex-1 area past the space actually available. */}
+                <div className="relative mt-8 min-h-0 flex-1">
+                  <img src={step.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
                 </div>
               </div>
-              {/* min-h-0 overrides flex's automatic minimum size — without
-                  it, the <img>'s intrinsic aspect ratio inflates this
-                  flex-1 area past the space actually available. */}
-              <div className="relative mt-8 min-h-0 flex-1">
-                <img src={step.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>
