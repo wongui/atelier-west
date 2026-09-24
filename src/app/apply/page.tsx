@@ -9,6 +9,7 @@ import { ApplyHero } from "@/components/folds/apply/ApplyHero";
 import { ApplyHeroMobile } from "@/components/folds/apply/ApplyHeroMobile";
 import { KeyDates } from "@/components/folds/apply/KeyDates";
 import { EntryCriteria } from "@/components/folds/apply/EntryCriteria";
+import { Faq } from "@/components/folds/apply/Faq";
 import { useIsDesktop } from "@/lib/useIsDesktop";
 
 /**
@@ -28,7 +29,7 @@ import { useIsDesktop } from "@/lib/useIsDesktop";
  * while scrolled over it, same mechanism as About's ImageTextFold folds.
  *
  * Section order matches the Figma wireframe: hero, Key Dates strip,
- * Entry Criteria & Selection Process, then the shared site Footer.
+ * Entry Criteria & Selection Process, FAQ, then the shared site Footer.
  */
 export default function ApplyPage() {
   const isDesktop = useIsDesktop();
@@ -46,6 +47,7 @@ export default function ApplyPage() {
       {isDesktop ? <ApplyHero /> : <ApplyHeroMobile />}
       <KeyDates sectionRef={keyDatesRef} />
       <EntryCriteria />
+      <Faq />
       {isDesktop ? <Footer /> : <FooterMobile />}
     </>
   );
