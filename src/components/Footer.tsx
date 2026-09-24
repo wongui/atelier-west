@@ -11,7 +11,7 @@ const WORDMARK_TEXT = "Atelier West";
 
 /**
  * Site footer — wordmark lockup (full-bleed, same treatment as the hero
- * wordmark), About/Apply Now links + legal line at col1, and the real
+ * wordmark), About/Apply links + legal line at col1, and the real
  * decorative blob asset positioned at col4-8 (5 columns per Figma). See
  * docs/FOUNDATIONS.md, Navigation family.
  *
@@ -116,7 +116,7 @@ export function Footer() {
               About
             </Link>
             <Link href="/apply" className="font-body text-body font-medium w-fit">
-              Apply Now
+              Apply
             </Link>
             <a
               href={EVENTS_URL}

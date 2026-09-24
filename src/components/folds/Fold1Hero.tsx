@@ -149,7 +149,7 @@ export function Fold1Hero({ heroRef }: Fold1HeroProps) {
               A 12-week equity-free residency for Physical AI founders.
             </p>
             <Button variant="cta" size="md" href="/apply">
-              Apply Now
+              Apply
             </Button>
           </div>
 

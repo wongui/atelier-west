@@ -78,7 +78,7 @@ export function FooterMobile() {
             About
           </Link>
           <Link href="/apply" className="font-body text-body font-medium w-fit">
-            Apply Now
+            Apply
           </Link>
           <a
             href={EVENTS_URL}
