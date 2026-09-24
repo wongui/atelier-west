@@ -43,10 +43,6 @@ export function Fold8BeliefMobile() {
         </h2>
         <div className="flex flex-col gap-4">
           <p className="font-body text-body text-text-on-light">
-            We are physical beings, in a physical world, with physical
-            problems.
-          </p>
-          <p className="font-body text-body text-text-on-light">
             For years, AI got smarter on a screen, delivering better
             answers, faster and at scale. That mattered.
           </p>
