@@ -164,7 +164,7 @@ export function Fold1HeroMobile({ heroRef }: Fold1HeroMobileProps) {
             <h1 className="font-display text-[48px] leading-[52px] text-text-on-light">
               Where AI
               <br />
-              Takes Shape.
+              Takes Shape
             </h1>
             <p className="max-w-[286px] font-body text-body text-text-on-light">
               A 12-week equity-free residency for Physical AI founders.
