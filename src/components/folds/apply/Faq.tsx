@@ -12,8 +12,9 @@ const faqs = [
       "Physical AI refers to artificial intelligence systems that are embodied in or directly interact with the physical world, perceiving the environment through sensors, making context-aware decisions, and taking actions autonomously.",
   },
   {
-    question: "What about IP for things built in the labs and/or with mentor help?",
-    answer: "Anything built during the residency is owned by the startup.",
+    question: "What about IP for things built in the lab or with mentor support?",
+    answer:
+      "Between the startup and Capgemini, the startup owns what it builds during the residency. Using our labs, equipment, or mentors doesn't change that. Each side retains its pre-existing IP, including any enhancements, modifications, or derivative works.",
   },
   {
     question: "Could I be in a similar program at the same time?",
