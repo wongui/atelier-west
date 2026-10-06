@@ -98,7 +98,7 @@ export function Fold1HeroMobile({ heroRef }: Fold1HeroMobileProps) {
     <div
       ref={heroRef}
       className="relative bg-[#c9c7c7]"
-      style={{ height: "calc(var(--dvh, 1dvh) * 175)" }}
+      style={{ height: "calc(var(--dvh, 1dvh) * 140)" }}
     >
       <div
         className="sticky top-0 flex flex-col overflow-hidden bg-[#c9c7c7]"

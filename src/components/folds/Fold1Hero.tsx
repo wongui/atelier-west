@@ -70,7 +70,7 @@ export function Fold1Hero({ heroRef }: Fold1HeroProps) {
   };
 
   return (
-    <div ref={heroRef} className="relative h-[200vh] overflow-x-hidden bg-surface-light">
+    <div ref={heroRef} className="relative h-[160vh] overflow-x-hidden bg-surface-light">
       <ScrollVideo framesPath={withBasePath("/frames/octopus")} frameCount={96} scrollContainerRef={heroRef} />
 
       {/* Own fixed 24px inset (top + sides) — independent of FoldGrid's
