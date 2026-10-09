@@ -105,8 +105,7 @@ export function AboutSeoContent() {
       <h2>Partner Benefits</h2>
       <p>
         Participants are prioritized for AWS for Startups ($100,000-200,000 in AWS Activate
-        Credits) and NVIDIA&rsquo;s Inception Program (developer tools, preferred hardware
-        pricing, and investor exposure).
+        Credits).
       </p>
       <p>
         We&rsquo;re looking for committed teams building in Physical AI and solving a clear, named

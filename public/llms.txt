@@ -7,7 +7,7 @@
 - Cost: free for participants, no equity and no cash; a refundable deposit tied to lab access
 - Location: Mission Rock, San Francisco, CA, with six labs (rapid prototyping, industrial design, mechanical engineering, electrical engineering, metrology, new product introduction)
 - Audience: Physical AI founders (robotics, autonomous machines, computer vision, edge AI devices) with traction
-- Partner benefits: AWS for Startups credits and NVIDIA Inception Program access
+- Partner benefits: AWS for Startups credits
 - Inaugural cohort: October 2026 to January 2027; applications close October 21, 2026
 
 ## Pages

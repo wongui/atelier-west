@@ -123,16 +123,6 @@ export function PartnersStrip({ sectionRef }: PartnersStripProps) {
           >
             <EyebrowLabel>In partnership with</EyebrowLabel>
             <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
-              {/* NVIDIA Inception mark hidden for now (not removed —
-                  bring it back by uncommenting) per request. */}
-              {/* <LogoMark
-                src={withBasePath("/images/logos/nvidia-inception-program-logo-cream.png")}
-                alt="NVIDIA Inception Program"
-                width={2422}
-                height={847}
-                className="h-10 w-32"
-                href="https://www.nvidia.com/en-us/startups/"
-              /> */}
               <LogoMark
                 src={withBasePath("/images/logos/aws-logo-cream.png")}
                 alt="AWS"

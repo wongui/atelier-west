@@ -29,8 +29,8 @@ interface PartnerBenefitProps {
 /**
  * One partner's block within Partner Benefits — logo, then a lead
  * sentence linking the partner's own program name out to their site,
- * then the program's specifics. Reused identically for AWS and NVIDIA,
- * on both desktop and mobile (see partnerBenefits below).
+ * then the program's specifics. Used on both desktop and mobile
+ * (see awsBenefit below).
  */
 function PartnerBenefit({ logoSrc, logoAlt, name, href, paragraphs }: PartnerBenefitProps) {
   return (
@@ -61,7 +61,7 @@ function PartnerBenefit({ logoSrc, logoAlt, name, href, paragraphs }: PartnerBen
   );
 }
 
-// Same two blocks render on both the desktop and mobile Partner Benefits
+// Same block renders on both the desktop and mobile Partner Benefits
 // sections — defined once here rather than duplicating the props at each
 // of the two call sites below.
 const awsBenefit = (
@@ -73,19 +73,6 @@ const awsBenefit = (
     paragraphs={[
       "Companies in this program get $100,000-200,000 in AWS Activate Credits and expert support to build what's next.",
       "Participants will be connected directly with the AWS team for support in accessing benefits.",
-    ]}
-  />
-);
-
-const nvidiaBenefit = (
-  <PartnerBenefit
-    logoSrc={withBasePath("/images/logos/nvidia-inception-program-logo-grey.png")}
-    logoAlt="NVIDIA Inception Program"
-    name="NVIDIA's Inception Program"
-    href="https://www.nvidia.com/en-us/startups/"
-    paragraphs={[
-      "Companies in this program get access to the latest developer tools and training, preferred pricing on NVIDIA hardware and software, exclusive offers from partners, and exposure to a global ecosystem of investors.",
-      "Participants will need to submit a separate, short application for Inception, which will be linked to from our Application form.",
     ]}
   />
 );
@@ -229,7 +216,6 @@ export default function AboutPage() {
           body={[
             "Cohort participants will also be prioritized to join our partner's programs, opening access to cloud credits, preferred pricing on hardware and software, and exposure to experts and investors.",
             awsBenefit,
-            nvidiaBenefit,
           ]}
         />
 
@@ -308,7 +294,6 @@ export default function AboutPage() {
         body={[
           "Cohort participants will also be prioritized to join our partner's programs, opening access to cloud credits, preferred pricing on hardware and software, and exposure to experts and investors.",
           awsBenefit,
-          nvidiaBenefit,
         ]}
       />
 
