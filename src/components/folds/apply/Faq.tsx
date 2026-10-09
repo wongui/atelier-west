@@ -17,7 +17,11 @@ function ChevronIcon({ open }: { open: boolean }) {
     <svg
       aria-hidden
       viewBox="0 0 14 14"
-      className={`size-4 shrink-0 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+      className={`size-4 shrink-0 transition-transform duration-300 ${
+        open
+          ? "rotate-180 motion-safe:group-hover:-translate-y-0.5"
+          : "motion-safe:group-hover:translate-y-0.5"
+      }`}
       fill="none"
       stroke="currentColor"
       strokeWidth="1.5"
@@ -48,9 +52,9 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
         aria-controls={answerId}
-        className="flex w-full items-center justify-between gap-6 py-6 text-left"
+        className="group flex w-full cursor-pointer items-center justify-between gap-6 py-6 text-left"
       >
-        <span className="font-display text-[20px] leading-[1.3] lg:text-[24px]">
+        <span className="font-display text-[20px] leading-[1.3] transition-transform duration-300 motion-safe:group-hover:translate-x-1 lg:text-[24px]">
           {question}
         </span>
         <ChevronIcon open={open} />
