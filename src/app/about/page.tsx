@@ -15,6 +15,7 @@ import { AboutClosingCta } from "@/components/folds/about/AboutClosingCta";
 import { AboutClosingCtaMobile } from "@/components/folds/about/AboutClosingCtaMobile";
 import { withBasePath } from "@/lib/basePath";
 import { useIsDesktop } from "@/lib/useIsDesktop";
+import { AboutSeoContent } from "@/components/SeoContent";
 import { mentors } from "@/data/mentors.generated";
 
 interface PartnerBenefitProps {
@@ -166,7 +167,7 @@ export default function AboutPage() {
   // mobile viewport, and vice versa.
   const isDesktop = useIsDesktop();
 
-  if (isDesktop === null) return null;
+  if (isDesktop === null) return <AboutSeoContent />;
 
   if (!isDesktop) {
     return (

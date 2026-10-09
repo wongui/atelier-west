@@ -4,15 +4,7 @@ import { ButtonXL } from "@/components/ButtonXL";
 import { FoldGrid } from "@/components/FoldGrid";
 import { useReveal } from "@/lib/useReveal";
 import { APPLY_URL } from "@/lib/links";
-
-const criteria = [
-  "You're building in Physical AI, defined as artificial intelligence systems that are embodied in or directly interact with the physical world, perceiving their environment through sensors, making context-aware decisions, and taking actions autonomously. This could include robotics, autonomous machines, computer vision systems, agent-first or edge AI devices.",
-  "You have a legal entity and at least two full-time team members with complementary technical and commercial skills.",
-  "You've raised $5M+ or have at least 9 months of runway.",
-  "You have a clear, named problem you're solving.",
-  "You have tangible traction: a working prototype, paid pilot, letter of intent, strategic partnership, recognized accelerator or award, or similar proof point.",
-  "You're committed to partnering with Capgemini on joint case studies, reference architectures, pilot projects, and/or thought leadership.",
-];
+import { criteria } from "@/data/apply";
 
 /**
  * Apply Fold3 — Entry Criteria & Selection Process. Centered 4-of-8-column

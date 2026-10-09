@@ -11,6 +11,7 @@ import { KeyDates } from "@/components/folds/apply/KeyDates";
 import { EntryCriteria } from "@/components/folds/apply/EntryCriteria";
 import { Faq } from "@/components/folds/apply/Faq";
 import { useIsDesktop } from "@/lib/useIsDesktop";
+import { ApplySeoContent } from "@/components/SeoContent";
 
 /**
  * Apply page — no hero-morph on the nav (same as About: `<SiteNav />` with
@@ -35,7 +36,7 @@ export default function ApplyPage() {
   const isDesktop = useIsDesktop();
   const keyDatesRef = useRef<HTMLDivElement>(null);
 
-  if (isDesktop === null) return null;
+  if (isDesktop === null) return <ApplySeoContent />;
 
   return (
     <>

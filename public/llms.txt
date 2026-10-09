@@ -1,0 +1,16 @@
+# Atelier West
+
+> Atelier West is a 12-week, cash- and equity-free residency for Physical AI startups, based at Mission Rock in San Francisco. Cohort companies get lab access, expert mentorship from frog, Synapse, and Capgemini Experience Engineering, and a direct line to enterprise partners and investors via a closing Demo Day.
+
+## Key facts
+- Format: 12-week, in-person, cohort-based residency (about 5 companies per cohort)
+- Cost: free for participants, no equity and no cash; a refundable deposit tied to lab access
+- Location: Mission Rock, San Francisco, CA, with six labs (rapid prototyping, industrial design, mechanical engineering, electrical engineering, metrology, new product introduction)
+- Audience: Physical AI founders (robotics, autonomous machines, computer vision, edge AI devices) with traction
+- Partner benefits: AWS for Startups credits and NVIDIA Inception Program access
+- Inaugural cohort: October 2026 to January 2027; applications close October 21, 2026
+
+## Pages
+- [Home](https://atelierwest.ai/): overview of the residency
+- [About the program](https://atelierwest.ai/about): costs, timeline, labs, mentors, enterprise access, partner benefits
+- [Apply](https://atelierwest.ai/apply): key dates, entry criteria, selection process, FAQs

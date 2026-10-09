@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { siteUrl } from "@/lib/site";
 
 const frogSerif = localFont({
   src: [
@@ -29,34 +30,66 @@ const bentonSans = localFont({
   display: "swap",
 });
 
-// Trailing slash matters: metadataBase + a relative (no leading "/") image
-// path are joined via the WHATWG URL resolution rules, which drop the last
-// path segment of the base unless it ends in "/" — without it, "atelier-west"
-// gets replaced instead of kept, and the og-image 404s under the repo's
-// GitHub Pages basePath.
-const siteUrl = "https://wongui.github.io/atelier-west/";
-const title = "Atelier West";
+const siteName = "Atelier West";
+const title = "Atelier West | 12-Week Equity-Free Physical AI Residency in San Francisco";
 const description =
-  "A 12-week, cash- and equity-free residency for Physical AI founders.";
+  "Atelier West is a 12-week, cash- and equity-free residency for Physical AI startups at Mission Rock, San Francisco: lab access, expert mentorship, and a straight line to enterprise partners.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title,
+  title: { default: title, template: `%s | ${siteName}` },
   description,
+  applicationName: siteName,
+  alternates: { canonical: "/" },
+  robots: { index: true, follow: true },
   openGraph: {
     title,
     description,
-    url: siteUrl,
-    siteName: title,
-    images: [{ url: "images/og-image.png", width: 1200, height: 630, alt: title }],
+    url: "/",
+    siteName,
+    images: [{ url: "/images/og-image.png", width: 1200, height: 630, alt: siteName }],
+    locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
-    images: ["images/og-image.png"],
+    images: ["/images/og-image.png"],
   },
+};
+
+// Entity data for Google and AI answer engines: tells them Atelier West is an
+// organization, where it is, and what it runs.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${siteUrl}/#organization`,
+      name: siteName,
+      url: siteUrl,
+      logo: `${siteUrl}/icon.png`,
+      description,
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Mission Rock",
+        addressLocality: "San Francisco",
+        addressRegion: "CA",
+        addressCountry: "US",
+      },
+      sameAs: ["https://luma.com/atelierwest"],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      url: siteUrl,
+      name: siteName,
+      description,
+      inLanguage: "en",
+      publisher: { "@id": `${siteUrl}/#organization` },
+    },
+  ],
 };
 
 // viewport-fit=cover lets env(safe-area-inset-*) resolve to real values on
@@ -85,7 +118,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${frogSerif.variable} ${bentonSans.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+          }}
+        />
+        {children}
+      </body>
     </html>
   );
 }

@@ -18,6 +18,7 @@ import { Fold8BeliefMobile } from "@/components/folds/Fold8BeliefMobile";
 import { FooterMobile } from "@/components/folds/FooterMobile";
 import { withBasePath } from "@/lib/basePath";
 import { useIsDesktop } from "@/lib/useIsDesktop";
+import { HomeSeoContent } from "@/components/SeoContent";
 
 const progressionSteps = [
   {
@@ -54,7 +55,7 @@ export default function Home() {
   // never coexist in the DOM, so neither can bleed into the other.
   const isDesktop = useIsDesktop();
 
-  if (isDesktop === null) return null;
+  if (isDesktop === null) return <HomeSeoContent />;
 
   if (!isDesktop) {
     return (
