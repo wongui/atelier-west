@@ -24,6 +24,10 @@ export function HomeSeoContent() {
         Francisco Mission Rock for Physical AI startups with lab access, expert mentorship, and
         enterprise partners, designed to give your technology a place to prove itself and scale.
       </p>
+      <p>
+        A hardware residency for robotics startups, autonomous machines, and computer vision
+        systems: an equity-free alternative to a traditional accelerator.
+      </p>
       <h2>Built to Build</h2>
       <p>
         Six labs for rapid prototyping, industrial design, mechanical and electrical engineering,
@@ -76,7 +80,7 @@ export function AboutSeoContent() {
         <li>Weeks 2-11, Build, with cohort events built around your problem set</li>
         <li>Week 12, Demo Day for enterprise partners and investors</li>
       </ul>
-      <h2>Lab &amp; Facilities Access</h2>
+      <h2>Lab &amp; Facilities Access: six prototyping labs</h2>
       <ul>
         <li>Rapid Prototyping</li>
         <li>Industrial Design</li>

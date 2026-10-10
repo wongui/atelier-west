@@ -33,13 +33,26 @@ const bentonSans = localFont({
 const siteName = "Atelier West";
 const title = "Atelier West | 12-Week Equity-Free Physical AI Residency in San Francisco";
 const description =
-  "Atelier West is a 12-week, cash- and equity-free residency for Physical AI startups at Mission Rock, San Francisco: lab access, expert mentorship, and a straight line to enterprise partners.";
+  "A 12-week, equity-free hardware residency for Physical AI and robotics startups at Mission Rock, San Francisco. Prototyping labs, expert mentors, and enterprise access.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: { default: title, template: `%s | ${siteName}` },
   description,
   applicationName: siteName,
+  keywords: [
+    "Physical AI",
+    "robotics",
+    "startups",
+    "autonomous machines",
+    "computer vision systems",
+    "hardware residency",
+    "accelerator",
+    "prototyping labs",
+    "equity-free residency",
+    "Mission Rock",
+    "San Francisco",
+  ],
   alternates: { canonical: "/" },
   robots: { index: true, follow: true },
   openGraph: {

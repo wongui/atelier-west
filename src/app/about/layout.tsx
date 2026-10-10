@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 const pageTitle = "About the Program: Labs, Mentors & Enterprise Access";
 const pageDescription =
-  "How Atelier West works: a free, 12-week Physical AI residency at Mission Rock, San Francisco, with six labs, expert mentors from frog, Synapse and Capgemini, partner benefits from AWS for Startups, and a Demo Day for enterprises and investors.";
+  "How Atelier West works: a free, 12-week Physical AI residency at Mission Rock, San Francisco, with six prototyping labs, expert mentors from frog, Synapse and Capgemini, partner benefits from AWS for Startups, and a Demo Day for enterprises and investors.";
 
 export const metadata: Metadata = {
   title: pageTitle,

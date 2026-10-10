@@ -6,7 +6,8 @@
 - Format: 12-week, in-person, cohort-based residency (about 5 companies per cohort)
 - Cost: free for participants, no equity and no cash; a refundable deposit tied to lab access
 - Location: Mission Rock, San Francisco, CA, with six labs (rapid prototyping, industrial design, mechanical engineering, electrical engineering, metrology, new product introduction)
-- Audience: Physical AI founders (robotics, autonomous machines, computer vision, edge AI devices) with traction
+- Audience: robotics and Physical AI startups (autonomous machines, computer vision systems, agent-first or edge AI devices) with traction
+- Positioning: a hardware residency with prototyping labs; unlike a traditional accelerator, it takes no equity and no cash
 - Partner benefits: AWS for Startups credits
 - Inaugural cohort: October 2026 to January 2027; applications close October 21, 2026
 
